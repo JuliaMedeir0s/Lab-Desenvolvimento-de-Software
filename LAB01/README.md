@@ -7,11 +7,14 @@ Professores terão acesso à lista de alunos matriculados em suas disciplinas.
 Além disso, o sistema deve controlar a ativação de disciplinas com base no número mínimo e máximo de alunos inscritos e se integrar ao sistema de cobranças da universidade.
 O acesso ao sistema será protegido por login e senha para todos os usuários.
 
-## 📃 Documentação
-
 ## 🚀 Tecnologias Utilizadas
 ### Linguagens de Programação
 
 ### Frameworks e Bibliotecas
 
 ## 📂 Estrutura do Projeto
+
+## 📖 Histórias de Usuário
+
+## 📊 Diagrama de Casos de Uso
+![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-Casos-de-Uso.png)
