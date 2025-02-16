@@ -15,6 +15,8 @@ O acesso ao sistema será protegido por login e senha para todos os usuários.
 ## 📂 Estrutura do Projeto
 
 ## 📖 Histórias de Usuário
+**📌 História de Usuário 01**:
+**Como** secretária, **quero** gerar o currículo do semestre, **para que** possa manter as informações organizadas sobre disciplinas, professores e alunos.
 
 ## 📊 Diagrama de Casos de Uso
 ![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-Casos-de-Uso.png)
