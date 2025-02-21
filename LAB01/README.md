@@ -14,6 +14,41 @@ O acesso ao sistema será protegido por login e senha para todos os usuários.
 
 ## 📂 Estrutura do Projeto
 
+src
+│
+├── main
+│   ├── java
+│   │   ├── application
+│   │   │   └── EducationalSystemApplication.java  
+│   │   ├── controller
+│   │   │   ├── ProfessorController.java  
+│   │   │   ├── StudentController.java 
+│   │   │   ├── AdministrativeStaffController.java  
+│   │   │   ├── CourseController.java 
+│   │   │   ├── DisciplineController.java  
+│   │   │   ├── EnrollmentController.java  
+│   │   │   └── BillingSystemController.java 
+│   │   ├── model
+│   │   │   ├── abstract
+│   │   │   │   └── User.java  
+│   │   │   ├── Professor.java  
+│   │   │   ├── Student.java  
+│   │   │   ├── AdministrativeStaff.java 
+│   │   │   ├── Course.java  
+│   │   │   ├── Discipline.java  
+│   │   │   ├── Enrollment.java  
+│   │   │   └── BillingSystem.java  
+│   │   └── service
+│   │       ├── ProfessorService.java  
+│   │       ├── StudentService.java  
+│   │       ├── AdministrativeStaffService.java  
+│   │       ├── CourseService.java  
+│   │       ├── DisciplineService.java  
+│   │       ├── EnrollmentService.java  
+│   │       └── BillingSystemService.java  
+│   │
+
+
 ## 📖 Histórias de Usuário
 **📌 História de Usuário 01**:
 **Como** secretária, **quero** gerar o currículo do semestre, **para que** possa manter as informações organizadas sobre disciplinas, professores e alunos.
