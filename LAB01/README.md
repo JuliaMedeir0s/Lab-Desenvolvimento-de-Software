@@ -14,12 +14,12 @@ O acesso ao sistema será protegido por login e senha para todos os usuários.
 
 ## 📂 Estrutura do Projeto
 
-src
+código
 │
 ├── main
 │   ├── java
-│   │   ├── application
-│   │   │   └── EducationalSystemApplication.java  
+│   │   ├── app.java
+│   │   │    
 │   │   ├── controller
 │   │   │   ├── ProfessorController.java  
 │   │   │   ├── StudentController.java 
@@ -27,7 +27,7 @@ src
 │   │   │   ├── CourseController.java 
 │   │   │   ├── DisciplineController.java  
 │   │   │   ├── EnrollmentController.java  
-│   │   │   └── BillingSystemController.java 
+│   │   │   └── PaymentSystemController.java 
 │   │   ├── model
 │   │   │   ├── abstract
 │   │   │   │   └── User.java  
@@ -37,7 +37,7 @@ src
 │   │   │   ├── Course.java  
 │   │   │   ├── Discipline.java  
 │   │   │   ├── Enrollment.java  
-│   │   │   └── BillingSystem.java  
+│   │   │   └── PaymentSystem.java  
 │   │   └── service
 │   │       ├── ProfessorService.java  
 │   │       ├── StudentService.java  
@@ -45,7 +45,7 @@ src
 │   │       ├── CourseService.java  
 │   │       ├── DisciplineService.java  
 │   │       ├── EnrollmentService.java  
-│   │       └── BillingSystemService.java  
+│   │       └── PaymentSystemService.java  
 │   │
 
 
