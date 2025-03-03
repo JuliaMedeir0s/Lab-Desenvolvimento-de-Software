@@ -1,0 +1,75 @@
+package models.abstracts;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import models.enums.TipoUsuario;
+
+public abstract class Usuario {
+    private static final AtomicInteger contadorAluno = new AtomicInteger(1);
+    private static final AtomicInteger contadorProfessor = new AtomicInteger(1);
+    private static final AtomicInteger contadorSecretaria = new AtomicInteger(1);
+
+    private String id;
+    private String nome;
+    private String email;
+    private String senha;
+    private TipoUsuario tipoUsuario;
+
+    public Usuario(String nome, String email, String senha, TipoUsuario tipoUsuario) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.tipoUsuario = tipoUsuario;
+        this.id = gerarId(tipoUsuario);
+    }
+
+    private String gerarId(TipoUsuario tipo) {
+        switch (tipo) {
+            case ALUNO:
+                return "ALU-" + String.format("%04d", contadorAluno.getAndIncrement());
+            case PROFESSOR:
+                return "PRO-" + String.format("%04d", contadorProfessor.getAndIncrement());
+            case SECRETARIA:
+                return "SEC-" + String.format("%04d", contadorSecretaria.getAndIncrement());
+            default:
+                throw new IllegalArgumentException("Tipo de usuário inválido");
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + nome + " (" + tipoUsuario + ")";
+    }
+}
