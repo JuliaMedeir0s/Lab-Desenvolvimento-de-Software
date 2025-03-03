@@ -82,3 +82,5 @@ código
 
 ## 📊 Diagrama de Casos de Uso
 ![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-Casos-de-Uso.png)
+## 📊 Diagrama de Classes
+![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-de-Classes.png)
