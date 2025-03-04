@@ -92,8 +92,21 @@ public class Secretaria extends Usuario {
         }
     }
 
+    public Disciplina buscarDisciplinaPorCodigo(String codigo) {
+        for (Disciplina disciplina : disciplinas) {
+            if (disciplina.getCodigo().equals(codigo)) {
+                return disciplina;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public static Secretaria getInstance() {
+        throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
     }
 }
