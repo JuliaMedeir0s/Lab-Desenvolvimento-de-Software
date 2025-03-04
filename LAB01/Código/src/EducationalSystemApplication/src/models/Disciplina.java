@@ -52,7 +52,6 @@ public class Disciplina {
             alunosMatriculados.add(aluno);
             return true;
         }
-        System.out.println("A disciplina " + nome + " já atingiu o limite de alunos!");
         return false;
     }
 
@@ -66,17 +65,6 @@ public class Disciplina {
 
     public boolean verificarMinimoAlunos() { //verifica se chegou a mínimo de alunos matriculados
         return alunosMatriculados.size() >= MIN_ALUNOS;
-    }
-
-    public void listarAlunos() {
-        if (alunosMatriculados.isEmpty()) {
-            System.out.println("Nenhum aluno matriculado na disciplina " + nome);
-        } else {
-            System.out.println("Alunos matriculados em " + nome + ":");
-            for (Aluno aluno : alunosMatriculados) {
-                System.out.println("- " + aluno.getNome());
-            }
-        }
     }
 
     @Override

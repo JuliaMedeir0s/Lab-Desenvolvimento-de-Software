@@ -101,6 +101,15 @@ public class Secretaria extends Usuario {
         return null;
     }
 
+    public Curso buscarCursoPorNome(String nome) {
+        for (Curso curso : cursos) {
+            if (curso.getNome().equals(nome)) {
+                return curso;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return super.toString();
