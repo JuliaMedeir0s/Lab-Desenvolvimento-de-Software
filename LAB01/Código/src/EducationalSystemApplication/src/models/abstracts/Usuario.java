@@ -2,6 +2,7 @@ package models.abstracts;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import models.enums.StatusUsuario;
 import models.enums.TipoUsuario;
 
 public abstract class Usuario {
@@ -14,6 +15,7 @@ public abstract class Usuario {
     private String email;
     private String senha;
     private TipoUsuario tipoUsuario;
+    private StatusUsuario status;
 
     public Usuario(String nome, String email, String senha, TipoUsuario tipoUsuario) {
         this.nome = nome;
@@ -21,6 +23,7 @@ public abstract class Usuario {
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
         this.id = gerarId(tipoUsuario);
+        this.status = StatusUsuario.ATIVO;
     }
 
     private String gerarId(TipoUsuario tipo) {
@@ -34,6 +37,16 @@ public abstract class Usuario {
             default:
                 throw new IllegalArgumentException("Tipo de usuário inválido");
         }
+    }
+
+    public void ativarUsuario() {
+        this.status = StatusUsuario.ATIVO;
+        System.out.println(nome + " foi ativado.");
+    }
+
+    public void desativarUsuario() {
+        this.status = StatusUsuario.INATIVO;
+        System.out.println(nome + " foi desativado.");
     }
 
     public String getId() {
@@ -70,6 +83,6 @@ public abstract class Usuario {
 
     @Override
     public String toString() {
-        return id + " - " + nome + " (" + tipoUsuario + ")";
+        return id + "," + nome + "," + email + "," + senha + "," + status;
     }
 }
