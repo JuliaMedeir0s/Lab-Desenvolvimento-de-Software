@@ -26,17 +26,6 @@ public class Professor extends Usuario {
         disciplinasLecionadas.remove(disciplina);
     }
 
-    public void listarDisciplinas() {
-        if(disciplinasLecionadas.isEmpty()){
-            System.out.println("O professor " + getNome() + " não está lecionando nenhuma disciplina");
-        } else {
-            System.out.println("Disciplinas lecionadas por " + getNome() + ":");
-            for(Disciplina d : disciplinasLecionadas) {
-                System.out.println("- " + d.getNome() + " (" + d.getCodigo() + ")");
-            }
-        }
-    }
-
     @Override
     public String toString() {
         return super.toString() + ", Disciplinas Lecionadas: " + disciplinasLecionadas.size();
