@@ -27,87 +27,76 @@ public class Secretaria extends Usuario {
         this.fimInscricao = null;
     }
 
-    public void criarSemestre(int ano, int periodo, LocalDate inicio, LocalDate fim) {
-        this.semestreAtual = new Semestre(ano, periodo, inicio, fim);
-        System.out.println("Semestre Atual definido:\n" + semestreAtual.toString());
+    public void adicionarAluno(Aluno aluno) {
+        alunos.add(aluno);
     }
 
-    public void definirPeriodoInscricao(LocalDate inicio, LocalDate fim) {
-        if (inicio.isBefore(fim)) {
-            this.inicioInscricao = inicio;
-            this.fimInscricao = fim;
-            System.out.println("Período de inscrições definido: " + inicio + " a " + fim);
-        } else {
-            System.out.println("Erro: A data de início deve ser antes da data de fim.");
-        }
+    public void adicionarProfessor(Professor professor) {
+        professores.add(professor);
     }
 
-    public boolean isDentroDoPeriodoInscricao(LocalDate dataAtual) {
-        return inicioInscricao != null && fimInscricao != null && !dataAtual.isBefore(inicioInscricao) && !dataAtual.isAfter(fimInscricao);
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
     }
 
-    public void validarDisciplinasParaProximoSemestre() {
-        if (semestreAtual == null) {
-            System.out.println("Nenhum semestre definido para validação.");
-            return;
-        }
-
-        List<Disciplina> disciplinasParaRemover = new ArrayList<>();
-
-        for (Disciplina disciplina : semestreAtual.getDisciplinasOfertadas()) {
-            if (!disciplina.verificarMinimoAlunos()) {
-                System.out.println("A disciplina " + disciplina.getNome() + " será cancelada por não atingir o número mínimo de alunos.");
-                disciplinasParaRemover.add(disciplina);
-            }
-        }
-
-        semestreAtual.getDisciplinasOfertadas().removeAll(disciplinasParaRemover);
+    public void adicionarCurso(Curso curso) {
+        cursos.add(curso);
     }
 
-    public void listarAlunos() {
-        System.out.println("Lista de Alunos:");
-        for (Aluno aluno : alunos) {
-            System.out.println("- " + aluno.toString());
-        }
+    public void removerAluno(Aluno aluno) {
+        alunos.remove(aluno);
     }
 
-    public void listarProfessores() {
-        System.out.println("Lista de Professores:");
-        for (Professor professor : professores) {
-            System.out.println("- " + professor.toString());
-        }
+    public void removerProfessor(Professor professor) {
+        professores.remove(professor);
     }
 
-    public void listarCursos() {
-        System.out.println("Lista de Cursos:");
-        for (Curso curso : cursos) {
-            System.out.println("- " + curso.toString());
-        }
+    public void removerDisciplina(Disciplina disciplina) {
+        disciplinas.remove(disciplina);
     }
 
-    public void listarDisciplinas() {
-        System.out.println("Lista de Disciplinas:");
-        for (Disciplina disciplina : disciplinas) {
-            System.out.println("- " + disciplina.toString());
-        }
+    public void removerCurso(Curso curso) {
+        cursos.remove(curso);
     }
 
-    public Disciplina buscarDisciplinaPorCodigo(String codigo) {
-        for (Disciplina disciplina : disciplinas) {
-            if (disciplina.getCodigo().equals(codigo)) {
-                return disciplina;
-            }
-        }
-        return null;
+    public List<Aluno> getAlunos() {
+        return alunos;
     }
 
-    public Curso buscarCursoPorNome(String nome) {
-        for (Curso curso : cursos) {
-            if (curso.getNome().equals(nome)) {
-                return curso;
-            }
-        }
-        return null;
+    public List<Professor> getProfessores() {
+        return professores;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setSemestreAtual(Semestre semestreAtual) {
+        this.semestreAtual = semestreAtual;
+    }
+
+    public void setInicioInscricao(LocalDate inicioInscricao) {
+        this.inicioInscricao = inicioInscricao;
+    }
+
+    public void setFimInscricao(LocalDate fimInscricao) {
+        this.fimInscricao = fimInscricao;
+    }
+
+    public LocalDate getInicioInscricao() {
+        return inicioInscricao;
+    }
+
+    public LocalDate getFimInscricao() {
+        return fimInscricao;
+    }
+
+    public Semestre getSemestreAtual() {
+        return semestreAtual;
     }
 
     @Override

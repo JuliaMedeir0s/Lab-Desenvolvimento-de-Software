@@ -51,13 +51,6 @@ public class Semestre {
         //return !dataAtual.isBefore(inicioInscricoes) && !dataAtual.isAfter(fimInscricoes);
     //}
 
-    public void listarDisciplinas() {
-        System.out.println("Disciplinas ofertadas no semestre " + ano + "." + periodo + ":");
-        for (Disciplina d : disciplinasOfertadas) {
-            System.out.println("- " + d.getNome() + " (" + d.getCodigo() + ")");
-        }
-    }
-
     @Override
     public String toString() {
         return "Semestre " + ano + "." + periodo + " | Inscrições: " + inicioInscricoes + " a " + fimInscricoes;

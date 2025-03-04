@@ -10,6 +10,8 @@ import models.Secretaria;
 import models.abstracts.Usuario;
 import views.professorView;
 
+import controller.secretariaController;
+
 public class TeacherController {
 
     public void menu() {
@@ -32,7 +34,7 @@ public class TeacherController {
     public void listarAlunos(String codigo) {
         Disciplina disciplina;
         try{
-        disciplina = Secretaria.getInstance().buscarDisciplinaPorCodigo(codigo);
+        disciplina = Secretaria.buscarDisciplinaPorCodigo(codigo);
         } catch (Exception e) {
             System.out.println("Disciplina não encontrada!");
             return;
