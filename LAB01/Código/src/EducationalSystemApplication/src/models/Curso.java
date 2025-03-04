@@ -48,28 +48,6 @@ public class Curso {
         alunosMatriculados.remove(aluno);
     }
 
-    public void listarDisciplinas() {
-        if (disciplinas.isEmpty()) {
-            System.out.println("Nenhuma disciplina cadastrada para este curso.");
-        } else {
-            System.out.println("Disciplinas do curso " + nome + ":");
-            for (Disciplina disciplina : disciplinas) {
-                System.out.println("- " + disciplina.getNome());
-            }
-        }
-    }
-
-    public void listarAlunos() {
-        if (alunosMatriculados.isEmpty()) {
-            System.out.println("Nenhum aluno matriculado neste curso.");
-        } else {
-            System.out.println("Alunos matriculados no curso " + nome + ":");
-            for (Aluno aluno : alunosMatriculados) {
-                System.out.println("- " + aluno.getNome());
-            }
-        }
-    }
-
     @Override
     public String toString() {
         return "Curso: " + nome + ", Créditos: " + creditos + ", Disciplinas: " + disciplinas.size() + ", Alunos: " + alunosMatriculados.size();
