@@ -31,23 +31,6 @@ public class Matricula {
         return valor;
     }
 
-    public boolean confirmarMatricula() {
-        if (disciplina.adicionarAluno(aluno)) {
-            this.status = StatusMatricula.ATIVA;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean cancelarMatricula() {
-        if (this.status == StatusMatricula.ATIVA) {
-            disciplina.removerAluno(aluno);
-            this.status = StatusMatricula.CANCELADA;
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return "Matrícula: " + aluno.getNome() + " em " + disciplina.getNome() + " - Status: " + status;
