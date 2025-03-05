@@ -29,6 +29,14 @@ public class Disciplina implements Serializable {
         this.status = Status.ATIVO;
     }
 
+    public boolean adicionarAluno(Aluno aluno) {
+        if (alunosMatriculados.size() < MAX_ALUNOS) {
+            alunosMatriculados.add(aluno);
+            return true;
+        }
+        return false;
+    }
+
     public String getCodigo() {
         return codigo;
     }
