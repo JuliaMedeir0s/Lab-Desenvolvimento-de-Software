@@ -9,8 +9,8 @@ import models.enums.TipoUsuario;
 public class Professor extends Usuario {
     private List<Disciplina> disciplinasLecionadas;
 
-    public Professor(String nome, String email, String senha) {
-        super(nome, email, senha, TipoUsuario.PROFESSOR);
+    public Professor(String id, String nome, String email, String senha) {
+        super(id, nome, email, senha, TipoUsuario.PROFESSOR);
         this.disciplinasLecionadas = new ArrayList<>();
     }
 

@@ -23,6 +23,14 @@ public class Disciplina {
         this.alunosMatriculados = new ArrayList<>();
     }
 
+    public boolean adicionarAluno(Aluno aluno) {
+        if (alunosMatriculados.size() < MAX_ALUNOS) {
+            alunosMatriculados.add(aluno);
+            return true;
+        }
+        return false;
+    }
+
     public String getCodigo() {
         return codigo;
     }

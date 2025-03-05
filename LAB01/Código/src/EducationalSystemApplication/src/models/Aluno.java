@@ -12,8 +12,8 @@ public class Aluno extends Usuario {
     private Curso curso;
     private List<Matricula> matriculas;
 
-    public Aluno(String nome, String email, String senha, String matricula, Curso curso) {
-        super(nome, email, senha, TipoUsuario.ALUNO);
+    public Aluno(String id, String nome, String email, String senha, String matricula, Curso curso) {
+        super(id, nome, email, senha, TipoUsuario.ALUNO);
         this.matricula = matricula;
         this.curso = curso;
         this.matriculas = new ArrayList<>();
