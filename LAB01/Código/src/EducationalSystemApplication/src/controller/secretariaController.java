@@ -1,5 +1,7 @@
 package controller;
 
+import DAO.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +12,31 @@ import models.Disciplina;
 import models.Professor;
 import models.Secretaria;
 import models.Semestre;
+import views.professorView;
+import views.secretariaView;
 
 public class secretariaController {
+    private final professorView view;
+    private final Aluno aluno;
+    private final Professor professor;
+    private final Curso curso;
+    private final Disciplina disciplina;
+    private final Secretaria secretaria;
+    private final Semestre semestre;
+
+    public secretariaController() {
+        this.view = new professorView();
+        this.aluno = AlunoDAO.getInstance();
+        this.professor = ProfessorDAO.getInstance();
+        this.curso = CursoDAO.getInstance();
+        this.disciplina = DisciplinaDAO.getInstance();
+        this.secretaria = SecretariaDAO.getInstance();
+        this.semestre = SemestreDAO.getInstance();
+
+    }
+
+
+
 
     public void criarSemestre(Secretaria secretaria, int ano, int periodo, LocalDate inicio, LocalDate fim) {
         if (inicio.isBefore(fim)) {
@@ -105,6 +130,18 @@ public class secretariaController {
             }
         }
         return null;
+    }
+
+    public List<Aluno> getAlunos(Secretaria secretaria) {
+        return secretaria.getAlunos();
+    }
+
+    public List<Professor> getProfessores(Secretaria secretaria) {
+        return secretaria.getProfessores();
+    }
+
+    public List<Disciplina> getDisciplinas(Secretaria secretaria) {
+        return secretaria.getDisciplinas();
     }
 
 

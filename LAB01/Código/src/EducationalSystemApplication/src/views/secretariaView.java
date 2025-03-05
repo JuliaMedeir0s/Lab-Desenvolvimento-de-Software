@@ -25,42 +25,42 @@ public class secretariaView {
         System.out.println("8. Criar Semestre");
         System.out.println("9. Sair");
         System.out.print("Escolha uma opção: ");
-        Scanner sc = new Scanner(System.in);
+        try (Scanner sc = new Scanner(System.in)) {
+            int op = sc.nextInt();
 
-        int op = sc.nextInt();
+            if (op == 1) {
+                listarDisciplinas();
+            } else if (op == 2) {
+                adicionarDisciplina();
+            } else if (op == 3) {
+                listarAlunos();
+            } else if (op == 4) {
+                adicionarAluno();
+            } else if (op == 5) {
+                listarProfessores();
+            } else if (op == 6) {
+                adicionarProfessor();
+            } else if (op == 7) {
+                atualizarDataInscricao();
+            } else if (op == 8) {
+                criarSemestre();
+            } else if (op == 9) {
+                System.out.println("Saindo...");
+            } else {
+                System.out.println("Opção inválida!");
 
-        if (op == 1) {
-            listarDisciplinas();
-        } else if (op == 2) {
-            adicionarDisciplina();
-        } else if (op == 3) {
-            listarAlunos();
-        } else if (op == 4) {
-            adicionarAluno();
-        } else if (op == 5) {
-            listarProfessores();
-        } else if (op == 6) {
-            adicionarProfessor();
-        } else if (op == 7) {
-            atualizarDataInscricao();
-        } else if (op == 8) {
-            criarSemestre();
-        } else if (op == 9) {
-            System.out.println("Saindo...");
-        } else {
-            System.out.println("Opção inválida!");
-
+            }
         }
     }
 
     public static void listarDisciplinas() {
         System.out.println("\n=== Disciplinas Cadastradas ===");
-        administrativeStaffController.listarDisciplinas(null);
+        administrativeStaffController.listarDisciplinas(null); //passar arugmento
     }
 
     public static void listarAlunos() {
         System.out.println("\n=== Alunos Cadastrados ===");
-        List<Aluno> alunos = administrativeStaffController.getAlunos();
+        List<Aluno> alunos = administrativeStaffController.getAlunos(null); //passar arugmento
         for (Aluno aluno : alunos) {
             int i = 1;
             System.out.println(i + aluno.toString());
@@ -70,7 +70,7 @@ public class secretariaView {
 
     public static void listarProfessores() {
         System.out.println("\n=== Professores Cadastrados ===");
-        List<Professor> professores = administrativeStaffController.getProfessores();
+        List<Professor> professores = administrativeStaffController.getProfessores(null);//passar arugmento
         for (Professor professor : professores) {
             int i = 1;
             System.out.println(i + professor.toString());
