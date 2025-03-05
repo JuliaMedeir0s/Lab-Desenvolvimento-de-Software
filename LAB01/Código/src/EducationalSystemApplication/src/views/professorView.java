@@ -1,45 +1,28 @@
 package views;
 
-import java.util.Scanner;
+import models.Professor;
 
-import controller.TeacherController;
+import java.util.List;
 
+import models.Aluno;
 
 public class professorView {
 
-
-    public static void menu() {
-        TeacherController teacherController = new TeacherController();
+    public static void exibirMenu() {
         System.out.println("\n=== Menu do Professor ===");
         System.out.println("1. Listar disciplinas");
         System.out.println("2. Sair");
-        System.out.print("Escolha uma opção: ");
-        Scanner sc = new Scanner(System.in);
-       
-        int op = sc.nextInt();
-
-        if(op == 1) {
-            teacherController.listarDisciplinas(null);;
-        } else if(op == 2) {
-            System.out.println("Saindo...");
+        System.out.print("Escolha uma opção: "); 
+    }
+    
+    public void exibirAlunos(List<Aluno> alunos) {
+        if(alunos.isEmpty()){
+            System.out.println("Nenhum aluno matriculado na disciplina");
         } else {
-            System.out.println("Opção inválida!");
+            System.out.println("Alunos matriculados na disciplina:");
+            for(Aluno a : alunos) {
+                System.out.println("- " + a.getNome() + " (" + a.getMatricula() + ")");
+            }
         }
-
-    }
-
-    public static void listarDisciplinas(Object professor) {
-        TeacherController teacherController = new TeacherController();
-        System.out.println("\n=== Disciplinas Lecionadas ===");
-        teacherController.listarDisciplinas(professor);
-        System.out.println("Digite o código da disciplina para ver os alunos matriculados ou 0 para voltar: ");
-        Scanner sc = new Scanner(System.in);
-        String codigo = sc.nextLine();
-        if(!codigo.equals("0")) {
-            teacherController.listarAlunos(codigo);
-        }
-        
-    }
-    
-    
+    }   
 }

@@ -3,6 +3,9 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import DAO.professorDAO;
+import
+
 import models.Aluno;
 import models.Disciplina;
 import models.Professor;
@@ -12,10 +15,13 @@ import views.professorView;
 
 import controller.secretariaController;
 
-public class TeacherController {
+public class ProfessorController {
+
+    private professorDAO professorDAO;
+
 
     public void menu() {
-        professorView.menu();
+
     }
 
     public void listarDisciplinas(Object professor) {
@@ -34,7 +40,7 @@ public class TeacherController {
     public void listarAlunos(String codigo) {
         Disciplina disciplina;
         try{
-        disciplina = Secretaria.buscarDisciplinaPorCodigo(codigo);
+        disciplina = buscarDisciplinaPorCodigo(codigo);
         } catch (Exception e) {
             System.out.println("Disciplina não encontrada!");
             return;
