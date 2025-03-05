@@ -8,8 +8,17 @@ import models.Secretaria;
 
 public class secretariaDAO extends AbstractDao implements Serializable {
 
-    private List<Secretaria> secretarias;
-    private static secretariaDAO instance;
+    private List<Secretaria> secretarias = new ArrayList<>();
+    private static secretariaDAO instance = new secretariaDAO();
+
+    private static final String CAMINHO_SECRETARIA = "secretarias.dat";
+
+    public secretariaDAO() {
+        super(CAMINHO_SECRETARIA);
+        this.secretarias = new ArrayList<>();
+        carregarSecretarias();
+    }
+
 
     public static secretariaDAO getInstance() {
         if (instance == null) {
@@ -18,16 +27,28 @@ public class secretariaDAO extends AbstractDao implements Serializable {
         return instance;
     }
 
-    public secretariaDAO() {
-        this.secretarias = new ArrayList<>();
-    }
-
     public boolean adicionarSecretaria(Secretaria secretaria) {
-        return this.secretarias.add(secretaria);
+        try{
+            this.secretarias.add(secretaria);
+            grava(secretarias);
+            return true;
+        }   catch (Exception e){
+            return false;
+        }
     }
 
     public boolean removerSecretaria(Secretaria secretaria) {
-        return this.secretarias.remove(secretaria);
+        try{
+            this.secretarias.remove(secretaria);
+            grava(secretarias);
+            return true;
+        }   catch (Exception e){
+            return false;
+        }
+    }
+
+    private void carregarSecretarias() {
+        this.secretarias = leitura();
     }
 
     public List<Secretaria> getSecretarias() {

@@ -7,11 +7,16 @@ import java.util.List;
 import models.Aluno;
 
 public class alunoDAO extends AbstractDao implements Serializable {
-    private static List<Aluno> alunos = new ArrayList<>();
-    private static alunoDAO instance;
+
+    private List<Aluno> alunos = new ArrayList<>();
+    private static alunoDAO instance = new alunoDAO();
+
+    private static final String CAMINHO_ALUNOS = "alunos.dat";
 
     private alunoDAO() {
-
+        super(CAMINHO_ALUNOS);
+        this.alunos = new ArrayList<>();
+        carregarAlunos();
     }
 
     public static alunoDAO getInstance() {
@@ -23,10 +28,13 @@ public class alunoDAO extends AbstractDao implements Serializable {
 
     public void adicionarAluno(Aluno aluno) {
         alunos.add(aluno);
+        grava(alunos);
     }
 
     public void removerAluno(Aluno aluno) {
         alunos.remove(aluno);
+        grava(alunos);
+
     }
 
     public List<Aluno> getAlunos() {
@@ -41,4 +49,9 @@ public class alunoDAO extends AbstractDao implements Serializable {
         }
         return null;
     }
+
+    private void carregarAlunos(){
+        this.alunos = leitura();
+    }
+
 }

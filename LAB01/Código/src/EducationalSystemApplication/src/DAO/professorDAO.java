@@ -8,10 +8,14 @@ import models.Professor;
 public class professorDAO extends AbstractDao implements Serializable {
 
     private static List<Professor> professores = new ArrayList<>();
-    private static professorDAO instance;
+    private static professorDAO instance = new professorDAO();
+
+    private static final String CAMINHO_PRFESSORES = "professores.dat";
 
     private professorDAO()  {
-
+        super(CAMINHO_PRFESSORES);
+        this.professores = new ArrayList<>();
+        carregarProfessores();
     }
 
     public static professorDAO getInstance() {
@@ -23,14 +27,20 @@ public class professorDAO extends AbstractDao implements Serializable {
 
     public void adicionarProfessor(Professor professor) {
         professores.add(professor);
+        grava(professores);
     }
 
     public void removerProfessor(Professor professor) {
         professores.remove(professor);
+        grava(professores);
     }
 
     public List<Professor> getProfessores() {
         return professores;
+    }
+
+    private void carregarProfessores() {
+        this.professores = leitura();
     }
 
     public Professor buscarPorNome(String nome) {
