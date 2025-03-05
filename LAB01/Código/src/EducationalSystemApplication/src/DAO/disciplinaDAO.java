@@ -6,22 +6,22 @@ import java.util.List;
 
 import models.Disciplina;
 
-public class disciplinaDAO extends AbstractDao implements Serializable {
+public class DisciplinaDAO extends AbstractDao implements Serializable {
     
     private static List<Disciplina> disciplinas = new ArrayList<>();
-    private static disciplinaDAO instance = new disciplinaDAO();
+    private static DisciplinaDAO instance = new DisciplinaDAO();
 
     private static final String CAMINHO_DISCIPLINA = "disciplinas.dat";
 
-    private disciplinaDAO() {
+    private DisciplinaDAO() {
         super(CAMINHO_DISCIPLINA);
         this.disciplinas = new ArrayList<>();
         carregarDisciplinas();
     }
 
-    public static disciplinaDAO getInstance() {
+    public static DisciplinaDAO getInstance() {
         if (instance == null) {
-            instance = new disciplinaDAO();
+            instance = new DisciplinaDAO();
         }
         return instance;
     }

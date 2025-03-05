@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-import controller.secretariaController;
+import controller.SecretariaController;
 import models.Secretaria;
 import models.Aluno;
 import models.Professor;
 
 public class SecretariaView {
 
-    public static secretariaController administrativeStaffController = new secretariaController();
+    public static SecretariaController administrativeStaffController = new SecretariaController();
 
     public static void mostrarMenu() {
         System.out.println("\n=== Menu da Secretaria ===");

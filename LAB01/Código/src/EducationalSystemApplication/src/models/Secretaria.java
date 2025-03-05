@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +8,15 @@ import models.abstracts.Usuario;
 import models.enums.TipoUsuario;
 
 public class Secretaria extends Usuario {
+    private static final long serialVersionUID = 1L;
     private List<Aluno> alunos;
     private List<Professor> professores;
     private List<Disciplina> disciplinas;
     private List<Curso> cursos;
     private Semestre semestreAtual;
 
-    public Secretaria(String nome, String email, String senha) {
-        super(nome, email, senha, TipoUsuario.SECRETARIA);
+    public Secretaria(String id, String nome, String email, String senha) {
+        super(id, nome, email, senha, TipoUsuario.SECRETARIA);
         this.alunos = new ArrayList<>();
         this.professores = new ArrayList<>();
         this.disciplinas = new ArrayList<>();
@@ -81,9 +83,5 @@ public class Secretaria extends Usuario {
     @Override
     public String toString() {
         return super.toString();
-    }
-
-    public static Secretaria getInstance() {
-        throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
     }
 }

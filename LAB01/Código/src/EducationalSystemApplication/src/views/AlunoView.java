@@ -3,12 +3,13 @@ package views;
 import models.Disciplina;
 import models.Aluno;
 
+import java.util.List;
 import java.util.Scanner;
 
 import controller.SessaoController;
 
 public class AlunoView {
-    public static void mostrarMenu(Aluno aluno, List<Disciplina> disciplinasDisponiveis) {
+    public static void mostrarMenu() {
         Scanner scanner = new Scanner(System.in);
         int opcao;
 
@@ -24,7 +25,7 @@ public class AlunoView {
 
             switch (opcao) {
                 case 1:
-                    listarDisciplinas(disciplinasDisponiveis);
+                    listarDisciplinas();
                     break;
                 case 2:
                     System.out.println("Realizando matrícula...");

@@ -6,23 +6,23 @@ import java.util.List;
 
 import models.Curso;
 
-public class cursoDAO extends AbstractDao implements Serializable {
+public class CursoDAO extends AbstractDao implements Serializable {
 
     private static List<Curso> cursos = new ArrayList<>();
-    private static cursoDAO instance = new cursoDAO();
+    private static CursoDAO instance = new CursoDAO();
 
     private static final String CAMINHO_CURSO = "cursos.dat";
 
-    private cursoDAO() {
+    private CursoDAO() {
         super(CAMINHO_CURSO);
         this.cursos = new ArrayList<>();
         carregarCursos();
 
     }
 
-    public static cursoDAO getInstance() {
+    public static CursoDAO getInstance() {
         if (instance == null) {
-            instance = new cursoDAO();
+            instance = new CursoDAO();
         }
         return instance;
     }

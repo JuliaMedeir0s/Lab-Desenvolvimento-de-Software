@@ -6,7 +6,7 @@ import java.util.List;
 import models.Disciplina;
 import models.Semestre;
 
-public class semestreController {
+public class SemestreController {
 
     public void listarDisciplinas(Semestre semestre) {
         List<Disciplina> disciplinasOfertadas = semestre.getDisciplinasOfertadas();

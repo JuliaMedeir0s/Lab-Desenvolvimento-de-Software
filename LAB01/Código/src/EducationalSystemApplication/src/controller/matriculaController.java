@@ -10,13 +10,13 @@ import DAO.*;
 
 
 
-public class matriculaController {
+public class MatriculaController {
     private final Aluno aluno;
     private final Matricula matricula;
     private final Disciplina disciplina;
     private StatusMatricula status;
 
-    public matriculaController(Aluno aluno, Matricula matricula, Disciplina disciplina) {
+    public MatriculaController(Aluno aluno, Matricula matricula, Disciplina disciplina) {
         this.disciplina = DisciplinaDAO.getInsance();
         this.aluno = aluno;
         this.matricula = matricula;

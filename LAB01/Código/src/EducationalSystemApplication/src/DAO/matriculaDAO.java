@@ -7,14 +7,14 @@ import java.util.List;
 
 import models.Matricula;
 
-public class matriculaDAO extends AbstractDao implements Serializable {
+public class MatriculaDAO extends AbstractDao implements Serializable {
 
     private List<Matricula> matriculas = new ArrayList<>();
-    private static matriculaDAO instance = new matriculaDAO();
+    private static MatriculaDAO instance = new MatriculaDAO();
 
     private static final String CAMINHO_MATRICULAS = "matriculas.dat";
 
-    public matriculaDAO() {
+    public MatriculaDAO() {
         super(CAMINHO_MATRICULAS);
         this.matriculas = new ArrayList<>();
         carregarMatriculas();
@@ -49,9 +49,9 @@ public class matriculaDAO extends AbstractDao implements Serializable {
     }
 
 
-    public static matriculaDAO getInstance() {
+    public static MatriculaDAO getInstance() {
         if (instance == null) {
-            instance = new matriculaDAO();
+            instance = new MatriculaDAO();
         }
         return instance;
     }

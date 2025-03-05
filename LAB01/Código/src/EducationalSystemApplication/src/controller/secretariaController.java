@@ -12,11 +12,11 @@ import models.Disciplina;
 import models.Professor;
 import models.Secretaria;
 import models.Semestre;
-import views.professorView;
-import views.secretariaView;
+import views.ProfessorView;
+import views.SecretariaView;
 
-public class secretariaController {
-    private final professorView view;
+public class SecretariaController {
+    private final ProfessorView view;
     private final Aluno aluno;
     private final Professor professor;
     private final Curso curso;
@@ -24,8 +24,8 @@ public class secretariaController {
     private final Secretaria secretaria;
     private final Semestre semestre;
 
-    public secretariaController() {
-        this.view = new professorView();
+    public SecretariaController() {
+        this.view = new ProfessorView();
         this.aluno = AlunoDAO.getInstance();
         this.professor = ProfessorDAO.getInstance();
         this.curso = CursoDAO.getInstance();

@@ -5,22 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Professor;
 
-public class professorDAO extends AbstractDao implements Serializable {
+public class ProfessorDAO extends AbstractDao implements Serializable {
 
     private static List<Professor> professores = new ArrayList<>();
-    private static professorDAO instance = new professorDAO();
+    private static ProfessorDAO instance = new ProfessorDAO();
 
     private static final String CAMINHO_PRFESSORES = "professores.dat";
 
-    private professorDAO()  {
+    private ProfessorDAO()  {
         super(CAMINHO_PRFESSORES);
         this.professores = new ArrayList<>();
         carregarProfessores();
     }
 
-    public static professorDAO getInstance() {
+    public static ProfessorDAO getInstance() {
         if (instance == null) {
-            instance = new professorDAO();
+            instance = new ProfessorDAO();
         }
         return instance;
     }
