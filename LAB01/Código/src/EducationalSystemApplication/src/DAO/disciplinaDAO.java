@@ -1,11 +1,12 @@
 package DAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Disciplina;
 
-public class disciplinaDAO {
+public class disciplinaDAO extends AbstractDao implements Serializable {
     private static List<Disciplina> disciplinas = new ArrayList<>();
     private static disciplinaDAO instance;
 

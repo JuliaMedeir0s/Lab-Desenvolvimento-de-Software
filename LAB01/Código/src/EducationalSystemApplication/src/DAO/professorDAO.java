@@ -1,15 +1,16 @@
 package DAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import models.Professor;
 
-public class professorDAO {
+public class professorDAO extends AbstractDao implements Serializable {
 
     private static List<Professor> professores = new ArrayList<>();
     private static professorDAO instance;
 
-    private professorDAO() {
+    private professorDAO()  {
 
     }
 

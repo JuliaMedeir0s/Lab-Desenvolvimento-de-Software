@@ -1,11 +1,12 @@
 package DAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Secretaria;
 
-public class secretariaDAO {
+public class secretariaDAO extends AbstractDao implements Serializable {
 
     private List<Secretaria> secretarias;
     private static secretariaDAO instance;
