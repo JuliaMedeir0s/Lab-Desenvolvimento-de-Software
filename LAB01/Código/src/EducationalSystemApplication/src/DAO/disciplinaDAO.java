@@ -1,55 +1,45 @@
 package DAO;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 import models.Disciplina;
 
-public class DisciplinaDAO extends AbstractDao implements Serializable {
-    
-    private static List<Disciplina> disciplinas = new ArrayList<>();
-    private static DisciplinaDAO instance = new DisciplinaDAO();
-
-    private static final String CAMINHO_DISCIPLINA = "disciplinas.dat";
+public class DisciplinaDAO extends AbstractDao<Disciplina> {
+    private static final String FILE_NAME = "disciplinas.dat";
+    private static DisciplinaDAO instancia = new DisciplinaDAO();
+    private List<Disciplina> disciplinas;
 
     private DisciplinaDAO() {
-        super(CAMINHO_DISCIPLINA);
-        this.disciplinas = new ArrayList<>();
-        carregarDisciplinas();
+        super(FILE_NAME);
+        disciplinas = leitura(); 
     }
 
     public static DisciplinaDAO getInstance() {
-        if (instance == null) {
-            instance = new DisciplinaDAO();
-        }
-        return instance;
+        return instancia;
     }
 
     public void adicionarDisciplina(Disciplina disciplina) {
         disciplinas.add(disciplina);
-        grava(disciplinas);
+        grava(disciplinas); 
     }
 
-    public void removerDisciplina(Disciplina disciplina) {
-        disciplinas.remove(disciplina);
-        grava(disciplinas);
+    public Optional<Disciplina> buscarPorCodigo(String codigo) {
+        return disciplinas.stream()
+                .filter(d -> d.getCodigo().equalsIgnoreCase(codigo))
+                .findFirst();
     }
 
-    public List<Disciplina> getDisciplinas() {
+    public List<Disciplina> listarDisciplinas() {
         return disciplinas;
     }
 
-    private void carregarDisciplinas() {
-        this.disciplinas = leitura();
-    }
-
-    public Disciplina buscarPorCodigo(String codigo) {
-        for (Disciplina disciplina : disciplinas) {
-            if (disciplina.getCodigo().equals(codigo)) {
-                return disciplina;
+    public void atualizarDisciplina(Disciplina disciplinaAtualizada) {
+        for (int i = 0; i < disciplinas.size(); i++) {
+            if (disciplinas.get(i).getCodigo().equalsIgnoreCase(disciplinaAtualizada.getCodigo())) {
+                disciplinas.set(i, disciplinaAtualizada);
+                grava(disciplinas);
+                return;
             }
         }
-        return null;
     }
 }

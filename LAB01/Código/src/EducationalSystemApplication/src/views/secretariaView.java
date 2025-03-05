@@ -19,7 +19,7 @@ public class SecretariaView {
             System.out.println("5. Gerenciar Cursos");
             System.out.println("6. Gerenciar Usuários da Secretaria");
             System.out.println("7. Deslogar");
-            System.out.println("0. Voltar ao Menu Principal");
+            System.out.println("0. Encerrar programa");
             System.out.print("Escolha uma opção: ");
             opcao = sc.nextInt();
             sc.nextLine(); // Consumir quebra de linha
