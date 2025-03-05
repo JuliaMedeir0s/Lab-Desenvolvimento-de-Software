@@ -1,105 +1,76 @@
 package views;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
-
 import controller.SecretariaController;
-import models.Secretaria;
-import models.Aluno;
-import models.Professor;
 
 public class SecretariaView {
-
-    public static SecretariaController administrativeStaffController = new SecretariaController();
+    private static final SecretariaController secretariaController = new SecretariaController();
+    private static final Scanner sc = new Scanner(System.in);
 
     public static void mostrarMenu() {
-        System.out.println("\n=== Menu da Secretaria ===");
-        System.out.println("1. Listar disciplinas");
-        System.out.println("2. Adicionar disciplina");
-        System.out.println("3. Listar alunos");
-        System.out.println("4. Adicionar aluno");
-        System.out.println("5. Listar professores");
-        System.out.println("6. Adicionar professor");
-        System.out.println("7. Atualizar data de inscrição");
-        System.out.println("8. Criar Semestre");
-        System.out.println("9. Sair");
-        System.out.print("Escolha uma opção: ");
-        try (Scanner sc = new Scanner(System.in)) {
-            int op = sc.nextInt();
+        int opcao;
+        do {
+            limparConsole();
+            System.out.println("\n===== MENU DA SECRETARIA =====");
+            System.out.println("1. Gerenciar Disciplinas");
+            System.out.println("2. Gerenciar Alunos");
+            System.out.println("3. Gerenciar Professores");
+            System.out.println("4. Gerenciar Semestre");
+            System.out.println("5. Gerenciar Cursos");
+            System.out.println("6. Gerenciar Usuários da Secretaria");
+            System.out.println("7. Deslogar");
+            System.out.println("0. Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine(); // Consumir quebra de linha
 
-            if (op == 1) {
-                listarDisciplinas();
-            } else if (op == 2) {
-                adicionarDisciplina();
-            } else if (op == 3) {
-                listarAlunos();
-            } else if (op == 4) {
-                adicionarAluno();
-            } else if (op == 5) {
-                listarProfessores();
-            } else if (op == 6) {
-                adicionarProfessor();
-            } else if (op == 7) {
-                atualizarDataInscricao();
-            } else if (op == 8) {
-                criarSemestre();
-            } else if (op == 9) {
-                System.out.println("Saindo...");
-            } else {
-                System.out.println("Opção inválida!");
-
+            switch (opcao) {
+                case 1:
+                    GerenciarDisciplinasView.mostrar();
+                    break;
+                case 2:
+                    GerenciarAlunosView.mostrar();
+                    break;
+                case 3:
+                    GerenciarProfessoresView.mostrar();
+                    break;
+                case 4:
+                    GerenciarSemestreView.mostrar();
+                    break;
+                case 5:
+                    GerenciarCursosView.mostrar();
+                    break;
+                case 6:
+                    GerenciarUsuariosView.mostrar();
+                    break;
+                case 7:
+                    System.out.println("✅ Você foi deslogado.");
+                    return;
+                case 0:
+                    System.out.println("Retornando ao menu principal...");
+                    return;
+                default:
+                    System.out.println("❌ Opção inválida! Tente novamente.");
+                    pausarTela();
             }
+        } while (opcao != 7 && opcao != 0);
+    }
+
+    private static void limparConsole() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Não foi possível limpar o console.");
         }
     }
 
-    public static void listarDisciplinas() {
-        System.out.println("\n=== Disciplinas Cadastradas ===");
-        administrativeStaffController.listarDisciplinas(null); //passar arugmento
+    private static void pausarTela() {
+        System.out.println("\nPressione ENTER para continuar...");
+        sc.nextLine();
     }
-
-    public static void listarAlunos() {
-        System.out.println("\n=== Alunos Cadastrados ===");
-        List<Aluno> alunos = administrativeStaffController.getAlunos(null); //passar arugmento
-        for (Aluno aluno : alunos) {
-            int i = 1;
-            System.out.println(i + aluno.toString());
-            i++;
-        }
-    }
-
-    public static void listarProfessores() {
-        System.out.println("\n=== Professores Cadastrados ===");
-        List<Professor> professores = administrativeStaffController.getProfessores(null);//passar arugmento
-        for (Professor professor : professores) {
-            int i = 1;
-            System.out.println(i + professor.toString());
-            i++;
-        }
-    }
-
-    public static void atualizarDataInscricao(){
-
-    }
-
-    public static void criarSemestre(){
-
-    }
-
-    public static void criarSemestre(int ano, int periodo, LocalDate inicio, LocalDate fim) {
-        // implementar metodo        
-    }
-
-    public static void adicionarDisciplina() {
-        // implementar metodo
-    }
-
-    public static void adicionarAluno() {
-        // implementar metodo
-    }
-
-    public static void adicionarProfessor() {
-        // implementar metodo
-    }
-
 }

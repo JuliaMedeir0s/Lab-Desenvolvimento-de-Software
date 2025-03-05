@@ -47,26 +47,6 @@ public class Disciplina {
         return alunosMatriculados;
     }
 
-    public boolean adicionarAluno(Aluno aluno) {
-        if (alunosMatriculados.size() < MAX_ALUNOS) { //verifica se não atingiu a lotação máxima antes
-            alunosMatriculados.add(aluno);
-            return true;
-        }
-        return false;
-    }
-
-    public void removerAluno(Aluno aluno) {
-        alunosMatriculados.remove(aluno);
-    }
-
-    public boolean verificarLotacao() { //verifica se o máximo de alunos foi atingido
-        return alunosMatriculados.size() >= MAX_ALUNOS;
-    }
-
-    public boolean verificarMinimoAlunos() { //verifica se chegou a mínimo de alunos matriculados
-        return alunosMatriculados.size() >= MIN_ALUNOS;
-    }
-
     @Override
     public String toString() {
         return "Disciplina: " + nome + " (" + codigo + "), Professor: " + professor.getNome() + ", Alunos: " + alunosMatriculados.size();
