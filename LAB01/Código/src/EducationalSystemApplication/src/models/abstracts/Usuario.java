@@ -69,6 +69,10 @@ public abstract class Usuario {
         return tipoUsuario;
     }
 
+    public StatusUsuario getStatus() {
+        return status;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -79,6 +83,10 @@ public abstract class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public void setStatus(StatusUsuario status) {
+        this.status = status;
     }
 
     @Override

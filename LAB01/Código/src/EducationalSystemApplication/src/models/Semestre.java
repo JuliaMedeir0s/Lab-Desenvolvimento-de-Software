@@ -47,9 +47,9 @@ public class Semestre {
         disciplinasOfertadas.remove(disciplina);
     }
 
-    //public boolean estaDentroDoPeriodo(LocalDate dataAtual){
-        //return !dataAtual.isBefore(inicioInscricoes) && !dataAtual.isAfter(fimInscricoes);
-    //}
+    public boolean isDentroDoPeriodo(LocalDate dataAtual){
+        return !dataAtual.isBefore(inicioInscricoes) && !dataAtual.isAfter(fimInscricoes);
+    }
 
     @Override
     public String toString() {

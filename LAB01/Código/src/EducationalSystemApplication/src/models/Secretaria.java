@@ -1,6 +1,5 @@
 package models;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +12,6 @@ public class Secretaria extends Usuario {
     private List<Disciplina> disciplinas;
     private List<Curso> cursos;
     private Semestre semestreAtual;
-    private LocalDate inicioInscricao;
-    private LocalDate fimInscricao;
 
     public Secretaria(String nome, String email, String senha) {
         super(nome, email, senha, TipoUsuario.SECRETARIA);
@@ -23,8 +20,6 @@ public class Secretaria extends Usuario {
         this.disciplinas = new ArrayList<>();
         this.cursos = new ArrayList<>();
         this.semestreAtual = null;
-        this.inicioInscricao = null;
-        this.fimInscricao = null;
     }
 
     public void adicionarAluno(Aluno aluno) {
@@ -77,22 +72,6 @@ public class Secretaria extends Usuario {
 
     public void setSemestreAtual(Semestre semestreAtual) {
         this.semestreAtual = semestreAtual;
-    }
-
-    public void setInicioInscricao(LocalDate inicioInscricao) {
-        this.inicioInscricao = inicioInscricao;
-    }
-
-    public void setFimInscricao(LocalDate fimInscricao) {
-        this.fimInscricao = fimInscricao;
-    }
-
-    public LocalDate getInicioInscricao() {
-        return inicioInscricao;
-    }
-
-    public LocalDate getFimInscricao() {
-        return fimInscricao;
     }
 
     public Semestre getSemestreAtual() {
