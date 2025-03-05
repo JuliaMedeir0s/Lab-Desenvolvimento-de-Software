@@ -1,62 +1,44 @@
 package views;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import controller.AlunoController;
-import models.Aluno;
-import models.Professor;
-import models.Secretaria;
+import DAO.UsuarioDAO;
+import controller.SessaoController;
 import models.abstracts.Usuario;
 
-public class loginView {
-    private static List<Usuario> usuarios = new ArrayList<>();
-    public static void main(String[] args) {
-        //usuários de teste
-        inicializarUsuarios();
+public class LoginView {
+    public static void mostrarLogin() {
         Scanner scanner = new Scanner(System.in);
+        // precisa salvar o usuário que iniciou a sessão
+        while (!SessaoController.isLogado()) {
+            System.out.print("ID ou Matrícula: ");
+            String id = scanner.nextLine();
+            System.out.print("Senha: ");
+            String senha = scanner.nextLine();
 
-        System.out.println("=== Sistema de Matrículas ===");
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Senha: ");
-        String senha = scanner.nextLine();
-        Usuario usuarioLogado = autenticarUsuario(email, senha);
-
-        // tem que verificar o tipo de quem está logado
-        if (usuarioLogado != null) {
-            System.out.println("\nBem-vindo, " + usuarioLogado.getNome() + "!");
-
-            if (usuarioLogado instanceof Aluno) {
-                AlunoController alunoController = new AlunoController((Aluno) usuarioLogado);
-                AlunoView.menu((Aluno) usuarioLogado);
-            } else if (usuarioLogado instanceof Professor) {
-                ProfessorController professorController = new ProfessorController((Professor) usuarioLogado);
-                ProfessorView.menu((Professor) usuarioLogado);
-            } else if (usuarioLogado instanceof Secretaria) {
-                SecretariaController secretariaController = new SecretariaController((Secretaria) usuarioLogado);
-                SecretariaView.menu((Secretaria) usuarioLogado);
-            }
-        } else {
-            System.out.println("\nLogin falhou! Verifique suas credenciais.");
-        }
-
-        scanner.close();
-    }
-    // usuários pra fazer um teste
-    private static void inicializarUsuarios() {
-        usuarios.add(new Aluno("Lucas", "lucas@email.com", "1234", "2023001", null));
-        usuarios.add(new Professor("Carlos", "carlos@email.com", "prof123"));
-        usuarios.add(new Secretaria("Ana", "ana@email.com", "admin123"));
-    }
-
-    private static Usuario autenticarUsuario(String email, String senha) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
-                return usuario;
+            UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+            Usuario usuario = usuarioDAO.autenticar(id, senha);
+            if (usuario != null) {
+                SessaoController.login(usuario);
+                System.out.println("Bem-vindo, " + usuario.getNome() + "! Você está logado.");
+                abrirView(usuario);
+            } else {
+                System.out.println("Credenciais inválidas! Tente novamente.");
             }
         }
-        return null;
+    }
+
+    private static void abrirView(Usuario usuario) {
+        switch (usuario.getTipoUsuario()) {
+            case ALUNO:
+                AlunoView.mostrarMenu();
+                break;
+            case PROFESSOR:
+                ProfessorView.mostrarMenu();
+                break;
+            case SECRETARIA:
+                SecretariaView.mostrarMenu();
+                break;
+        }
     }
 }

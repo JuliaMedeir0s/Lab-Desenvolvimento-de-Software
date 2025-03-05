@@ -9,11 +9,11 @@ import models.Secretaria;
 import models.Aluno;
 import models.Professor;
 
-public class secretariaView {
+public class SecretariaView {
 
     public static secretariaController administrativeStaffController = new secretariaController();
 
-    public static void menu(Secretaria secretaria) {
+    public static void mostrarMenu() {
         System.out.println("\n=== Menu da Secretaria ===");
         System.out.println("1. Listar disciplinas");
         System.out.println("2. Adicionar disciplina");
