@@ -1,15 +1,18 @@
 package models.abstracts;
 
-import models.enums.StatusUsuario;
+import java.io.Serializable;
+
+import models.enums.Status;
 import models.enums.TipoUsuario;
 
-public abstract class Usuario {
+public abstract class Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String id;
     private String nome;
     private String email;
     private String senha;
     private TipoUsuario tipoUsuario;
-    private StatusUsuario status;
+    private Status status;
 
     public Usuario(String id, String nome, String email, String senha, TipoUsuario tipoUsuario) {
         this.id = id;
@@ -17,7 +20,7 @@ public abstract class Usuario {
         this.email = email;
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
-        this.status = StatusUsuario.ATIVO;
+        this.status = Status.ATIVO;
     }
 
     public String getId() {
@@ -40,8 +43,12 @@ public abstract class Usuario {
         return tipoUsuario;
     }
 
-    public StatusUsuario getStatus() {
+    public Status getStatus() {
         return status;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {
@@ -56,12 +63,12 @@ public abstract class Usuario {
         this.senha = senha;
     }
 
-    public void setStatus(StatusUsuario status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return id + "," + nome + "," + email + "," + status;
+        return id + "," + nome + "," + email + "," + tipoUsuario + "," + status;
     }
 }

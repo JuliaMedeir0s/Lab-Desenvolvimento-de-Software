@@ -1,5 +1,5 @@
 package models.enums;
 
-public enum StatusUsuario {
+public enum Status {
     ATIVO, INATIVO;
 }
