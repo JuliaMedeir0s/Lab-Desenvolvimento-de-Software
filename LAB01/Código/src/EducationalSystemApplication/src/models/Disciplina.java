@@ -85,6 +85,10 @@ public class Disciplina implements Serializable {
         return alunosMatriculados;
     }
 
+    public void setAtiva(boolean ativa) {
+        this.status = ativa ? Status.ATIVO : Status.INATIVO;
+    }
+
     @Override
     public String toString() {
         return "Disciplina: " + nome + " (" + codigo + "), Professor: " +
