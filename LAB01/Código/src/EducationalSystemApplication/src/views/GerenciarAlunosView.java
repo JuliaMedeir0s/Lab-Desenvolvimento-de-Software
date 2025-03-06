@@ -49,6 +49,7 @@ public class GerenciarAlunosView {
 
         System.out.print("Senha do Aluno: ");
         String senha = sc.nextLine();
+<<<<<<< HEAD
 
         System.out.println("\nLista de Cursos Ativos:");
         cursoController.listarCursosAtivos();
@@ -59,6 +60,18 @@ public class GerenciarAlunosView {
         boolean sucesso = alunoController.adicionarAluno(nome, email, senha, cursoIndex);
         System.out.println(sucesso ? "✅ Aluno adicionado com sucesso!" : "❌ Erro ao adicionar aluno.");
         Utils.pausarTela();
+=======
+        System.out.println("Matrícula do Aluno: ");
+        String matricula = sc.nextLine();
+        System.out.println(" Selecione o Curso do Aluno: ");
+        secretariaController.listarCursos();
+        System.out.print("Código do Curso: ");
+        String codigoCurso = sc.nextLine();
+
+        secretariaController.adicionarAluno(nome, email, senha, matricula, secretariaController.getCurso(codigoCurso));
+        System.out.println("✅ Aluno adicionado com sucesso!");
+        pausarTela();
+>>>>>>> 3711e5730b43689194f96f13aba3fdba0a9a4349
     }
 
     private static void editarAluno() {

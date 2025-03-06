@@ -41,8 +41,9 @@ public class Matricula {
         }
     }
 
-    public void cancelarMatricula() {
+    public boolean cancelarMatricula() {
         this.status = StatusMatricula.CANCELADA;
+        return true;
     }
 
     @Override

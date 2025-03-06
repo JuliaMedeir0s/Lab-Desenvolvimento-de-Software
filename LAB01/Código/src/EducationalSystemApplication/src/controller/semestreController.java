@@ -54,4 +54,8 @@ public class SemestreController {
     public Semestre buscarSemestre(int ano, int periodo) {
         return semestreDAO.buscarSemestre(ano, periodo);
     }
+
+    public List<Semestre> listarSemestres() {
+        return semestreDAO.listarSemestres();
+    }
 }

@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import models.*;
@@ -11,32 +10,58 @@ import DAO.*;
 
 
 public class MatriculaController {
-    private final Aluno aluno;
-    private final Matricula matricula;
-    private final Disciplina disciplina;
-    private StatusMatricula status;
+   
+    private final AlunoDAO alunoDAO = AlunoDAO.getInstance();
 
-    public MatriculaController(Aluno aluno, Matricula matricula, Disciplina disciplina) {
-        this.disciplina = DisciplinaDAO.getInsance();
-        this.aluno = aluno;
-        this.matricula = matricula;
+
+    public List<Aluno> listarAlunos() {
+        return alunoDAO.getAlunos();
     }
 
-    public boolean confirmarMatricula() {
-        if (disciplina.adicionarAluno(aluno)) {
-            this.status = StatusMatricula.ATIVA;
-            return true;
+    public Aluno buscarPorNome(String nome) {
+        return alunoDAO.buscarPorNome(nome);
+    }
+
+    public Aluno buscarPorMatricula(String matricula) {
+        return alunoDAO.buscarPorMatricula(matricula);
+    }
+
+    public boolean adicionarAluno(Aluno aluno) {
+        if (alunoDAO.buscarPorMatricula(aluno.getMatricula()) != null) {
+            return false;
+        }
+        alunoDAO.adicionarAluno(aluno);
+        return true;
+    }
+
+    public boolean inscreverEmDisciplina(Aluno aluno, Disciplina disciplina) {
+        if (aluno.getMatriculas().size() < 6) {
+            Matricula novaMatricula = new Matricula(aluno, disciplina);
+            if (novaMatricula.confirmarMatricula()) {
+                aluno.getMatriculas().add(novaMatricula);
+                return true;
+            }
+        } else {
+            System.out.println("Aluno " + aluno.getNome() + " já está matriculado no máximo permitido de 6 disciplinas.");
         }
         return false;
     }
 
-    public boolean cancelarMatricula() {
-        if (this.status == StatusMatricula.ATIVA) {
-            disciplina.removerAluno(aluno);
-            this.status = StatusMatricula.CANCELADA;
-            return true;
+    public boolean desinscreverDeDisciplina(Aluno aluno, Disciplina disciplina) {
+        Matricula matriculaParaCancelar = null;
+        for (Matricula m : aluno.getMatriculas()) {
+            if (m.getDisciplina().equals(disciplina)) {
+                matriculaParaCancelar = m;
+            }
+        }
+        if (matriculaParaCancelar != null) {
+            if (matriculaParaCancelar.cancelarMatricula()) {
+                aluno.getMatriculas().remove(matriculaParaCancelar);
+                return true;
+            }
         }
         return false;
     }
+
 
 }

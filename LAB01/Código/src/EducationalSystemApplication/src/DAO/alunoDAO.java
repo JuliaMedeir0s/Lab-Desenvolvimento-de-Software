@@ -1,7 +1,17 @@
 package DAO;
 
+<<<<<<< HEAD
 import models.Aluno;
 import models.enums.Status;
+=======
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import models.Aluno;
+import models.Disciplina;
+>>>>>>> 3711e5730b43689194f96f13aba3fdba0a9a4349
 
 import java.util.List;
 import java.util.Optional;
@@ -94,4 +104,32 @@ public class AlunoDAO extends AbstractDao<Aluno> {
             AlunoController.setContadorAluno(maiorMatricula + 1);
         }
     }
+<<<<<<< HEAD
 }
+=======
+
+    public Aluno buscarPorEmail(String email) {
+        for (Aluno aluno : alunos) {
+            if (aluno.getEmail().equals(email)) {
+                return aluno;
+            }
+        }
+        return null;
+    }
+
+    public void atualizarAluno(Aluno aluno) {
+        Optional<Aluno> alunoOptional = alunos.stream().filter(a -> a.getId().equals(aluno.getId())).findFirst();
+        if (alunoOptional.isPresent()) {
+            Aluno alunoAtualizado = alunoOptional.get();
+            alunoAtualizado.setNome(aluno.getNome());
+            alunoAtualizado.setEmail(aluno.getEmail());
+            alunoAtualizado.setSenha(aluno.getSenha());
+            alunoAtualizado.setMatricula(aluno.getMatricula());
+            alunoAtualizado.setCurso(aluno.getCurso());
+            alunoAtualizado.setMatriculas(aluno.getMatriculas());
+            grava(alunos);
+        }
+    }
+
+}
+>>>>>>> 3711e5730b43689194f96f13aba3fdba0a9a4349

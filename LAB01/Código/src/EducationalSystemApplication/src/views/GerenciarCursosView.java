@@ -47,7 +47,8 @@ public class GerenciarCursosView {
         System.out.print("Nome do Curso: ");
         String nome = sc.nextLine();
         System.out.print("Código do Curso: ");
-        String codigo = sc.nextLine();
+        int codigo = sc.nextInt();
+        sc.nextLine();
         secretariaController.adicionarCurso(nome, codigo);
         System.out.println("✅ Curso adicionado com sucesso!");
         pausarTela();

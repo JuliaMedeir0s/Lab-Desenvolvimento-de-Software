@@ -32,6 +32,28 @@ public class DisciplinaDAO extends AbstractDao<Disciplina> {
         return null;
     }
 
+    public void editarDisciplina(String codigo, String novoNome, int novaCargaHoraria, double novoValor) {
+        for (Disciplina disciplina : disciplinas) {
+            if (disciplina.getCodigo().equals(codigo)) {
+                disciplina.setNome(novoNome);
+                disciplina.setCargaHoraria(novaCargaHoraria);
+                disciplina.setValor(novoValor);
+                grava(disciplinas);
+                return;
+            }
+        }
+    }
+
+    public void alterarStatusDisciplina(String codigo, boolean ativa) {
+        for (Disciplina disciplina : disciplinas) {
+            if (disciplina.getCodigo().equals(codigo)) {
+                disciplina.setAtiva(ativa);
+                grava(disciplinas);
+                return;
+            }
+        }
+    }
+
     public Optional<Disciplina> buscarPorCodigo(String codigo) {
         return disciplinas.stream()
                 .filter(d -> d.getCodigo().equalsIgnoreCase(codigo))
