@@ -10,6 +10,8 @@ import java.util.Scanner;
 import controller.AlunoController;
 import controller.SessaoController;
 
+
+
 public class AlunoView {
 
     private static final Aluno aluno = (Aluno) SessaoController.getUsuarioLogado();
@@ -35,8 +37,8 @@ public class AlunoView {
                     break;
                 case 2:
                     limparConsole();
-                    System.out.println("Realizando matrícula...");
-                    listarDisciplinas(null); // passar parametros
+                    System.out.println("Disciplinas Disponiveis");
+                    listarDisciplinas(aluno.getCurso().getDisciplinas()); 
                     break;
                 case 0:
                     SessaoController.logout();
@@ -50,13 +52,17 @@ public class AlunoView {
 
     public static void listarDisciplinasMatriculados(List<Matricula> matriculas){
         System.out.println("\nDisciplinas matriculadas:");
+        if (matriculas.isEmpty()) {
+            System.out.println("Você não está matriculado em nenhuma disciplina.");
+            return;
+        }
+
         for (Matricula matricula : matriculas) {
             System.out.println("- Código: " + matricula.getDisciplina().getCodigo());
             System.out.println("  Nome: " + matricula.getDisciplina().getNome());
             System.out.println("  Carga Horária: " + matricula.getDisciplina().getCargaHoraria() + " horas");
             System.out.println("  Professor: " + matricula.getDisciplina().getProfessor().getNome());
             System.out.println("  Valor: R$ " + String.format("%.2f", matricula.getDisciplina().getValor()));
-            System.out.println("  Status: " + matricula.getStatus());
             System.out.println();
         }
 
@@ -70,6 +76,8 @@ public class AlunoView {
                 cancelarMatricula(disciplina);
             } else {
                 System.out.println("Disciplina não encontrada.");
+                limparConsole();
+                listarDisciplinasMatriculados(matriculas);
             }
         }
 
@@ -114,6 +122,8 @@ public class AlunoView {
                 realizarMatricula(disciplina);
             } else {
                 System.out.println("Disciplina não encontrada.");
+                limparConsole();
+                listarDisciplinas(disciplinasDisponiveis);
             }
         }
     }
