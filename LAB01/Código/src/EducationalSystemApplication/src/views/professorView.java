@@ -32,6 +32,7 @@ public class ProfessorView {
                     listarDisciplinas();
                     break;
                 case 0:
+                    SessaoController.encerrarSessao();
                     System.out.println("✅ Você foi deslogado.");
                     return;
                 default:

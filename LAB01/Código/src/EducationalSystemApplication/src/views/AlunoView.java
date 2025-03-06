@@ -41,7 +41,7 @@ public class AlunoView {
                     listarDisciplinas(aluno.getCurso().getDisciplinas()); 
                     break;
                 case 0:
-                    SessaoController.logout();
+                SessaoController.encerrarSessao();
                     System.out.println("Sessão encerrada.");
                     return;
                 default:
