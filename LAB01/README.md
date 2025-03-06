@@ -46,7 +46,7 @@ código
 │   │   │
 │   │   ├── data
 │   │   │
-│   │   ├── model
+│   │   ├── models
 │   │   │   ├── abstract
 │   │   │   │   └── User.java  
 │   │   │   │
@@ -62,17 +62,22 @@ código
 │   │   │   ├── Professor.java  
 │   │   │   ├── Secretaria.java  
 │   │   │   ├── Semestre.java  
-│   │   │   └── SistemaCobranca.java  
+│   │   │   └── SistemaCobranca.java
 │   │   │
-│   │   └── service
-│   │       ├── ProfessorService.java  
-│   │       ├── StudentService.java  
-│   │       ├── AdministrativeStaffService.java  
-│   │       ├── CourseService.java  
-│   │       ├── DisciplineService.java  
-│   │       ├── EnrollmentService.java  
-│   │       └── PaymentSystemService.java  
-│   │
+│   │   ├── utils
+│   │   │   └── utils.java  
+│   │   │
+│   │   └── views
+│   │   │   ├── AlunoView.java  
+│   │   │   ├── GerenciarAlunosView.java  
+│   │   │   ├── GerenciarCursosView.java  
+│   │   │   ├── GerenciarDisciplinasView.java 
+│   │   │   ├── GerenciarProfessoresView.java  
+│   │   │   ├── GerenciarSemestreView.java  
+│   │   │   ├── GerenciarUsuarioView.java  
+│   │   │   ├── LoginView.java
+│   │   │   ├── ProfessorViewupdat.java  
+│   │   │   └── SecretaruaView.java
 
 
 ## 📖 Histórias de Usuário
