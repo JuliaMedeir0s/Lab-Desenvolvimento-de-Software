@@ -54,10 +54,10 @@ public class ProfessorDAO extends AbstractDao<Professor> {
     private void atualizarContadorID() {
         if (!professores.isEmpty()) {
             int maiorID = professores.stream()
-                    .map(p -> Integer.parseInt(p.getId().split("-")[1])) // Pega o número do ID (ex: "0003")
-                    .max(Comparator.naturalOrder()) // Pega o maior número
+                    .map(p -> Integer.parseInt(p.getId().split("-")[1])) 
+                    .max(Comparator.naturalOrder()) 
                     .orElse(0);
-            ProfessorController.setContadorProfessor(maiorID + 1); // Atualiza o contador
+            ProfessorController.setContadorProfessor(maiorID + 1); 
         }
     }
 }

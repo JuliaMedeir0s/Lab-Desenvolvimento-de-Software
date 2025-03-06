@@ -8,8 +8,6 @@ import java.util.Optional;
 
 import controller.CursoController;
 
-import java.util.Comparator;
-
 public class CursoDAO extends AbstractDao<Curso> {
     private static final String FILE_NAME = "cursos.dat";
     private static CursoDAO instancia;

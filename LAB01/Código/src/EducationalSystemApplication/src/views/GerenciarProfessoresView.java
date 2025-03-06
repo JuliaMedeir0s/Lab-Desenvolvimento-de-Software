@@ -52,43 +52,84 @@ public class GerenciarProfessoresView {
     }
 
     private static void adicionarProfessor() {
-        System.out.print("Nome do Professor: ");
+        Utils.limparTela();
+        System.out.println("===== ADICIONAR PROFESSOR =====");
+    
+        System.out.print("Nome do Professor (0 para cancelar): ");
         String nome = sc.nextLine();
-        System.out.print("E-mail do Professor: ");
+        if (nome.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("E-mail do Professor (0 para cancelar): ");
         String email = sc.nextLine();
-        System.out.print("Senha do Professor: ");
+        if (email.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("Senha do Professor (0 para cancelar): ");
         String senha = sc.nextLine();
-
+        if (senha.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
         boolean sucesso = professorController.adicionarProfessor(nome, email, senha);
         System.out.println(
                 sucesso ? "✅ Professor adicionado com sucesso!" : "❌ Erro: Já existe um professor com esse e-mail.");
         Utils.pausarTela();
-    }
+    }    
 
     private static void editarProfessor() {
         professorController.listarProfessores();
-        System.out.print("\nDigite o número do professor que deseja editar: ");
-        int index = sc.nextInt();
-        sc.nextLine();
-
+        System.out.print("\nDigite o número do professor que deseja editar (0 para cancelar): ");
+        int index = Utils.lerInteiro();
+        if (index == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
         Professor professorSelecionado = professorController.selecionarProfessor(index);
         if (professorSelecionado == null) {
             System.out.println("❌ Erro: Professor não encontrado.");
             Utils.pausarTela();
             return;
         }
-
+    
         System.out.println("\n📌 Professor Selecionado:");
         System.out.println("Nome: " + professorSelecionado.getNome());
         System.out.println("E-mail: " + professorSelecionado.getEmail());
-
-        System.out.print("\nNovo Nome (ENTER para manter): ");
+    
+        System.out.print("\nNovo Nome (ENTER para manter, 0 para cancelar): ");
         String novoNome = sc.nextLine();
-        System.out.print("Novo E-mail (ENTER para manter): ");
+        if (novoNome.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("Novo E-mail (ENTER para manter, 0 para cancelar): ");
         String novoEmail = sc.nextLine();
-        System.out.print("Nova Senha (ENTER para manter): ");
+        if (novoEmail.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("Nova Senha (ENTER para manter, 0 para cancelar): ");
         String novaSenha = sc.nextLine();
-
+        if (novaSenha.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
         System.out.print("\nConfirmar edição? (S/N): ");
         String confirmacao = sc.nextLine().trim().toUpperCase();
         if (!confirmacao.equals("S")) {
@@ -96,12 +137,12 @@ public class GerenciarProfessoresView {
             Utils.pausarTela();
             return;
         }
-
+    
         boolean sucesso = professorController.editarProfessor(professorSelecionado.getId(), novoNome, novoEmail,
                 novaSenha);
         System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro ao editar professor.");
         Utils.pausarTela();
-    }
+    }    
 
     private static void alterarStatusProfessor() {
         professorController.listarProfessores();

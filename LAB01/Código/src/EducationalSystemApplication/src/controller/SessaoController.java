@@ -6,7 +6,6 @@ import DAO.UsuarioDAO;
 import models.Secretaria;
 import models.abstracts.Usuario;
 import models.enums.Status;
-import models.enums.TipoUsuario;
 
 public class SessaoController {
     private static Usuario usuarioLogado;

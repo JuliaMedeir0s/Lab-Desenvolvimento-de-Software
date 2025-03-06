@@ -8,31 +8,31 @@ import models.abstracts.Usuario;
 
 public class LoginView {
     public static void mostrarLogin() {
-        Scanner scanner = new Scanner(System.in);
+        try (Scanner scanner = new Scanner(System.in)) { //ele não tava fechando certo, por isso o try-with-resources
+            if (SessaoController.isLogado()) {
+                Usuario usuarioLogado = SessaoController.getUsuarioLogado();
+                System.out.println("✅ Usuário " + usuarioLogado.getNome() + " já está logado.");
+                abrirView(usuarioLogado);
+                return;
+            }
 
-        if (SessaoController.isLogado()) {
-            Usuario usuarioLogado = SessaoController.getUsuarioLogado();
-            System.out.println("✅ Usuário " + usuarioLogado.getNome() + " já está logado.");
-            abrirView(usuarioLogado);
-            return;
-        }
+            while (!SessaoController.isLogado()) {
+                System.out.print("ID ou Matrícula: ");
+                String id = scanner.nextLine();
+                System.out.print("Senha: ");
+                String senha = scanner.nextLine();
 
-        while (!SessaoController.isLogado()) {
-            System.out.print("ID ou Matrícula: ");
-            String id = scanner.nextLine();
-            System.out.print("Senha: ");
-            String senha = scanner.nextLine();
+                Usuario usuario = SessaoController.iniciarSessao(id, senha); 
 
-            Usuario usuario = SessaoController.iniciarSessao(id, senha); 
-
-            if (usuario != null) {
-                SessaoController.login(usuario);
-                Utils.limparTela();
-                System.out.println("✅ Bem-vindo, " + usuario.getNome() + "! Você está logado.");
-                abrirView(usuario);
-            } else {
-                Utils.limparTela();
-                System.out.println("❌ Credenciais inválidas! Tente novamente.");
+                if (usuario != null) {
+                    SessaoController.login(usuario);
+                    Utils.limparTela();
+                    System.out.println("✅ Bem-vindo, " + usuario.getNome() + "! Você está logado.");
+                    abrirView(usuario);
+                } else {
+                    Utils.limparTela();
+                    System.out.println("❌ Credenciais inválidas! Tente novamente.");
+                }
             }
         }
     }

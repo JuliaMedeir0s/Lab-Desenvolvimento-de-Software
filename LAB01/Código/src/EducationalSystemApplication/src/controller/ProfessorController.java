@@ -146,6 +146,12 @@ public class ProfessorController {
         return true;
     }
 
+    public List<Professor> listarProfessoresAtivos() {
+        return professorDAO.listarProfessores().stream()
+                .filter(professor -> professor.getStatus() == Status.ATIVO)
+                .toList();
+    }
+
     public void listarProfessores() {
         List<Professor> professores = professorDAO.listarProfessores();
         if (professores.isEmpty()) {

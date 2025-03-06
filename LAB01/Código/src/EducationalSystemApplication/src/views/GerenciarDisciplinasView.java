@@ -1,174 +1,159 @@
 package views;
 
-import java.util.Scanner;
 import controller.DisciplinaController;
-import models.Professor;
-import java.util.List;
+import controller.ProfessorController;
+import models.Disciplina;
+import utils.Utils;
+import java.util.Scanner;
 
 public class GerenciarDisciplinasView {
     private static final DisciplinaController disciplinaController = new DisciplinaController();
+    private static final ProfessorController professorController = new ProfessorController(); 
     private static final Scanner sc = new Scanner(System.in);
 
     public static void mostrarMenu() {
-        int opcao;
-        do {
-            limparConsole();
-            System.out.println("\n===== GERENCIAR DISCIPLINAS =====");
+        while (true) {
+            Utils.limparTela();
+            System.out.println("===== GERENCIAR DISCIPLINAS =====");
             System.out.println("1. Adicionar Disciplina");
             System.out.println("2. Editar Disciplina");
-            System.out.println("3. Desativar/Ativar Disciplina");
+            System.out.println("3. Ativar/Desativar Disciplina");
             System.out.println("4. Listar Disciplinas");
-            System.out.println("0. Voltar ao Menu Anterior");
+            System.out.println("0. Voltar");
             System.out.print("Escolha uma opção: ");
-            opcao = sc.nextInt();
-            sc.nextLine();
 
+            int opcao = Utils.lerInteiro();
             switch (opcao) {
-                case 1:
-                    adicionarDisciplina();
-                    break;
-                case 2:
-                    editarDisciplina();
-                    break;
-                case 3:
-                    alterarStatusDisciplina();
-                    break;
-                case 4:
-                    disciplinaController.listarDisciplinas();
-                    pausarTela();
-                    break;
-                case 0:
+                case 1 -> adicionarDisciplina();
+                case 2 -> editarDisciplina();
+                case 3 -> alterarStatusDisciplina();
+                case 4 -> listarDisciplinas();
+                case 0 -> {
                     return;
-                default:
-                    System.out.println("❌ Opção inválida! Tente novamente.");
-                    pausarTela();
+                }
+                default -> System.out.println("❌ Opção inválida.");
             }
-        } while (opcao != 0);
+        }
     }
 
     private static void adicionarDisciplina() {
-        System.out.print("Nome da Disciplina: ");
+        Utils.limparTela();
+        System.out.println("===== ADICIONAR DISCIPLINA =====");
+    
+        System.out.print("Nome da Disciplina (0 para cancelar): ");
         String nome = sc.nextLine();
-        System.out.print("Código da Disciplina: ");
-        String codigo = sc.nextLine();
-        System.out.print("Carga Horária: ");
-        int cargaHoraria = sc.nextInt();
-        System.out.print("Valor da Disciplina: ");
-        double valor = sc.nextDouble();
-        sc.nextLine(); 
-    
-        //tem que listar professores antes da seleção
-        List<Professor> professores = disciplinaController.listarProfessoresAtivos();
-        Professor professorSelecionado = null;
-        if (!professores.isEmpty()) {
-            System.out.println("\n=== Professores Disponíveis ===");
-            for (int i = 0; i < professores.size(); i++) {
-                System.out.println((i + 1) + ". " + professores.get(i).getNome() + " (ID: " + professores.get(i).getId() + ")");
-            }
-            System.out.print("Escolha um professor (digite o número ou 0 para sem professor): ");
-            int escolhaProfessor = sc.nextInt();
-            sc.nextLine();
-    
-            if (escolhaProfessor > 0 && escolhaProfessor <= professores.size()) {
-                professorSelecionado = professores.get(escolhaProfessor - 1);
-            }
+        if (nome.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
         }
     
-        boolean sucesso = disciplinaController.adicionarDisciplina(nome, codigo, cargaHoraria, professorSelecionado, valor);
-        System.out.println(sucesso ? "✅ Disciplina adicionada com sucesso!" : "❌ Erro: Já existe uma disciplina com esse código.");
-        pausarTela();
-    }
+        System.out.print("Carga Horária (0 para cancelar): ");
+        int cargaHoraria = Utils.lerInteiro();
+        if (cargaHoraria == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.println("\nLista de Professores Ativos:");
+        professorController.listarProfessoresAtivos();
+        System.out.print("\nEscolha o número do professor (ENTER para sem professor, 0 para cancelar): ");
+        Integer professorIndex = Utils.lerInteiroOpcional();
+        if (professorIndex != null && professorIndex == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("Valor da Disciplina (0 para cancelar): ");
+        double valor = Utils.lerDouble();
+        if (valor == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        String codigo = disciplinaController.gerarCodigo();
+        boolean sucesso = disciplinaController.adicionarDisciplina(codigo, nome, cargaHoraria, professorIndex, valor);
+        System.out.println(sucesso ? "✅ Disciplina adicionada com sucesso! Código: " + codigo : "❌ Erro ao adicionar disciplina.");
+        Utils.pausarTela();
+    }      
 
     private static void editarDisciplina() {
-        // Listar disciplinas antes da edição
-        System.out.println("\n=== Disciplinas Disponíveis ===");
-        disciplinaController.listarDisciplinas();
+        listarDisciplinas();
+        System.out.print("\nDigite o número da disciplina que deseja editar (0 para cancelar): ");
+        int index = Utils.lerInteiro();
+        if (index == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
     
-        System.out.print("\nDigite o código da disciplina que deseja editar: ");
-        String codigo = sc.nextLine();
+        Disciplina disciplinaSelecionada = disciplinaController.selecionarDisciplina(index);
+        if (disciplinaSelecionada == null) {
+            System.out.println("❌ Erro: Disciplina não encontrada.");
+            Utils.pausarTela();
+            return;
+        }
     
-        int opcao;
-        do {
-            limparConsole();
-            System.out.println("\n=== Editar Disciplina ===");
-            System.out.println("1. Editar Nome");
-            System.out.println("2. Editar Carga Horária");
-            System.out.println("3. Editar Professor");
-            System.out.println("4. Editar Valor");
-            System.out.println("0. Voltar");
-            System.out.print("Escolha uma opção: ");
-            opcao = sc.nextInt();
-            sc.nextLine();
+        System.out.println("\n📌 Disciplina Selecionada:");
+        System.out.println("Código: " + disciplinaSelecionada.getCodigo());
+        System.out.println("Nome: " + disciplinaSelecionada.getNome());
+        System.out.println("Carga Horária: " + disciplinaSelecionada.getCargaHoraria());
     
-            boolean sucesso = false;
-            switch (opcao) {
-                case 1:
-                    System.out.print("Novo Nome: ");
-                    String novoNome = sc.nextLine();
-                    sucesso = disciplinaController.editarNomeDisciplina(codigo, novoNome);
-                    break;
-                case 2:
-                    System.out.print("Nova Carga Horária: ");
-                    int novaCargaHoraria = sc.nextInt();
-                    sc.nextLine();
-                    sucesso = disciplinaController.editarCargaHorariaDisciplina(codigo, novaCargaHoraria);
-                    break;
-                case 3:
-                    //listar professores antes
-                    List<Professor> professores = disciplinaController.listarProfessoresAtivos();
-                    Professor professorSelecionado = null;
-                    if (!professores.isEmpty()) {
-                        System.out.println("\n=== Professores Disponíveis ===");
-                        for (int i = 0; i < professores.size(); i++) {
-                            System.out.println((i + 1) + ". " + professores.get(i).getNome() + " (ID: " + professores.get(i).getId() + ")");
-                        }
-                        System.out.print("Escolha um professor (digite o número ou 0 para sem professor): ");
-                        int escolhaProfessor = sc.nextInt();
-                        sc.nextLine();
+        System.out.print("\nNovo Nome (ENTER para manter, 0 para cancelar): ");
+        String novoNome = sc.nextLine();
+        if (novoNome.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
     
-                        if (escolhaProfessor > 0 && escolhaProfessor <= professores.size()) {
-                            professorSelecionado = professores.get(escolhaProfessor - 1);
-                        }
-                    }
-                    sucesso = disciplinaController.editarProfessorDisciplina(codigo, professorSelecionado);
-                    break;
-                case 4:
-                    System.out.print("Novo Valor: ");
-                    double novoValor = sc.nextDouble();
-                    sc.nextLine();
-                    sucesso = disciplinaController.editarValorDisciplina(codigo, novoValor);
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("❌ Opção inválida! Tente novamente.");
-            }
+        System.out.print("Nova Carga Horária (ENTER para manter, 0 para cancelar): ");
+        Integer novaCargaHoraria = Utils.lerInteiroOpcional();
+        if (novaCargaHoraria != null && novaCargaHoraria == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
     
-            System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro: Disciplina não encontrada.");
-            pausarTela();
-        } while (opcao != 0);
-    }
+        System.out.print("\nLista de Professores Ativos:");
+        professorController.listarProfessoresAtivos();
+        System.out.print("\nEscolha o número do novo professor (ENTER para manter, 0 para cancelar): ");
+        Integer professorIndex = Utils.lerInteiroOpcional();
+        if (professorIndex != null && professorIndex == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("\nNovo Valor (ENTER para manter, 0 para cancelar): ");
+        Double novoValor = Utils.lerDoubleOpcional();
+        if (novoValor != null && novoValor == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        boolean sucesso = disciplinaController.editarDisciplina(index, novoNome, novaCargaHoraria, professorIndex, novoValor);
+        System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro ao editar disciplina.");
+        Utils.pausarTela();
+    }    
 
     private static void alterarStatusDisciplina() {
-        //listar as disciplinas antes
-        System.out.println("\n=== Disciplinas Disponíveis ===");
+        listarDisciplinas();
+        System.out.print("\nDigite o número da disciplina que deseja ativar/desativar: ");
+        int index = Utils.lerInteiro();
+
+        boolean sucesso = disciplinaController.alterarStatusDisciplina(index);
+        System.out.println(sucesso ? "✅ Status da disciplina alterado!" : "❌ Erro: Disciplina não encontrada.");
+        Utils.pausarTela();
+    }
+
+    private static void listarDisciplinas() {
+        Utils.limparTela();
         disciplinaController.listarDisciplinas();
-    
-        System.out.print("\nDigite o código da disciplina que deseja ativar/desativar: ");
-        String codigo = sc.nextLine();
-    
-        boolean sucesso = disciplinaController.alterarStatusDisciplina(codigo);
-        System.out.println(sucesso ? "✅ Status da disciplina alterado com sucesso!" : "❌ Erro: Disciplina não encontrada.");
-        pausarTela();
-    }
-
-    private static void limparConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
+        Utils.pausarTela();
     }
 }

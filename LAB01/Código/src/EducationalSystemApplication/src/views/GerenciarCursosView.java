@@ -1,89 +1,120 @@
 package views;
 
+import controller.CursoController;
+import models.Curso;
+import utils.Utils;
 import java.util.Scanner;
-import controller.SecretariaController;
 
 public class GerenciarCursosView {
-    private static final SecretariaController secretariaController = new SecretariaController();
+    private static final CursoController cursoController = new CursoController();
     private static final Scanner sc = new Scanner(System.in);
 
     public static void mostrarMenu() {
-        int opcao;
-        do {
-            limparConsole();
-            System.out.println("\n===== GERENCIAR CURSOS =====");
+        while (true) {
+            Utils.limparTela();
+            System.out.println("===== GERENCIAR CURSOS =====");
             System.out.println("1. Adicionar Curso");
             System.out.println("2. Editar Curso");
-            System.out.println("3. Excluir Curso");
+            System.out.println("3. Ativar/Desativar Curso");
             System.out.println("4. Listar Cursos");
-            System.out.println("0. Voltar ao Menu Anterior");
+            System.out.println("0. Voltar");
             System.out.print("Escolha uma opção: ");
-            opcao = sc.nextInt();
-            sc.nextLine(); 
 
+            int opcao = Utils.lerInteiro();
             switch (opcao) {
-                case 1:
-                    adicionarCurso();
-                    break;
-                case 2:
-                    editarCurso();
-                    break;
-                case 3:
-                    excluirCurso();
-                    break;
-                case 4:
-                    listarCursos();
-                    break;
-                case 0:
+                case 1 -> adicionarCurso();
+                case 2 -> editarCurso();
+                case 3 -> alterarStatusCurso();
+                case 4 -> listarCursos();
+                case 0 -> {
                     return;
-                default:
-                    System.out.println("❌ Opção inválida! Tente novamente.");
-                    pausarTela();
+                }
+                default -> System.out.println("❌ Opção inválida.");
             }
-        } while (opcao != 0);
+        }
     }
 
     private static void adicionarCurso() {
-        System.out.print("Nome do Curso: ");
+        Utils.limparTela();
+        System.out.println("===== ADICIONAR CURSO =====");
+    
+        System.out.print("Nome do Curso (0 para cancelar): ");
         String nome = sc.nextLine();
-        System.out.print("Código do Curso: ");
-        int codigo = sc.nextInt();
-        sc.nextLine();
-        secretariaController.adicionarCurso(nome, codigo);
-        System.out.println("✅ Curso adicionado com sucesso!");
-        pausarTela();
-    }
+        if (nome.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("Créditos do Curso (0 para cancelar): ");
+        int creditos = Utils.lerInteiro();
+        if (creditos == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        boolean sucesso = cursoController.adicionarCurso(nome, creditos);
+        System.out.println(sucesso ? "✅ Curso adicionado com sucesso!" : "❌ Erro ao adicionar curso.");
+        Utils.pausarTela();
+    }  
 
     private static void editarCurso() {
-        System.out.print("Código do Curso: ");
-        String codigo = sc.nextLine();
-        System.out.print("Novo Nome do Curso: ");
+        listarCursos();
+        System.out.print("\nDigite o número do curso que deseja editar (0 para cancelar): ");
+        int index = Utils.lerInteiro();
+        if (index == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        Curso cursoSelecionado = cursoController.selecionarCurso(index);
+        if (cursoSelecionado == null) {
+            System.out.println("❌ Erro: Curso não encontrado.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.println("\n📌 Curso Selecionado:");
+        System.out.println("Código: " + cursoSelecionado.getCodigo());
+        System.out.println("Nome: " + cursoSelecionado.getNome());
+        System.out.println("Créditos: " + cursoSelecionado.getCreditos());
+    
+        System.out.print("\nNovo Nome (ENTER para manter, 0 para cancelar): ");
         String novoNome = sc.nextLine();
-        secretariaController.editarCurso(codigo, novoNome);
-        System.out.println("✅ Curso editado com sucesso!");
-        pausarTela();
+        if (novoNome.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        System.out.print("Novos Créditos (ENTER para manter, 0 para cancelar): ");
+        Integer novosCreditos = Utils.lerInteiroOpcional();
+        if (novosCreditos != null && novosCreditos == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        boolean sucesso = cursoController.editarCurso(index, novoNome, novosCreditos);
+        System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro ao editar curso.");
+        Utils.pausarTela();
     }
 
-    private static void excluirCurso() {
-        System.out.print("Código do Curso: ");
-        String codigo = sc.nextLine();
-        secretariaController.excluirCurso(codigo);
-        System.out.println("✅ Curso excluído com sucesso!");
-        pausarTela();
+    private static void alterarStatusCurso() {
+        listarCursos();
+        System.out.print("\nDigite o número do curso que deseja ativar/desativar: ");
+        int index = Utils.lerInteiro();
+
+        boolean sucesso = cursoController.alterarStatusCurso(index);
+        System.out.println(sucesso ? "✅ Status do curso alterado!" : "❌ Erro: Curso não encontrado.");
+        Utils.pausarTela();
     }
 
     private static void listarCursos() {
-        secretariaController.listarCursos();
-        pausarTela();
-    }
-
-    private static void limparConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
+        Utils.limparTela();
+        cursoController.listarCursos();
+        Utils.pausarTela();
     }
 }
