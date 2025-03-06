@@ -87,7 +87,7 @@ public class ProfessorController {
             }
         }
     }
-
+    
     // ============================
     public boolean adicionarProfessor(String nome, String email, String senha) {
         if (!EMAIL_PATTERN.matcher(email).matches()) {

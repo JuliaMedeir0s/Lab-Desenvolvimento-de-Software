@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import controller.SemestreController;
 import models.Semestre;
+import utils.Utils;
 
 public class GerenciarSemestreView {
     private static final SemestreController semestreController = new SemestreController();
@@ -12,7 +13,7 @@ public class GerenciarSemestreView {
     public static void mostrarMenu() {
         int opcao;
         do {
-            limparConsole();
+            Utils.limparTela();
             System.out.println("\n===== GERENCIAR SEMESTRES =====");
             System.out.println("1. Criar Semestre");
             System.out.println("2. Editar Semestre");
@@ -40,7 +41,7 @@ public class GerenciarSemestreView {
                     return;
                 default:
                     System.out.println("❌ Opção inválida! Tente novamente.");
-                    pausarTela();
+                    Utils.pausarTela();
             }
         } while (opcao != 0);
     }
@@ -56,7 +57,7 @@ public class GerenciarSemestreView {
         LocalDate fim = LocalDate.parse(sc.next());
         semestreController.criarSemestre(ano, periodo, inicio, fim);
         System.out.println("✅ Semestre criado com sucesso!");
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void editarSemestre() {
@@ -76,7 +77,7 @@ public class GerenciarSemestreView {
         } else {
             System.out.println("❌ Semestre não encontrado!");
         }
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void fecharSemestre() {
@@ -91,21 +92,11 @@ public class GerenciarSemestreView {
         } else {
             System.out.println("❌ Semestre não encontrado!");
         }
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void listarSemestres() {
         semestreController.listarSemestres();
-        pausarTela();
-    }
-
-    private static void limparConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
+        Utils.pausarTela();
     }
 }
