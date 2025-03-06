@@ -47,6 +47,40 @@ public class SecretariaDAO extends AbstractDao implements Serializable {
         }
     }
 
+    public boolean atualizarSecretaria(Secretaria secretaria) {
+        try{
+            for (Secretaria s : secretarias) {
+                if (s.getId().equals(secretaria.getId())) {
+                    s.setNome(secretaria.getNome());
+                    s.setEmail(secretaria.getEmail());
+                    s.setSenha(secretaria.getSenha());
+                    grava(secretarias);
+                    return true;
+                }
+            }
+            return false;
+        }   catch (Exception e){
+            return false;
+        }
+    }
+
+    public List<Secretaria> listarSecretarias() {
+        return secretarias;
+    }
+
+    public int getContadorSecretarias() {
+        return secretarias.size();
+    }
+
+    public Secretaria buscarSecretariaPorId(String id) {
+        for (Secretaria secretaria : secretarias) {
+            if (secretaria.getId().equals(id)) {
+                return secretaria;
+            }
+        }
+        return null;
+    }
+
     private void carregarSecretarias() {
         this.secretarias = leitura();
     }

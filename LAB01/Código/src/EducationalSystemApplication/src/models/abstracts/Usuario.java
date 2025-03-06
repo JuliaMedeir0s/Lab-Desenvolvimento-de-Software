@@ -67,6 +67,18 @@ public abstract class Usuario implements Serializable {
         this.status = status;
     }
 
+    public boolean isAtivo() {
+        return status == Status.ATIVO;
+    }
+
+    public void setAtivo(boolean ativo) {
+        if(ativo) {
+            status = Status.ATIVO;
+        } else {
+            status = Status.INATIVO;
+        }
+    }
+
     @Override
     public String toString() {
         return id + "," + nome + "," + email + "," + tipoUsuario + "," + status;
