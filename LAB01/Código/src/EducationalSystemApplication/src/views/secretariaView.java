@@ -1,4 +1,5 @@
 package views;
+import utils.Utils;
 
 import java.util.Scanner;
 import controller.SecretariaController;
@@ -10,7 +11,7 @@ public class SecretariaView {
     public static void mostrarMenu() {
         int opcao;
         do {
-            limparConsole();
+            Utils.limparTela();
             System.out.println("\n===== MENU DA SECRETARIA =====");
             System.out.println("1. Gerenciar Disciplinas");
             System.out.println("2. Gerenciar Alunos");
@@ -22,7 +23,7 @@ public class SecretariaView {
             System.out.println("0. Encerrar programa");
             System.out.print("Escolha uma opção: ");
             opcao = sc.nextInt();
-            sc.nextLine(); // Consumir quebra de linha
+            sc.nextLine(); 
 
             switch (opcao) {
                 case 1:
@@ -51,26 +52,8 @@ public class SecretariaView {
                     return;
                 default:
                     System.out.println("❌ Opção inválida! Tente novamente.");
-                    pausarTela();
+                    Utils.pausarTela();
             }
         } while (opcao != 7 && opcao != 0);
-    }
-
-    private static void limparConsole() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            System.out.println("❌ Não foi possível limpar o console.");
-        }
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
     }
 }

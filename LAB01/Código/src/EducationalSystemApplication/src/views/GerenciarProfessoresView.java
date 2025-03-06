@@ -2,6 +2,7 @@ package views;
 
 import controller.ProfessorController;
 import models.Professor;
+import utils.Utils;
 
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ public class GerenciarProfessoresView {
     public static void mostrar() {
         int opcao;
         do {
-            limparConsole();
+            Utils.limparTela();
             System.out.println("\n===== GERENCIAR PROFESSORES =====");
             System.out.println("1. Adicionar Professor");
             System.out.println("2. Editar Professor");
@@ -36,7 +37,7 @@ public class GerenciarProfessoresView {
                     break;
                 case 4:
                     professorController.listarProfessores();
-                    pausarTela();
+                    Utils.pausarTela();
                     break;
                 case 5:
                     visualizarProfessor();
@@ -45,7 +46,7 @@ public class GerenciarProfessoresView {
                     return;
                 default:
                     System.out.println("❌ Opção inválida! Tente novamente.");
-                    pausarTela();
+                    Utils.pausarTela();
             }
         } while (opcao != 0);
     }
@@ -61,7 +62,7 @@ public class GerenciarProfessoresView {
         boolean sucesso = professorController.adicionarProfessor(nome, email, senha);
         System.out.println(
                 sucesso ? "✅ Professor adicionado com sucesso!" : "❌ Erro: Já existe um professor com esse e-mail.");
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void editarProfessor() {
@@ -73,7 +74,7 @@ public class GerenciarProfessoresView {
         Professor professorSelecionado = professorController.selecionarProfessor(index);
         if (professorSelecionado == null) {
             System.out.println("❌ Erro: Professor não encontrado.");
-            pausarTela();
+            Utils.pausarTela();
             return;
         }
 
@@ -92,14 +93,14 @@ public class GerenciarProfessoresView {
         String confirmacao = sc.nextLine().trim().toUpperCase();
         if (!confirmacao.equals("S")) {
             System.out.println("❌ Edição cancelada.");
-            pausarTela();
+            Utils.pausarTela();
             return;
         }
 
         boolean sucesso = professorController.editarProfessor(professorSelecionado.getId(), novoNome, novoEmail,
                 novaSenha);
         System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro ao editar professor.");
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void alterarStatusProfessor() {
@@ -111,7 +112,7 @@ public class GerenciarProfessoresView {
         boolean sucesso = professorController.alterarStatusProfessor(index);
         System.out
                 .println(sucesso ? "✅ Status do professor alterado com sucesso!" : "❌ Erro: Professor não encontrado.");
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void visualizarProfessor() {
@@ -123,21 +124,11 @@ public class GerenciarProfessoresView {
         Professor professorSelecionado = professorController.selecionarProfessor(index);
         if (professorSelecionado == null) {
             System.out.println("❌ Erro: Professor não encontrado.");
-            pausarTela();
+            Utils.pausarTela();
             return;
         }
     
         professorController.visualizarProfessor(professorSelecionado.getId());
-        pausarTela();
-    }
-
-    private static void limparConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
+        Utils.pausarTela();
     }
 }
