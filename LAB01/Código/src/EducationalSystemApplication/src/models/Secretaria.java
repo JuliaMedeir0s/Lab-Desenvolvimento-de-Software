@@ -1,6 +1,5 @@
 package models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,4 +83,5 @@ public class Secretaria extends Usuario {
     public String toString() {
         return super.toString();
     }
+
 }

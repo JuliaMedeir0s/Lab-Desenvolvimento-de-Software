@@ -3,10 +3,14 @@ package controller;
 import DAO.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
+
 import models.Aluno;
 import models.Curso;
 import models.Disciplina;
 import models.Professor;
+import models.Secretaria;
 import models.Semestre;
 
 public class SecretariaController {
@@ -15,6 +19,11 @@ public class SecretariaController {
     private final CursoDAO cursoDAO;
     private final DisciplinaDAO disciplinaDAO;
     private final SemestreDAO semestreDAO;
+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    private static final AtomicInteger contadorSecretaria = new AtomicInteger(1);
+
+    private final SecretariaDAO secretariaDAO = SecretariaDAO.getInstance();
 
     public SecretariaController() {
         this.alunoDAO = AlunoDAO.getInstance();
@@ -49,6 +58,16 @@ public class SecretariaController {
         return semestre.getInicioInscricao() != null && semestre.getFimInscricao() != null
                 && !dataAtual.isBefore(semestre.getInicioInscricao())
                 && !dataAtual.isAfter(semestre.getFimInscricao());
+    }
+
+    public void listarUsuarios() {
+        List<Secretaria> secretarias = secretariaDAO.listarSecretarias();
+        if (secretarias.isEmpty()) {
+            System.out.println("📌 Nenhuma secretaria cadastrada.");
+        } else {
+            System.out.println("\n=== Lista de Secretarias ===");
+            secretarias.forEach(secretaria -> System.out.println("- " + secretaria));
+        }
     }
 
     public void listarAlunos() {
@@ -96,6 +115,47 @@ public class SecretariaController {
     }
 
     public Curso buscarCursoPorNome(String nome) {
-        return cursoDAO.buscarPorNome(nome).orElse(null);
+        return cursoDAO.buscarPorNome(nome);
     }
+
+    public void adicionarUsuario(String nome, String email, String senha) {
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            System.out.println("❌ Erro: E-mail inválido.");
+
+        }
+
+        if (professorDAO.buscarPorEmail(email).isPresent()) {
+            System.out.println("❌ Erro: Já existe um professor com esse e-mail.");
+        }
+        String id = gerarId();
+        Secretaria secretaria = new Secretaria(id, nome, email, senha);
+        try {
+            secretariaDAO.adicionarSecretaria(secretaria);
+            System.out.println("✅ Usuário adicionado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao adicionar usuário: " + e.getMessage());
+        }
+
+    }
+
+    public void editarUsuario(String id, String novoNome) {
+        try {
+            Secretaria secretaria = secretariaDAO.buscarSecretariaPorId(id);
+            if (secretaria != null) {
+                secretaria.setNome(novoNome);
+                secretariaDAO.atualizarSecretaria(secretaria);
+                System.out.println("✅ Usuário editado com sucesso!");
+            } else {
+                System.out.println("❌ Usuário não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao editar usuário: " + e.getMessage());
+        }
+
+    }
+
+    private String gerarId() {
+        return "SEC-" + String.format("%04d", contadorSecretaria.getAndIncrement());
+    }
+
 }
