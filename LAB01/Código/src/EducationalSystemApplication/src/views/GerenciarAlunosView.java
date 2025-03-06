@@ -40,55 +40,61 @@ public class GerenciarAlunosView {
     private static void adicionarAluno() {
         Utils.limparTela();
         System.out.println("===== ADICIONAR ALUNO =====");
-    
+
         System.out.print("Nome do Aluno: ");
         String nome = sc.nextLine();
-    
+
         System.out.print("E-mail do Aluno: ");
         String email = sc.nextLine();
-    
+
         System.out.print("Senha do Aluno: ");
         String senha = sc.nextLine();
-    
+
         System.out.println("\nLista de Cursos Ativos:");
         cursoController.listarCursosAtivos();
-        System.out.print("\nEscolha o número do curso do aluno: ");
-        int cursoIndex = Utils.lerInteiro();
-    
+        System.out.print("\nEscolha o número do curso do aluno (ENTER para deixar sem curso): ");
+        String cursoIndexStr = sc.nextLine().trim();
+        Integer cursoIndex = cursoIndexStr.isEmpty() ? null : Utils.converterParaInteiro(cursoIndexStr);
+
         boolean sucesso = alunoController.adicionarAluno(nome, email, senha, cursoIndex);
         System.out.println(sucesso ? "✅ Aluno adicionado com sucesso!" : "❌ Erro ao adicionar aluno.");
         Utils.pausarTela();
     }
-    
+
     private static void editarAluno() {
         listarAlunos();
         System.out.print("\nDigite o número do aluno que deseja editar: ");
         int index = Utils.lerInteiro();
-    
+
         Aluno alunoSelecionado = alunoController.selecionarAluno(index);
         if (alunoSelecionado == null) {
             System.out.println("❌ Erro: Aluno não encontrado.");
             Utils.pausarTela();
             return;
         }
-    
+
         System.out.println("\n📌 Aluno Selecionado:");
         System.out.println("Nome: " + alunoSelecionado.getNome());
         System.out.println("E-mail: " + alunoSelecionado.getEmail());
-        System.out.println("Curso Atual: " + alunoSelecionado.getCurso().getNome());
-    
+
+        if (alunoSelecionado.getCurso() != null) {
+            System.out.println("Curso Atual: " + alunoSelecionado.getCurso().getNome());
+        } else {
+            System.out.println("Curso Atual: ❌ Nenhum curso atribuído");
+        }
+
         System.out.print("\nNovo Nome (ENTER para manter): ");
         String novoNome = sc.nextLine();
         System.out.print("Novo E-mail (ENTER para manter): ");
         String novoEmail = sc.nextLine();
         System.out.print("Nova Senha (ENTER para manter): ");
         String novaSenha = sc.nextLine();
-    
+
         System.out.println("\nLista de Cursos Ativos:");
         cursoController.listarCursosAtivos();
         System.out.print("\nEscolha o número do novo curso do aluno (ENTER para manter): ");
         Integer cursoIndex = Utils.lerInteiroOpcional();
-    
+
         System.out.print("\nConfirmar edição? (S/N): ");
         String confirmacao = sc.nextLine().trim().toUpperCase();
         if (!confirmacao.equals("S")) {
@@ -96,12 +102,12 @@ public class GerenciarAlunosView {
             Utils.pausarTela();
             return;
         }
-    
+
         boolean sucesso = alunoController.editarAluno(index, novoNome, novoEmail, novaSenha, cursoIndex);
         System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro ao editar aluno.");
         Utils.pausarTela();
     }
-    
+
     private static void alterarStatusAluno() {
         listarAlunos();
         System.out.print("\nDigite o número do aluno que deseja ativar/desativar: ");

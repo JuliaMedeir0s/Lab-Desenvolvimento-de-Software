@@ -1,6 +1,7 @@
 package views;
 
 import java.util.Scanner;
+import utils.Utils;
 
 import DAO.UsuarioDAO;
 import controller.SessaoController;
@@ -9,21 +10,30 @@ import models.abstracts.Usuario;
 public class LoginView {
     public static void mostrarLogin() {
         Scanner scanner = new Scanner(System.in);
-        // precisa salvar o usuário que iniciou a sessão
+
+        if (SessaoController.isLogado()) {
+            Usuario usuarioLogado = SessaoController.getUsuarioLogado();
+            System.out.println("✅ Usuário " + usuarioLogado.getNome() + " já está logado.");
+            abrirView(usuarioLogado);
+            return;
+        }
+
         while (!SessaoController.isLogado()) {
             System.out.print("ID ou Matrícula: ");
             String id = scanner.nextLine();
             System.out.print("Senha: ");
             String senha = scanner.nextLine();
 
-            UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-            Usuario usuario = usuarioDAO.autenticar(id, senha);
+            Usuario usuario = SessaoController.iniciarSessao(id, senha); 
+
             if (usuario != null) {
                 SessaoController.login(usuario);
-                System.out.println("Bem-vindo, " + usuario.getNome() + "! Você está logado.");
+                Utils.limparTela();
+                System.out.println("✅ Bem-vindo, " + usuario.getNome() + "! Você está logado.");
                 abrirView(usuario);
             } else {
-                System.out.println("Credenciais inválidas! Tente novamente.");
+                Utils.limparTela();
+                System.out.println("❌ Credenciais inválidas! Tente novamente.");
             }
         }
     }

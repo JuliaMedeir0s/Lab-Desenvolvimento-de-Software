@@ -19,23 +19,19 @@ public class AlunoController {
         contadorAluno.set(valor);
     }
 
-    public boolean adicionarAluno(String nome, String email, String senha, int cursoIndex) {
+    public boolean adicionarAluno(String nome, String email, String senha, Integer cursoIndex) {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             System.out.println("❌ Erro: E-mail inválido.");
             return false;
         }
-
+    
         if (alunoDAO.buscarPorEmail(email).isPresent()) {
             System.out.println("❌ Erro: Já existe um aluno com esse e-mail.");
             return false;
         }
-
-        Curso curso = cursoController.selecionarCurso(cursoIndex);
-        if (curso == null) {
-            System.out.println("❌ Erro: Curso inválido.");
-            return false;
-        }
-
+    
+        Curso curso = (cursoIndex != null) ? cursoController.selecionarCurso(cursoIndex) : null;
+        
         String id = gerarId();
         Aluno novoAluno = new Aluno(id, nome, email, senha, curso);
         alunoDAO.adicionarAluno(novoAluno);

@@ -25,6 +25,8 @@ public class ProfessorDAO extends AbstractDao<Professor> {
     public void adicionarProfessor(Professor professor) {
         professores.add(professor);
         grava(professores);
+        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+        usuarioDAO.adicionarUsuario(professor);
     }
 
     public Optional<Professor> buscarPorId(String id) {

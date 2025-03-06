@@ -51,6 +51,14 @@ public class Utils {
         }
     }
 
+    public static Integer converterParaInteiro(String input) {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     public static void limparTela() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

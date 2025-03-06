@@ -29,6 +29,8 @@ public class AlunoDAO extends AbstractDao<Aluno> {
     public void adicionarAluno(Aluno aluno) {
         alunos.add(aluno);
         grava(alunos);
+        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+        usuarioDAO.adicionarUsuario(aluno);
         atualizarContadorMatricula();
     }
 
