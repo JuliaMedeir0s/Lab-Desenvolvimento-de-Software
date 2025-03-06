@@ -1,9 +1,11 @@
 package DAO;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import controller.ProfessorController;
 import models.Professor;
-import models.enums.Status;
 
 public class ProfessorDAO extends AbstractDao<Professor> {
     private static final String FILE_NAME = "professores.dat";
@@ -12,7 +14,8 @@ public class ProfessorDAO extends AbstractDao<Professor> {
 
     private ProfessorDAO() {
         super(FILE_NAME);
-        professores = leitura(); 
+        professores = leitura();
+        atualizarContadorID();
     }
 
     public static ProfessorDAO getInstance() {
@@ -21,16 +24,38 @@ public class ProfessorDAO extends AbstractDao<Professor> {
 
     public void adicionarProfessor(Professor professor) {
         professores.add(professor);
-        grava(professores); 
+        grava(professores);
+    }
+
+    public Optional<Professor> buscarPorId(String id) {
+        return professores.stream().filter(p -> p.getId().equals(id)).findFirst();
+    }
+
+    public Optional<Professor> buscarPorEmail(String email) {
+        return professores.stream().filter(p -> p.getEmail().equalsIgnoreCase(email)).findFirst();
     }
 
     public List<Professor> listarProfessores() {
         return professores;
     }
 
-    public List<Professor> listarProfessoresAtivos() {
-        return professores.stream()
-                .filter(professor -> professor.getStatus() == Status.ATIVO)
-                .collect(Collectors.toList());
+    public void atualizarProfessor(Professor professorAtualizado) {
+        for (int i = 0; i < professores.size(); i++) {
+            if (professores.get(i).getId().equals(professorAtualizado.getId())) {
+                professores.set(i, professorAtualizado);
+                grava(professores);
+                return;
+            }
+        }
+    }
+
+    private void atualizarContadorID() {
+        if (!professores.isEmpty()) {
+            int maiorID = professores.stream()
+                    .map(p -> Integer.parseInt(p.getId().split("-")[1])) // Pega o número do ID (ex: "0003")
+                    .max(Comparator.naturalOrder()) // Pega o maior número
+                    .orElse(0);
+            ProfessorController.setContadorProfessor(maiorID + 1); // Atualiza o contador
+        }
     }
 }
