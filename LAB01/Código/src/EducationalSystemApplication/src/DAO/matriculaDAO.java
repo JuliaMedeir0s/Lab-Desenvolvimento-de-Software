@@ -48,6 +48,17 @@ public class MatriculaDAO extends AbstractDao implements Serializable {
         return this.matriculas;
     }
 
+    public Matricula buscarPorCodigo(String codigo) {
+        for (Matricula matricula : matriculas) {
+            if (matricula.getDisciplina().getCodigo().equals(codigo)) {
+                return matricula;
+            }
+        }
+        return null;
+    }
+
+    
+
 
     public static MatriculaDAO getInstance() {
         if (instance == null) {

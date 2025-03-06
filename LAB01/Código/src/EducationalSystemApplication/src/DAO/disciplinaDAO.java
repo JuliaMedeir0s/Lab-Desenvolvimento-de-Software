@@ -23,6 +23,15 @@ public class DisciplinaDAO extends AbstractDao<Disciplina> {
         grava(disciplinas); 
     }
 
+    public Disciplina buscarDisciplinaporCodigo(String codigo) {
+        for (Disciplina disciplina : disciplinas) {
+            if (disciplina.getCodigo().equals(codigo)) {
+                return disciplina;
+            }
+        }
+        return null;
+    }
+
     public Optional<Disciplina> buscarPorCodigo(String codigo) {
         return disciplinas.stream()
                 .filter(d -> d.getCodigo().equalsIgnoreCase(codigo))
