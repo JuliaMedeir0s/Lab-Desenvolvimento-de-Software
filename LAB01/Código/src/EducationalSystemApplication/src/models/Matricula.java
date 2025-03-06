@@ -31,6 +31,20 @@ public class Matricula {
         return valor;
     }
 
+    public boolean confirmarMatricula() {
+        if (aluno.getMatriculas().size() < 6) {
+            this.status = StatusMatricula.ATIVA;
+            return true;
+        } else {
+            System.out.println("Aluno " + aluno.getNome() + " já está matriculado no máximo permitido de 6 disciplinas.");
+            return false;
+        }
+    }
+
+    public void cancelarMatricula() {
+        this.status = StatusMatricula.CANCELADA;
+    }
+
     @Override
     public String toString() {
         return "Matrícula: " + aluno.getNome() + " em " + disciplina.getNome() + " - Status: " + status;

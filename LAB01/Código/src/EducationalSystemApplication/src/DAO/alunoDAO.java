@@ -50,6 +50,15 @@ public class AlunoDAO extends AbstractDao implements Serializable {
         return null;
     }
 
+    public Aluno buscarPorMatricula(String matricula) {
+        for (Aluno aluno : alunos) {
+            if (aluno.getMatricula().equals(matricula)) {
+                return aluno;
+            }
+        }
+        return null;
+    }
+
     private void carregarAlunos(){
         this.alunos = leitura();
     }
