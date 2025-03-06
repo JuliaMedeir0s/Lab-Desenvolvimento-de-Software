@@ -9,7 +9,7 @@ public class GerenciarSemestreView {
     private static final SemestreController semestreController = new SemestreController();
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void mostrar() {
+    public static void mostrarMenu() {
         int opcao;
         do {
             limparConsole();

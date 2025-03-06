@@ -10,7 +10,7 @@ public class GerenciarProfessoresView {
     private static final ProfessorController professorController = new ProfessorController();
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void mostrar() {
+    public static void mostrarMenu() {
         int opcao;
         do {
             Utils.limparTela();

@@ -29,8 +29,9 @@ public class SessaoController {
         usuarioLogado = usuario;
     }
 
-    public static void logout() {
+    public static void encerrarSessao() {
         usuarioLogado = null;
+        System.out.println("✅ Sessão encerrada com sucesso!");
     }
 
     public static boolean isLogado() {

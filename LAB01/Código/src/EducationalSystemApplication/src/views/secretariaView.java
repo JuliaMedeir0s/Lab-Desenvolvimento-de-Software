@@ -3,14 +3,11 @@ import utils.Utils;
 
 import java.util.Scanner;
 import controller.SecretariaController;
+import controller.SessaoController;
 
 public class SecretariaView {
-    private static final SecretariaController secretariaController = new SecretariaController();
-    private static final Scanner sc = new Scanner(System.in);
-
     public static void mostrarMenu() {
-        int opcao;
-        do {
+        while (true) {
             Utils.limparTela();
             System.out.println("\n===== MENU DA SECRETARIA =====");
             System.out.println("1. Gerenciar Disciplinas");
@@ -20,40 +17,29 @@ public class SecretariaView {
             System.out.println("5. Gerenciar Cursos");
             System.out.println("6. Gerenciar Usuários da Secretaria");
             System.out.println("7. Deslogar");
-            System.out.println("0. Encerrar programa");
+            System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
-            opcao = sc.nextInt();
-            sc.nextLine(); 
 
+            int opcao = Utils.lerInteiro();
             switch (opcao) {
-                case 1:
-                    GerenciarDisciplinasView.mostrar();
-                    break;
-                case 2:
-                    GerenciarAlunosView.mostrar();
-                    break;
-                case 3:
-                    GerenciarProfessoresView.mostrar();
-                    break;
-                case 4:
-                    GerenciarSemestreView.mostrar();
-                    break;
-                case 5:
-                    GerenciarCursosView.mostrar();
-                    break;
-                case 6:
-                    GerenciarUsuariosView.mostrar();
-                    break;
-                case 7:
-                    System.out.println("✅ Você foi deslogado.");
+                case 1 -> GerenciarDisciplinasView.mostrarMenu();
+                case 2 -> GerenciarAlunosView.mostrarMenu();
+                case 3 -> GerenciarProfessoresView.mostrarMenu();
+                case 4 -> GerenciarSemestreView.mostrarMenu();
+                case 5 -> GerenciarCursosView.mostrarMenu();
+                case 6 -> GerenciarUsuariosView.mostrarMenu();
+                case 7 -> deslogar(); 
+                case 0 -> {
                     return;
-                case 0:
-                    System.out.println("Retornando ao menu principal...");
-                    return;
-                default:
-                    System.out.println("❌ Opção inválida! Tente novamente.");
-                    Utils.pausarTela();
+                }
+                default -> System.out.println("❌ Opção inválida! Tente novamente.");
             }
-        } while (opcao != 7 && opcao != 0);
+        }
+    }
+
+    private static void deslogar() {
+        System.out.println("✅ Você foi deslogado.");
+        SessaoController.encerrarSessao();
+        LoginView.mostrarLogin(); 
     }
 }

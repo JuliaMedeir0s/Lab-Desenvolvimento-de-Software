@@ -9,7 +9,7 @@ public class GerenciarDisciplinasView {
     private static final DisciplinaController disciplinaController = new DisciplinaController();
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void mostrar() {
+    public static void mostrarMenu() {
         int opcao;
         do {
             limparConsole();
