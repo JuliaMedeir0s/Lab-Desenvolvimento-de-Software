@@ -1,8 +1,6 @@
 package views;
 import utils.Utils;
 
-import java.util.Scanner;
-import controller.SecretariaController;
 import controller.SessaoController;
 
 public class SecretariaView {
@@ -17,7 +15,7 @@ public class SecretariaView {
             System.out.println("5. Gerenciar Cursos");
             System.out.println("6. Gerenciar Usuários da Secretaria");
             System.out.println("7. Deslogar");
-            System.out.println("0. Voltar ao Menu Principal");
+            System.out.println("0. Encerrar Sistema");
             System.out.print("Escolha uma opção: ");
 
             int opcao = Utils.lerInteiro();
@@ -38,6 +36,7 @@ public class SecretariaView {
     }
 
     private static void deslogar() {
+        Utils.limparTela();
         System.out.println("✅ Você foi deslogado.");
         SessaoController.encerrarSessao();
         LoginView.mostrarLogin(); 

@@ -7,7 +7,7 @@ public class Main {
         System.out.println("===== SISTEMA DE MATRÍCULAS =====");
         //cria usuario padrão
         SessaoController.verificarUsuarioPadrao();
-        UsuarioDAO.getInstance().imprimirUsuarios();
+        //UsuarioDAO.getInstance().imprimirUsuarios();
         //abrir tela de login
         LoginView.mostrarLogin();
         System.out.println("Sistema encerrado.");

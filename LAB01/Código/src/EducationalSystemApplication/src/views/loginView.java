@@ -3,7 +3,6 @@ package views;
 import java.util.Scanner;
 import utils.Utils;
 
-import DAO.UsuarioDAO;
 import controller.SessaoController;
 import models.abstracts.Usuario;
 
