@@ -3,8 +3,10 @@ package DAO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import models.Aluno;
+import models.Disciplina;
 
 public class AlunoDAO extends AbstractDao implements Serializable {
 
@@ -61,6 +63,29 @@ public class AlunoDAO extends AbstractDao implements Serializable {
 
     private void carregarAlunos(){
         this.alunos = leitura();
+    }
+
+    public Aluno buscarPorEmail(String email) {
+        for (Aluno aluno : alunos) {
+            if (aluno.getEmail().equals(email)) {
+                return aluno;
+            }
+        }
+        return null;
+    }
+
+    public void atualizarAluno(Aluno aluno) {
+        Optional<Aluno> alunoOptional = alunos.stream().filter(a -> a.getId().equals(aluno.getId())).findFirst();
+        if (alunoOptional.isPresent()) {
+            Aluno alunoAtualizado = alunoOptional.get();
+            alunoAtualizado.setNome(aluno.getNome());
+            alunoAtualizado.setEmail(aluno.getEmail());
+            alunoAtualizado.setSenha(aluno.getSenha());
+            alunoAtualizado.setMatricula(aluno.getMatricula());
+            alunoAtualizado.setCurso(aluno.getCurso());
+            alunoAtualizado.setMatriculas(aluno.getMatriculas());
+            grava(alunos);
+        }
     }
 
 }
