@@ -18,26 +18,52 @@ código
 │
 ├── main
 │   ├── java
-│   │   ├── app.java
+│   │   ├── Main.java
 │   │   │    
 │   │   ├── controller
+│   │   │   ├── AlunoController.java  
+│   │   │   ├── CursoController.java 
+│   │   │   ├── DisciplinaController.java  
+│   │   │   ├── MatriculaController.java 
 │   │   │   ├── ProfessorController.java  
-│   │   │   ├── StudentController.java 
-│   │   │   ├── AdministrativeStaffController.java  
-│   │   │   ├── CourseController.java 
-│   │   │   ├── DisciplineController.java  
-│   │   │   ├── EnrollmentController.java  
-│   │   │   └── PaymentSystemController.java 
+│   │   │   ├── SecretariaController.java  
+│   │   │   ├── SecretariaDisciplinaController.java 
+│   │   │   ├── SemestreController.java
+│   │   │   ├── SessaoController.java
+│   │   │   ├── SistemaCobrancaController.java
+│   │   │   └── UsuarioController.java
+│   │   │
+│   │   ├── DAO
+│   │   │   ├── AbstractDAO.java  
+│   │   │   ├── AlunoDAO.java  
+│   │   │   ├── CusroDAO.java  
+│   │   │   ├── DisciplinaDAO.java 
+│   │   │   ├── MatriculaDAO.java  
+│   │   │   ├── ProfessorDAO.java  
+│   │   │   ├── SecretariaDAO.java  
+│   │   │   ├── SemestreDAO.java  
+│   │   │   └── USuarioDAO.java
+│   │   │
+│   │   ├── data
+│   │   │
 │   │   ├── model
 │   │   │   ├── abstract
 │   │   │   │   └── User.java  
+│   │   │   │
+│   │   │   ├── enums.java
+│   │   │   │   ├── Status.java
+│   │   │   │   ├── StatusMaricula.java
+│   │   │   │   └── TipoUsuario.java
+│   │   │   │
+│   │   │   ├── Aluno.java  
+│   │   │   ├── Cusro.java  
+│   │   │   ├── Disciplina.java 
+│   │   │   ├── Matricula.java  
 │   │   │   ├── Professor.java  
-│   │   │   ├── Student.java  
-│   │   │   ├── AdministrativeStaff.java 
-│   │   │   ├── Course.java  
-│   │   │   ├── Discipline.java  
-│   │   │   ├── Enrollment.java  
-│   │   │   └── PaymentSystem.java  
+│   │   │   ├── Secretaria.java  
+│   │   │   ├── Semestre.java  
+│   │   │   └── SistemaCobranca.java  
+│   │   │
 │   │   └── service
 │   │       ├── ProfessorService.java  
 │   │       ├── StudentService.java  
