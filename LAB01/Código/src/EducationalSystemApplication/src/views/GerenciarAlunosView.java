@@ -50,7 +50,14 @@ public class GerenciarAlunosView {
         String email = sc.nextLine();
         System.out.print("Senha do Aluno: ");
         String senha = sc.nextLine();
-        secretariaController.adicionarAluno(nome, email, senha);
+        System.out.println("Matrícula do Aluno: ");
+        String matricula = sc.nextLine();
+        System.out.println(" Selecione o Curso do Aluno: ");
+        secretariaController.listarCursos();
+        System.out.print("Código do Curso: ");
+        String codigoCurso = sc.nextLine();
+
+        secretariaController.adicionarAluno(nome, email, senha, matricula, secretariaController.getCurso(codigoCurso));
         System.out.println("✅ Aluno adicionado com sucesso!");
         pausarTela();
     }
