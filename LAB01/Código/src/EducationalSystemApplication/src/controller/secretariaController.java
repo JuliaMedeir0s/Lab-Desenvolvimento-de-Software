@@ -95,8 +95,9 @@ public class SecretariaController {
         if (cursos.isEmpty()) {
             System.out.println("📌 Nenhum curso cadastrado.");
         } else {
+            AtomicInteger i = new AtomicInteger(0);
             System.out.println("\n=== Lista de Cursos ===");
-            cursos.forEach(curso -> System.out.println("- " + curso));
+            cursos.forEach(curso -> System.out.println(i.getAndIncrement() +" - " + curso));
         }
     }
 
@@ -173,5 +174,101 @@ public class SecretariaController {
     private String gerarId() {
         return "SEC-" + String.format("%04d", contadorSecretaria.getAndIncrement());
     }
+
+    public void adicionarAluno(String nome, String email, String senha, String matricula, Curso curso) {
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            System.out.println("❌ Erro: E-mail inválido.");
+            return;
+        }
+
+        if (alunoDAO.buscarPorEmail(email).getEmail() != null) {
+            System.out.println("❌ Erro: Já existe um aluno com esse e-mail.");
+            return;
+        }
+
+        String id = gerarId();
+        Aluno aluno = new Aluno(id, nome, email, senha, matricula, curso);
+        try {
+            alunoDAO.adicionarAluno(aluno);
+            System.out.println("✅ Aluno adicionado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao adicionar aluno: " + e.getMessage());
+        }
+    }
+
+    public Curso getCurso(String codigo) {
+        return cursoDAO.buscarPorNome(codigo);
+    }
+
+    public void editarAluno(String matricula, String novoNome) {
+        try {
+            Aluno aluno = alunoDAO.buscarPorMatricula(matricula);
+            if (aluno != null) {
+                aluno.setNome(novoNome);
+                alunoDAO.atualizarAluno(aluno);
+                System.out.println("✅ Aluno editado com sucesso!");
+            } else {
+                System.out.println("❌ Aluno não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao editar aluno: " + e.getMessage());
+        }
+    }
+
+    public void alterarStatusAluno(String matricula) {
+        try {
+            Aluno aluno = alunoDAO.buscarPorMatricula(matricula);
+            if (aluno != null) {
+                aluno.setAtivo(!aluno.isAtivo());
+                alunoDAO.atualizarAluno(aluno);
+                System.out.println("✅ Status do aluno alterado com sucesso!");
+            } else {
+                System.out.println("❌ Aluno não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao alterar status do aluno: " + e.getMessage());
+        }
+    }
+
+    public void adicionarCurso(String nome, int codigo) {
+        Curso curso = new Curso(nome, codigo);
+        try {
+            cursoDAO.adicionarCurso(curso);
+            System.out.println("✅ Curso adicionado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao adicionar curso: " + e.getMessage());
+        }
+    }
+
+    public void editarCurso(String codigo, String novoNome) {
+        try {
+            Curso curso = cursoDAO.buscarPorNome(codigo);
+            if (curso != null) {
+                curso.setNome(novoNome);
+                cursoDAO.atualizarCurso(curso);
+                System.out.println("✅ Curso editado com sucesso!");
+            } else {
+                System.out.println("❌ Curso não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao editar curso: " + e.getMessage());
+        }
+    }
+
+    public void excluirCurso(String codigo) {
+        try {
+            Curso curso = cursoDAO.buscarPorNome(codigo);
+            if (curso != null) {
+                cursoDAO.removerCurso(curso);
+                System.out.println("✅ Curso excluído com sucesso!");
+            } else {
+                System.out.println("❌ Curso não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao excluir curso: " + e.getMessage());
+        }
+    }
+
+
 
 }
