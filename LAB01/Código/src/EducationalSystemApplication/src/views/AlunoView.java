@@ -1,37 +1,42 @@
 package views;
 
 import models.Disciplina;
+import models.Matricula;
 import models.Aluno;
 
 import java.util.List;
 import java.util.Scanner;
 
+import controller.AlunoController;
 import controller.SessaoController;
 
 public class AlunoView {
+
+    private static final Aluno aluno = (Aluno) SessaoController.getUsuarioLogado();
+    private static Scanner sc = new Scanner(System.in);
+    private static final AlunoController alunoController = new AlunoController();
+
     public static void mostrarMenu() {
-        Scanner scanner = new Scanner(System.in);
         int opcao;
 
         do {
             System.out.println("\n===== MENU ALUNO =====");
-            System.out.println("1 - Visualizar Disciplinas");
+            System.out.println("1 - Visualizar minhas Disciplinas");
             System.out.println("2 - Realizar Matrícula");
-            System.out.println("3 - Cancelar Matrícula");
             System.out.println("0 - Logout");
             System.out.print("Escolha uma opção: ");
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            opcao = sc.nextInt();
+            sc.nextLine();
 
             switch (opcao) {
                 case 1:
-                    listarDisciplinas();
+                    limparConsole();
+                    listarDisciplinasMatriculados(aluno.getMatriculas());
                     break;
                 case 2:
+                    limparConsole();
                     System.out.println("Realizando matrícula...");
-                    break;
-                case 3:
-                    System.out.println("Cancelando matrícula...");
+                    listarDisciplinas(null); // passar parametros
                     break;
                 case 0:
                     SessaoController.logout();
@@ -42,6 +47,47 @@ public class AlunoView {
             }
         } while (opcao != 0);
     }
+
+    public static void listarDisciplinasMatriculados(List<Matricula> matriculas){
+        System.out.println("\nDisciplinas matriculadas:");
+        for (Matricula matricula : matriculas) {
+            System.out.println("- Código: " + matricula.getDisciplina().getCodigo());
+            System.out.println("  Nome: " + matricula.getDisciplina().getNome());
+            System.out.println("  Carga Horária: " + matricula.getDisciplina().getCargaHoraria() + " horas");
+            System.out.println("  Professor: " + matricula.getDisciplina().getProfessor().getNome());
+            System.out.println("  Valor: R$ " + String.format("%.2f", matricula.getDisciplina().getValor()));
+            System.out.println("  Status: " + matricula.getStatus());
+            System.out.println();
+        }
+
+        System.out.println("Digite o código da disciplina para cancelar a matrícula ou 0 para voltar: ");
+        String codigo = sc.nextLine();
+        if (codigo.equals("0")) {
+            mostrarMenu();
+        } else {
+            Disciplina disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
+            if (disciplina != null) {
+                cancelarMatricula(disciplina);
+            } else {
+                System.out.println("Disciplina não encontrada.");
+            }
+        }
+
+    }
+
+    public static void realizarMatricula(Disciplina disciplina) {
+        if (alunoController.inscreverEmDisciplina(aluno, disciplina)) {
+            System.out.println("Matrícula realizada com sucesso!");
+        } else {
+            System.out.println("Não foi possível realizar a matrícula.");
+        }
+    }
+
+    public static void cancelarMatricula(Disciplina disciplina) {
+        alunoController.desinscreverDeDisciplina(aluno, disciplina);
+        System.out.println("Matrícula cancelada com sucesso!");
+    }
+
     public static void listarDisciplinas(List<Disciplina> disciplinasDisponiveis) {
         if (disciplinasDisponiveis.isEmpty()) {
             System.out.println("Não há disciplinas disponíveis para inscrição.");
@@ -56,6 +102,38 @@ public class AlunoView {
             System.out.println("  Professor: " + disciplina.getProfessor().getNome());
             System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
             System.out.println();
+        }
+
+        System.out.println("Digite o código da disciplina para se inscrever ou 0 para voltar: ");
+        String codigo = sc.nextLine();
+        if (codigo.equals("0")) {
+            mostrarMenu();
+        } else {
+            Disciplina disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
+            if (disciplina != null) {
+                realizarMatricula(disciplina);
+            } else {
+                System.out.println("Disciplina não encontrada.");
+            }
+        }
     }
-}
+
+    private static void limparConsole() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Não foi possível limpar o console.");
+        }
+    }
+
+    private static void pausarTela() {
+        System.out.println("\nPressione ENTER para continuar...");
+        sc.nextLine();
+    }
+
 }
