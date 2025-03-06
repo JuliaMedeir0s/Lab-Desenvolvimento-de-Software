@@ -1,66 +1,95 @@
 package DAO;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import models.Aluno;
+import models.enums.Status;
 
-public class AlunoDAO extends AbstractDao implements Serializable {
+import java.util.List;
+import java.util.Optional;
+import java.util.Comparator;
+import controller.AlunoController;
 
-    private List<Aluno> alunos = new ArrayList<>();
-    private static AlunoDAO instance = new AlunoDAO();
-
-    private static final String CAMINHO_ALUNOS = "alunos.dat";
+public class AlunoDAO extends AbstractDao<Aluno> {
+    private static final String FILE_NAME = "alunos.dat";
+    private static AlunoDAO instancia;
+    private List<Aluno> alunos;
 
     private AlunoDAO() {
-        super(CAMINHO_ALUNOS);
-        this.alunos = new ArrayList<>();
-        carregarAlunos();
+        super(FILE_NAME);
+        alunos = leitura();
+        atualizarContadorMatricula();
     }
 
     public static AlunoDAO getInstance() {
-        if (instance == null) {
-            instance = new AlunoDAO();
+        if (instancia == null) {
+            instancia = new AlunoDAO();
         }
-        return instance;
+        return instancia;
     }
 
     public void adicionarAluno(Aluno aluno) {
         alunos.add(aluno);
         grava(alunos);
+        atualizarContadorMatricula();
     }
 
-    public void removerAluno(Aluno aluno) {
-        alunos.remove(aluno);
-        grava(alunos);
-
+    public Optional<Aluno> buscarPorMatricula(String matricula) {
+        return alunos.stream().filter(a -> a.getId().equals(matricula)).findFirst();
     }
 
-    public List<Aluno> getAlunos() {
+    public Optional<Aluno> buscarPorEmail(String email) {
+        return alunos.stream().filter(a -> a.getEmail().equalsIgnoreCase(email)).findFirst();
+    }
+
+    public List<Aluno> listarAlunos() {
         return alunos;
     }
 
-    public Aluno buscarPorNome(String nome) {
-        for (Aluno aluno : alunos) {
-            if (aluno.getNome().equals(nome)) {
-                return aluno;
+    public void atualizarAluno(Aluno alunoAtualizado) {
+        for (int i = 0; i < alunos.size(); i++) {
+            if (alunos.get(i).getId().equals(alunoAtualizado.getId())) {
+                alunos.set(i, alunoAtualizado);
+                grava(alunos);
+                return;
             }
         }
-        return null;
     }
 
-    public Aluno buscarPorMatricula(String matricula) {
-        for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equals(matricula)) {
-                return aluno;
-            }
+    public boolean alterarStatusAluno(String matricula) {
+        Optional<Aluno> alunoOpt = buscarPorMatricula(matricula);
+        if (alunoOpt.isPresent()) {
+            Aluno aluno = alunoOpt.get();
+            aluno.setStatus(aluno.getStatus() == Status.ATIVO ? Status.INATIVO : Status.ATIVO);
+            atualizarAluno(aluno);
+            return true;
         }
-        return null;
+        return false;
+    }    
+
+    public boolean removerAluno(String matricula) {
+        Optional<Aluno> alunoOpt = buscarPorMatricula(matricula);
+        if (alunoOpt.isPresent()) {
+            alunos.remove(alunoOpt.get());
+            grava(alunos);
+            return true;
+        }
+        return false;
     }
 
-    private void carregarAlunos(){
-        this.alunos = leitura();
+    private void atualizarContadorMatricula() {
+        if (!alunos.isEmpty()) {
+            int maiorMatricula = alunos.stream()
+                    .map(a -> {
+                        String[] partes = a.getId().split("-");
+                        if (partes.length < 2) return 0;
+                        try {
+                            return Integer.parseInt(partes[1]);
+                        } catch (NumberFormatException e) {
+                            return 0;
+                        }
+                    })
+                    .max(Integer::compare)
+                    .orElse(0);
+            AlunoController.setContadorAluno(maiorMatricula + 1);
+        }
     }
-
 }

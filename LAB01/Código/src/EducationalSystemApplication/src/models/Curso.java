@@ -1,27 +1,47 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import models.enums.Status;
 
-public class Curso {
+public class Curso implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String codigo;
     private String nome;
     private int creditos;
     private List<Disciplina> disciplinas;
     private List<Aluno> alunosMatriculados;
+    private Status status;
 
-    public Curso(String nome, int creditos){
+    public Curso(String codigo, String nome, int creditos) {
+        this.codigo = codigo;
         this.nome = nome;
         this.creditos = creditos;
         this.disciplinas = new ArrayList<>();
         this.alunosMatriculados = new ArrayList<>();
+        this.status = Status.ATIVO;
     }
 
-    public String getNome(){
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getCreditos() {
         return this.creditos;
+    }
+
+    public void setCreditos(int creditos) {
+        this.creditos = creditos;
     }
 
     public List<Disciplina> getDisciplinas() {
@@ -32,24 +52,18 @@ public class Curso {
         return this.alunosMatriculados;
     }
 
-    public void adicionarDisciplina(Disciplina disciplina){
-        disciplinas.add(disciplina);
+    public Status getStatus() {
+        return status;
     }
 
-    public void removerDisciplina(Disciplina disciplina){
-        disciplinas.remove(disciplina);
-    }
-
-    public void matricularAluno(Aluno aluno){
-        alunosMatriculados.add(aluno);
-    }
-
-    public void removerAluno(Aluno aluno) {
-        alunosMatriculados.remove(aluno);
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Curso: " + nome + ", Créditos: " + creditos + ", Disciplinas: " + disciplinas.size() + ", Alunos: " + alunosMatriculados.size();
+        return "Curso: " + nome + " (" + codigo + "), Créditos: " + creditos +
+                ", Disciplinas: " + disciplinas.size() + ", Alunos: " + alunosMatriculados.size() +
+                " [" + status + "]";
     }
 }

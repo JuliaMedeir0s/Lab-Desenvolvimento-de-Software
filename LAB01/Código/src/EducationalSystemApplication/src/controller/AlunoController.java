@@ -1,110 +1,115 @@
 package controller;
 
-import java.util.ArrayList;
+import DAO.AlunoDAO;
+import models.Aluno;
+import models.Curso;
+import models.enums.Status;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
-import models.Aluno;
-import models.Disciplina;
-import models.Matricula;
-import models.SistemaCobranca;
-import models.enums.StatusMatricula;
-
-import DAO.AlunoDAO;
-import DAO.DisciplinaDAO;
-import DAO.MatriculaDAO;
-
-public class AlunoController{
-
+public class AlunoController {
     private final AlunoDAO alunoDAO = AlunoDAO.getInstance();
-    private final DisciplinaDAO disciplinaDAO = DisciplinaDAO.getInstance();
-    private final MatriculaDAO matriculaDAO = MatriculaDAO.getInstance();
+    private final CursoController cursoController = new CursoController();
+    private static final AtomicInteger contadorAluno = new AtomicInteger(1);
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
-    public List<Aluno> listarAlunos() {
-        return alunoDAO.getAlunos();
+    public static void setContadorAluno(int valor) {
+        contadorAluno.set(valor);
     }
 
-    public Aluno buscarPorNome(String nome) {
-        return alunoDAO.buscarPorNome(nome);
-    }
-
-    public Aluno buscarPorMatricula(String matricula) {
-        return alunoDAO.buscarPorMatricula(matricula);
-    }
-
-    public boolean adicionarAluno(Aluno aluno) {
-        if (alunoDAO.buscarPorMatricula(aluno.getMatricula()) != null) {
+    public boolean adicionarAluno(String nome, String email, String senha, int cursoIndex) {
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            System.out.println("❌ Erro: E-mail inválido.");
             return false;
         }
-        alunoDAO.adicionarAluno(aluno);
+
+        if (alunoDAO.buscarPorEmail(email).isPresent()) {
+            System.out.println("❌ Erro: Já existe um aluno com esse e-mail.");
+            return false;
+        }
+
+        Curso curso = cursoController.selecionarCurso(cursoIndex);
+        if (curso == null) {
+            System.out.println("❌ Erro: Curso inválido.");
+            return false;
+        }
+
+        String id = gerarId();
+        Aluno novoAluno = new Aluno(id, nome, email, senha, curso);
+        alunoDAO.adicionarAluno(novoAluno);
         return true;
     }
 
-    public boolean inscreverEmDisciplina(Aluno aluno, Disciplina disciplina) {
-        if (aluno.getMatriculas().size() < 6) {
-            Matricula novaMatricula = new Matricula(aluno, disciplina);
-            if (novaMatricula.confirmarMatricula()) {
-                aluno.getMatriculas().add(novaMatricula);
-                return true;
-            }
-        } else {
-            System.out.println("Aluno " + aluno.getNome() + " já está matriculado no máximo permitido de 6 disciplinas.");
-        }
-        return false;
+    private String gerarId() {
+        return "ALU-" + String.format("%04d", contadorAluno.getAndIncrement());
     }
 
-    public boolean desinscreverDeDisciplina(Aluno aluno, Disciplina disciplina) {
-        Matricula matriculaParaCancelar = null;
-        for (Matricula m : aluno.getMatriculas()) {
-            if (m.getDisciplina().equals(disciplina)) {
-                matriculaParaCancelar = m;
-                break;
-            }
-        }
-        if (matriculaParaCancelar != null) {
-            matriculaParaCancelar.cancelarMatricula();
-            aluno.getMatriculas().remove(matriculaParaCancelar);
-            return true;
-        } else {
-            System.out.println("Aluno " + aluno.getNome() + " não está matriculado na disciplina " + disciplina.getNome());
+    public boolean editarAluno(int index, String novoNome, String novoEmail, String novaSenha, Integer cursoIndex) {
+        List<Aluno> alunos = alunoDAO.listarAlunos();
+        if (index < 1 || index > alunos.size()) {
             return false;
         }
-    }
 
-    public Disciplina buscarDisciplinaPorCodigo(String codigo) {
-        return disciplinaDAO.buscarDisciplinaporCodigo(codigo);
-    }
-
-    public void listarMatriculas(){
-        if(matriculaDAO.getMatriculas().isEmpty()){
-            System.out.println("Não está matriculado em nenhuma disciplina.");
-            return;
+        Aluno aluno = alunos.get(index - 1);
+        if (!novoEmail.isEmpty() && !EMAIL_PATTERN.matcher(novoEmail).matches()) {
+            System.out.println("❌ Erro: E-mail inválido.");
+            return false;
         }
-        System.out.println("\nDisciplinas matriculadas:");
-        System.out.println("Código | Nome | Carga Horária | Professor | Valor | Status");
-        for (Matricula matricula : matriculaDAO.getMatriculas()) {
-            System.out.println(matricula.getDisciplina().getCodigo() + " | " + matricula.getDisciplina().getNome() + " | " + matricula.getDisciplina().getCargaHoraria() + " horas | " + matricula.getDisciplina().getProfessor().getNome() + " | R$ " + String.format("%.2f", matricula.getDisciplina().getValor()) + " | " + matricula.getStatus());
-            System.out.println();
-        }
-    }
 
-    public void notificarCobranca(SistemaCobranca sistemaCobranca, Aluno aluno) {
-        double total = calcularValorTotal(aluno);
-        if (total > 0) {
-            sistemaCobranca.gerarCobranca(aluno, total);
-        } else {
-            System.out.println("Nenhuma cobrança necessária para " + aluno.getNome());
-        }
-    }
+        if (!novoNome.isEmpty()) aluno.setNome(novoNome);
+        if (!novoEmail.isEmpty()) aluno.setEmail(novoEmail);
+        if (!novaSenha.isEmpty()) aluno.setSenha(novaSenha);
 
-    public double calcularValorTotal(Aluno aluno) {
-        double total = 0.0;
-        for (Matricula m : aluno.getMatriculas()) {
-            if (m.getStatus() == StatusMatricula.ATIVA) {
-                total += m.getValor();
+        if (cursoIndex != null) {
+            Curso novoCurso = cursoController.selecionarCurso(cursoIndex);
+            if (novoCurso != null) {
+                aluno.setCurso(novoCurso);
+            } else {
+                System.out.println("❌ Erro: Curso inválido.");
+                return false;
             }
         }
-        return total;
+
+        alunoDAO.atualizarAluno(aluno);
+        return true;
     }
 
+    public boolean alterarStatusAluno(int index) {
+        List<Aluno> alunos = alunoDAO.listarAlunos();
+        if (index < 1 || index > alunos.size()) {
+            return false;
+        }
+
+        Aluno aluno = alunos.get(index - 1);
+        aluno.setStatus(aluno.getStatus() == Status.ATIVO ? Status.INATIVO : Status.ATIVO);
+        alunoDAO.atualizarAluno(aluno);
+        return true;
+    }
+
+    public void listarAlunos() {
+        List<Aluno> alunos = alunoDAO.listarAlunos();
+        if (alunos.isEmpty()) {
+            System.out.println("📌 Nenhum aluno cadastrado.");
+        } else {
+            System.out.println("\n=== Lista de Alunos ===");
+            System.out.println(" Nº | ID        | Nome                | E-mail               | Status ");
+            System.out.println("---------------------------------------------------------------");
+            int i = 1;
+            for (Aluno aluno : alunos) {
+                System.out.printf(" %2d | %-8s | %-20s | %-20s | %s \n",
+                        i, aluno.getId(), aluno.getNome(), aluno.getEmail(), aluno.getStatus());
+                i++;
+            }
+        }
+    }
+
+    public Aluno selecionarAluno(int index) {
+        List<Aluno> alunos = alunoDAO.listarAlunos();
+        if (index < 1 || index > alunos.size()) {
+            return null;
+        }
+        return alunos.get(index - 1);
+    }
 }

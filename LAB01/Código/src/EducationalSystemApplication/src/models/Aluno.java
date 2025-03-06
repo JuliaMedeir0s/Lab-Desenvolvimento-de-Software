@@ -4,23 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.abstracts.Usuario;
-import models.enums.StatusMatricula;
 import models.enums.TipoUsuario;
 
 public class Aluno extends Usuario {
-    private String matricula;
     private Curso curso;
     private List<Matricula> matriculas;
 
-    public Aluno(String id, String nome, String email, String senha, String matricula, Curso curso) {
+    public Aluno(String id, String nome, String email, String senha, Curso curso) {
         super(id, nome, email, senha, TipoUsuario.ALUNO);
-        this.matricula = matricula;
         this.curso = curso;
         this.matriculas = new ArrayList<>();
-    }
-
-    public String getMatricula() {
-        return matricula;
     }
 
     public Curso getCurso() {
@@ -29,18 +22,6 @@ public class Aluno extends Usuario {
 
     public List<Matricula> getMatriculas() {
         return matriculas;
-    }
-
-    public void adicionarMatricula(Matricula matricula) {
-        this.matriculas.add(matricula);
-    }
-
-    public void removerMatricula(Matricula matricula) {
-        this.matriculas.remove(matricula);
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
     }
 
     public void setCurso(Curso curso) {
@@ -53,6 +34,6 @@ public class Aluno extends Usuario {
 
     @Override
     public String toString() {
-        return super.toString() + ", Matrícula: " + matricula + ", Curso: " + curso.getNome() + ", Disciplinas Matriculadas: " + matriculas.size();
+        return super.toString() + ", Curso: " + curso.getNome() + ", Disciplinas Matriculadas: " + matriculas.size();
     }
 }
