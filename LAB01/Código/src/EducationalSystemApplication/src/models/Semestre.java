@@ -22,18 +22,53 @@ public class Semestre implements Serializable {
         this.disciplinasOfertadas = new ArrayList<>();
     }
 
-    public int getAno() { return ano; }
-    public int getPeriodo() { return periodo; }
-    public LocalDate getDataInicioInscricoes() { return inicioInscricoes; }
-    public LocalDate getDataFimInscricoes() { return fimInscricoes; }
-    public List<Disciplina> getDisciplinasOfertadas() { return disciplinasOfertadas; }
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinasOfertadas.add(disciplina);
+    }
 
-    public void setDataInicioInscricoes(LocalDate inicio) { this.inicioInscricoes = inicio; }
-    public void setDataFimInscricoes(LocalDate fim) { this.fimInscricoes = fim; }
+    public void removerDisciplina(Disciplina disciplina) {
+        disciplinasOfertadas.remove(disciplina);
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public LocalDate getDataInicioInscricoes() {
+        return inicioInscricoes;
+    }
+
+    public LocalDate getDataFimInscricoes() {
+        return fimInscricoes;
+    }
+
+    public List<Disciplina> getDisciplinasOfertadas() {
+        return disciplinasOfertadas;
+    }
+
+    public void setDataInicioInscricoes(LocalDate inicio) {
+        this.inicioInscricoes = inicio;
+    }
+
+    public void setDataFimInscricoes(LocalDate fim) {
+        this.fimInscricoes = fim;
+    }
 
     @Override
     public String toString() {
         return "Semestre " + ano + "." + periodo + " | Inscrições: " + inicioInscricoes + " a " + fimInscricoes +
-               " | Disciplinas: " + disciplinasOfertadas.size();
+                " | Disciplinas: " + disciplinasOfertadas.size();
     }
 }

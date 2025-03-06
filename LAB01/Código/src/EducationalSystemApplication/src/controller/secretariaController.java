@@ -45,8 +45,8 @@ public class SecretariaController {
 
     public void definirPeriodoInscricao(Semestre semestre, LocalDate inicio, LocalDate fim) {
         if (inicio.isBefore(fim)) {
-            semestre.setInicioInscricao(inicio);
-            semestre.setFimInscricao(fim);
+            semestre.setDataInicioInscricoes(inicio);
+            semestre.setDataFimInscricoes(fim);
             semestreDAO.atualizarSemestre(semestre);
             System.out.println("✅ Período de inscrições definido: " + inicio + " a " + fim);
         } else {
@@ -55,9 +55,9 @@ public class SecretariaController {
     }
 
     public boolean isDentroDoPeriodoInscricao(Semestre semestre, LocalDate dataAtual) {
-        return semestre.getInicioInscricao() != null && semestre.getFimInscricao() != null
-                && !dataAtual.isBefore(semestre.getInicioInscricao())
-                && !dataAtual.isAfter(semestre.getFimInscricao());
+        return semestre.getDataInicioInscricoes() != null && semestre.getDataFimInscricoes() != null
+                && !dataAtual.isBefore(semestre.getDataInicioInscricoes())
+                && !dataAtual.isAfter(semestre.getDataFimInscricoes());
     }
 
     public void listarUsuarios() {
@@ -71,7 +71,7 @@ public class SecretariaController {
     }
 
     public void listarAlunos() {
-        List<Aluno> alunos = alunoDAO.listarAlunos();
+        List<Aluno> alunos = alunoDAO.getAlunos();
         if (alunos.isEmpty()) {
             System.out.println("📌 Nenhum aluno cadastrado.");
         } else {
@@ -91,7 +91,7 @@ public class SecretariaController {
     }
 
     public void listarCursos() {
-        List<Curso> cursos = cursoDAO.listarCursos();
+        List<Curso> cursos = cursoDAO.getCursos();
         if (cursos.isEmpty()) {
             System.out.println("📌 Nenhum curso cadastrado.");
         } else {
