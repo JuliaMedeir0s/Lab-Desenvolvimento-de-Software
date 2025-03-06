@@ -64,7 +64,7 @@ public class SecretariaDisciplinaController {
             return;
         }
 
-        disciplinaDAO.alterarStatusDisciplina(codigo, Status.INATIVO);
+        disciplinaDAO.alterarStatusDisciplina(codigo, false);
         System.out.println("Disciplina " + codigo + " foi desativada.");
     }
 
@@ -82,7 +82,7 @@ public class SecretariaDisciplinaController {
             return;
         }
 
-        disciplinaDAO.alterarStatusDisciplina(codigo, Status.ATIVO);
+        disciplinaDAO.alterarStatusDisciplina(codigo, true);
         System.out.println("Disciplina " + codigo + " foi ativada.");
     }
 }
