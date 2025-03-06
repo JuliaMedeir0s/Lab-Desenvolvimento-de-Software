@@ -1,12 +1,19 @@
 package views;
 
 import controller.CursoController;
+import controller.DisciplinaController;
 import models.Curso;
+import models.Disciplina;
 import utils.Utils;
+
+import java.util.List;
 import java.util.Scanner;
+
+import DAO.DisciplinaDAO;
 
 public class GerenciarCursosView {
     private static final CursoController cursoController = new CursoController();
+    private static final DisciplinaController disciplinaController = new DisciplinaController();
     private static final Scanner sc = new Scanner(System.in);
 
     public static void mostrarMenu() {
@@ -17,6 +24,8 @@ public class GerenciarCursosView {
             System.out.println("2. Editar Curso");
             System.out.println("3. Ativar/Desativar Curso");
             System.out.println("4. Listar Cursos");
+            System.out.println("5. Adicionar Disciplina ao Curso");
+            System.out.println("6. Visualizar Curso e Disciplinas");
             System.out.println("0. Voltar");
             System.out.print("Escolha uma opção: ");
 
@@ -26,6 +35,8 @@ public class GerenciarCursosView {
                 case 2 -> editarCurso();
                 case 3 -> alterarStatusCurso();
                 case 4 -> listarCursos();
+                case 5 -> adicionarDisciplinaAoCurso();
+                case 6 -> visualizarCurso();
                 case 0 -> {
                     return;
                 }
@@ -37,7 +48,7 @@ public class GerenciarCursosView {
     private static void adicionarCurso() {
         Utils.limparTela();
         System.out.println("===== ADICIONAR CURSO =====");
-    
+
         System.out.print("Nome do Curso (0 para cancelar): ");
         String nome = sc.nextLine();
         if (nome.equals("0")) {
@@ -45,7 +56,7 @@ public class GerenciarCursosView {
             Utils.pausarTela();
             return;
         }
-    
+
         System.out.print("Créditos do Curso (0 para cancelar): ");
         int creditos = Utils.lerInteiro();
         if (creditos == 0) {
@@ -53,11 +64,11 @@ public class GerenciarCursosView {
             Utils.pausarTela();
             return;
         }
-    
+
         boolean sucesso = cursoController.adicionarCurso(nome, creditos);
         System.out.println(sucesso ? "✅ Curso adicionado com sucesso!" : "❌ Erro ao adicionar curso.");
         Utils.pausarTela();
-    }  
+    }
 
     private static void editarCurso() {
         listarCursos();
@@ -68,19 +79,19 @@ public class GerenciarCursosView {
             Utils.pausarTela();
             return;
         }
-    
+
         Curso cursoSelecionado = cursoController.selecionarCurso(index);
         if (cursoSelecionado == null) {
             System.out.println("❌ Erro: Curso não encontrado.");
             Utils.pausarTela();
             return;
         }
-    
+
         System.out.println("\n📌 Curso Selecionado:");
         System.out.println("Código: " + cursoSelecionado.getCodigo());
         System.out.println("Nome: " + cursoSelecionado.getNome());
         System.out.println("Créditos: " + cursoSelecionado.getCreditos());
-    
+
         System.out.print("\nNovo Nome (ENTER para manter, 0 para cancelar): ");
         String novoNome = sc.nextLine();
         if (novoNome.equals("0")) {
@@ -88,7 +99,7 @@ public class GerenciarCursosView {
             Utils.pausarTela();
             return;
         }
-    
+
         System.out.print("Novos Créditos (ENTER para manter, 0 para cancelar): ");
         Integer novosCreditos = Utils.lerInteiroOpcional();
         if (novosCreditos != null && novosCreditos == 0) {
@@ -96,7 +107,7 @@ public class GerenciarCursosView {
             Utils.pausarTela();
             return;
         }
-    
+
         boolean sucesso = cursoController.editarCurso(index, novoNome, novosCreditos);
         System.out.println(sucesso ? "✅ Edição realizada com sucesso!" : "❌ Erro ao editar curso.");
         Utils.pausarTela();
@@ -115,6 +126,92 @@ public class GerenciarCursosView {
     private static void listarCursos() {
         Utils.limparTela();
         cursoController.listarCursos();
+        Utils.pausarTela();
+    }
+
+    private static void adicionarDisciplinaAoCurso() {
+        listarCursos();
+        System.out.print("\nDigite o código do curso ao qual deseja adicionar uma disciplina (0 para cancelar): ");
+        String cursoCodigo = sc.nextLine().trim();
+        if (cursoCodigo.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        Curso cursoSelecionado = cursoController.buscarCursoPorCodigo(cursoCodigo);
+        if (cursoSelecionado == null) {
+            System.out.println("❌ Erro: Curso não encontrado.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        List<Disciplina> disciplinasDisponiveis = disciplinaController.listarDisciplinasNaoAssociadas(cursoSelecionado);
+    
+        if (disciplinasDisponiveis.isEmpty()) {
+            System.out.println("📌 Todas as disciplinas já estão associadas a este curso.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        // 🔥 Exibe apenas disciplinas disponíveis
+        System.out.println("\n=== Disciplinas Disponíveis ===");
+        System.out.println(" Nº | Código   | Nome               | Carga Horária | Professor         | Valor   | Status ");
+        System.out.println("--------------------------------------------------------------------------------------------");
+        int i = 1;
+        for (Disciplina disciplina : disciplinasDisponiveis) {
+            String professorNome = disciplina.getProfessor() != null ? disciplina.getProfessor().getNome() : "N/A";
+            System.out.printf(" %2d | %-8s | %-20s | %-13d | %-18s | %.2f | %s \n",
+                    i, disciplina.getCodigo(), disciplina.getNome(), disciplina.getCargaHoraria(), professorNome,
+                    disciplina.getValor(), disciplina.getStatus());
+            i++;
+        }
+    
+        System.out.print("\nDigite o código da disciplina que deseja adicionar ao curso (0 para cancelar): ");
+        String disciplinaCodigo = sc.nextLine().trim();
+        if (disciplinaCodigo.equals("0")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        boolean sucesso = cursoController.adicionarDisciplinaAoCurso(cursoCodigo, disciplinaCodigo);
+        System.out.println(sucesso ? "✅ Disciplina adicionada ao curso!" : "❌ Erro ao adicionar disciplina.");
+        Utils.pausarTela();
+    }       
+
+    private static void visualizarCurso() {
+        listarCursos();
+        System.out.print("\nDigite o número do curso que deseja visualizar (0 para cancelar): ");
+        int cursoIndex = Utils.lerInteiro();
+        if (cursoIndex == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+
+        Curso cursoSelecionado = cursoController.visualizarCurso(cursoIndex);
+        if (cursoSelecionado == null) {
+            System.out.println("❌ Erro: Curso não encontrado.");
+            Utils.pausarTela();
+            return;
+        }
+
+        System.out.println("\n===== DETALHES DO CURSO =====");
+        System.out.println("Código: " + cursoSelecionado.getCodigo());
+        System.out.println("Nome: " + cursoSelecionado.getNome());
+        System.out.println("Créditos: " + cursoSelecionado.getCreditos());
+        System.out.println("Status: " + cursoSelecionado.getStatus());
+
+        if (cursoSelecionado.getDisciplinas() != null && !cursoSelecionado.getDisciplinas().isEmpty()) {
+            System.out.println("\n📌 Disciplinas Associadas:");
+            for (Disciplina disciplina : cursoSelecionado.getDisciplinas()) {
+                System.out.printf("- %s (%s)\n", disciplina.getNome(), disciplina.getCodigo());
+            }
+        } else {
+            System.out.println("📌 Nenhuma disciplina associada.");
+        }
+
         Utils.pausarTela();
     }
 }

@@ -67,26 +67,26 @@ public class ProfessorController {
     // }
 
     
-    public void listarAlunos(String codigo) {
-        Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigo);
+    // public void listarAlunos(String codigo) {
+    //     Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigo);
 
-        if (disciplinaOpt.isEmpty()) {
-            System.out.println("❌ Disciplina não encontrada!");
-            return;
-        }
+    //     if (disciplinaOpt.isEmpty()) {
+    //         System.out.println("❌ Disciplina não encontrada!");
+    //         return;
+    //     }
 
-        Disciplina disciplina = disciplinaOpt.get();
-        List<Aluno> alunos = disciplina.getAlunosMatriculados();
+    //     Disciplina disciplina = disciplinaOpt.get();
+    //     List<Aluno> alunos = disciplina.getAlunosMatriculados();
 
-        if (alunos.isEmpty()) {
-            System.out.println("📌 Nenhum aluno matriculado na disciplina " + disciplina.getNome());
-        } else {
-            System.out.println("\n📌 Alunos matriculados na disciplina " + disciplina.getNome() + ":");
-            for (Aluno aluno : alunos) {
-                System.out.println("- " + aluno.getNome() + " (" + aluno.getMatricula() + ")");
-            }
-        }
-    }
+    //     if (alunos.isEmpty()) {
+    //         System.out.println("📌 Nenhum aluno matriculado na disciplina " + disciplina.getNome());
+    //     } else {
+    //         System.out.println("\n📌 Alunos matriculados na disciplina " + disciplina.getNome() + ":");
+    //         for (Aluno aluno : alunos) {
+    //             System.out.println("- " + aluno.getNome() + " (" + aluno.getMatricula() + ")");
+    //         }
+    //     }
+    // }
     
     // ============================
     public boolean adicionarProfessor(String nome, String email, String senha) {

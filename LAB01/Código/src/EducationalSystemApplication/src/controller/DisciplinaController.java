@@ -2,10 +2,14 @@ package controller;
 
 import DAO.DisciplinaDAO;
 import DAO.ProfessorDAO;
+import models.Curso;
 import models.Disciplina;
 import models.Professor;
 import models.enums.Status;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -101,4 +105,54 @@ public class DisciplinaController {
         }
         return disciplinas.get(index - 1);
     }
+
+    public boolean adicionarCursoADisciplina(String codigoDisciplina, Curso curso) {
+    Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
+    if (disciplinaOpt.isEmpty()) {
+        System.out.println("❌ Erro: Disciplina não encontrada.");
+        return false;
+    }
+
+    Disciplina disciplina = disciplinaOpt.get();
+    if (disciplina.getCursos() == null) {
+        disciplina.setCursos(new ArrayList<>());
+    }
+
+    if (!disciplina.getCursos().contains(curso)) {
+        disciplina.getCursos().add(curso);
+        disciplinaDAO.atualizarDisciplina(disciplina);
+        return true;
+    }
+    System.out.println("❌ Esta disciplina já está associada a este curso.");
+    return false;
+}
+
+public List<Disciplina> listarDisciplinasNaoAssociadas(Curso curso) {
+    List<Disciplina> todasDisciplinas = disciplinaDAO.listarDisciplinas();
+    List<Disciplina> disciplinasDisponiveis = new ArrayList<>();
+
+    for (Disciplina disciplina : todasDisciplinas) {
+        if (!curso.getDisciplinas().contains(disciplina)) {
+            disciplinasDisponiveis.add(disciplina);
+        }
+    }
+    return disciplinasDisponiveis;
+}
+
+
+public boolean removerCursoDeDisciplina(String codigoDisciplina, Curso curso) {
+    Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
+    if (disciplinaOpt.isEmpty()) {
+        System.out.println("❌ Erro: Disciplina não encontrada.");
+        return false;
+    }
+
+    Disciplina disciplina = disciplinaOpt.get();
+    if (disciplina.getCursos().contains(curso)) {
+        disciplina.getCursos().remove(curso); 
+        disciplinaDAO.atualizarDisciplina(disciplina);
+        return true;
+    }
+    return false;
+}
 }

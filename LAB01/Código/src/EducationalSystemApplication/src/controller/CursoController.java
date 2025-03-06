@@ -1,13 +1,18 @@
 package controller;
 
 import DAO.CursoDAO;
+import DAO.DisciplinaDAO;
 import models.Curso;
+import models.Disciplina;
 import models.enums.Status;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CursoController {
     private final CursoDAO cursoDAO = CursoDAO.getInstance();
+    private final DisciplinaDAO disciplinaDAO = DisciplinaDAO.getInstance();
+    private final DisciplinaController disciplinaController = new DisciplinaController();
     private static final AtomicInteger contadorCurso = new AtomicInteger(1);
 
     public static void setContadorCurso(int valor) {
@@ -32,8 +37,10 @@ public class CursoController {
         }
 
         Curso curso = cursos.get(index - 1);
-        if (!novoNome.isEmpty()) curso.setNome(novoNome);
-        if (novosCreditos != null) curso.setCreditos(novosCreditos);
+        if (!novoNome.isEmpty())
+            curso.setNome(novoNome);
+        if (novosCreditos != null)
+            curso.setCreditos(novosCreditos);
 
         cursoDAO.atualizarCurso(curso);
         return true;
@@ -100,4 +107,47 @@ public class CursoController {
         }
         return cursos.get(index - 1);
     }
+
+    public boolean adicionarDisciplinaAoCurso(String cursoCodigo, String disciplinaCodigo) {
+        Optional<Curso> cursoOpt = cursoDAO.buscarPorCodigo(cursoCodigo);
+        Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(disciplinaCodigo);
+
+        if (cursoOpt.isEmpty()) {
+            System.out.println("❌ Erro: Curso não encontrado.");
+            return false;
+        }
+
+        if (disciplinaOpt.isEmpty()) {
+            System.out.println("❌ Erro: Disciplina não encontrada.");
+            return false;
+        }
+
+        Curso curso = cursoOpt.get();
+        Disciplina disciplina = disciplinaOpt.get();
+
+        if (!curso.getDisciplinas().contains(disciplina)) {
+            curso.getDisciplinas().add(disciplina); // 🔥 Adiciona a disciplina ao curso
+            cursoDAO.atualizarCurso(curso);
+        } else {
+            System.out.println("❌ Esta disciplina já está associada a este curso.");
+            return false;
+        }
+
+        return disciplinaController.adicionarCursoADisciplina(disciplina.getCodigo(), curso);
+    }
+
+    public Curso visualizarCurso(int cursoIndex) {
+        List<Curso> cursos = cursoDAO.listarCursos();
+        if (cursoIndex < 1 || cursoIndex > cursos.size()) {
+            return null;
+        }
+        return cursos.get(cursoIndex - 1);
+    }
+
+    public Curso buscarCursoPorCodigo(String codigo) {
+        return cursoDAO.listarCursos().stream()
+            .filter(curso -> curso.getCodigo().equalsIgnoreCase(codigo))
+            .findFirst()
+            .orElse(null);
+    }    
 }

@@ -17,6 +17,7 @@ public class Disciplina implements Serializable {
     private Professor professor;
     private double valor;
     private List<Aluno> alunosMatriculados;
+    private List<Curso> cursos;
     private Status status;
 
     public Disciplina(String codigo, String nome, int cargaHoraria, Professor professor, double valor) {
@@ -26,15 +27,8 @@ public class Disciplina implements Serializable {
         this.professor = professor;
         this.valor = valor;
         this.alunosMatriculados = new ArrayList<>();
+        this.cursos = new ArrayList<>();
         this.status = Status.ATIVO;
-    }
-
-    public boolean adicionarAluno(Aluno aluno) {
-        if (alunosMatriculados.size() < MAX_ALUNOS) {
-            alunosMatriculados.add(aluno);
-            return true;
-        }
-        return false;
     }
 
     public String getCodigo() {
@@ -85,14 +79,30 @@ public class Disciplina implements Serializable {
         return alunosMatriculados;
     }
 
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        if (cursos == null) {
+            this.cursos = new ArrayList<>(); 
+            
+        } else {
+            this.cursos = new ArrayList<>(cursos); 
+        }    
+    }
+
     public void setAtiva(boolean ativa) {
         this.status = ativa ? Status.ATIVO : Status.INATIVO;
     }
 
     @Override
     public String toString() {
-        return "Disciplina: " + nome + " (" + codigo + "), Professor: " +
-                (professor != null ? professor.getNome() : "Não definido") +
-                ", Alunos: " + alunosMatriculados.size() + " [" + status + "]";
+        String cursosAssociados = cursos.isEmpty() ? "Nenhum curso associado" :
+                String.join(", ", cursos.stream().map(Curso::getNome).toList());
+        return String.format("Disciplina: %s (%s), Carga Horária: %d, Professor: %s, Valor: %.2f, Cursos: [%s]",
+                nome, codigo, cargaHoraria, 
+                professor != null ? professor.getNome() : "Nenhum",
+                valor, cursosAssociados);
     }
 }
