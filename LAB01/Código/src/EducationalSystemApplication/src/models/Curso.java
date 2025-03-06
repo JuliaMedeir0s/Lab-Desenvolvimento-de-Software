@@ -48,6 +48,23 @@ public class Curso {
         alunosMatriculados.remove(aluno);
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }  
+
+    public void setCreditos(int creditos) {
+        this.creditos = creditos;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
+    public void setAlunosMatriculados(List<Aluno> alunosMatriculados) {
+        this.alunosMatriculados = alunosMatriculados;
+    }
+
+
     @Override
     public String toString() {
         return "Curso: " + nome + ", Créditos: " + creditos + ", Disciplinas: " + disciplinas.size() + ", Alunos: " + alunosMatriculados.size();
