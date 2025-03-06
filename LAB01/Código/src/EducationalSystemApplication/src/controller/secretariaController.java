@@ -154,6 +154,22 @@ public class SecretariaController {
 
     }
 
+    public void alterarStatusUsuario(String id) {
+        try {
+            Secretaria secretaria = secretariaDAO.buscarSecretariaPorId(id);
+            if (secretaria != null) {
+                secretaria.setAtivo(!secretaria.isAtivo());
+                secretariaDAO.atualizarSecretaria(secretaria);
+                System.out.println("✅ Status do usuário alterado com sucesso!");
+            } else {
+                System.out.println("❌ Usuário não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao alterar status do usuário: " + e.getMessage());
+        }
+
+    }
+
     private String gerarId() {
         return "SEC-" + String.format("%04d", contadorSecretaria.getAndIncrement());
     }
