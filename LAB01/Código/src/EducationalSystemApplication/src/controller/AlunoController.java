@@ -5,7 +5,6 @@ import models.Aluno;
 import models.Curso;
 import models.enums.Status;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 

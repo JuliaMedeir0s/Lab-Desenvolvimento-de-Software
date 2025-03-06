@@ -2,6 +2,7 @@ package views;
 
 import models.Disciplina;
 import models.Matricula;
+import utils.Utils;
 import models.Aluno;
 
 import java.util.List;
@@ -32,11 +33,11 @@ public class AlunoView {
 
             switch (opcao) {
                 case 1:
-                    limparConsole();
+                    Utils.limparTela();
                     listarDisciplinasMatriculados(aluno.getMatriculas());
                     break;
                 case 2:
-                    limparConsole();
+                    Utils.limparTela();
                     System.out.println("Disciplinas Disponiveis");
                     listarDisciplinas(aluno.getCurso().getDisciplinas()); 
                     break;
@@ -76,7 +77,7 @@ public class AlunoView {
                 cancelarMatricula(disciplina);
             } else {
                 System.out.println("Disciplina não encontrada.");
-                limparConsole();
+                Utils.limparTela();
                 listarDisciplinasMatriculados(matriculas);
             }
         }
@@ -122,28 +123,9 @@ public class AlunoView {
                 realizarMatricula(disciplina);
             } else {
                 System.out.println("Disciplina não encontrada.");
-                limparConsole();
+                Utils.limparTela();
                 listarDisciplinas(disciplinasDisponiveis);
             }
         }
     }
-
-    private static void limparConsole() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            System.out.println("❌ Não foi possível limpar o console.");
-        }
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
-    }
-
 }
