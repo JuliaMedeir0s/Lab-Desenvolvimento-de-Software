@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -8,12 +7,10 @@ import java.util.regex.Pattern;
 
 import DAO.ProfessorDAO;
 import DAO.DisciplinaDAO;
-
 import models.Aluno;
 import models.Disciplina;
+import models.Matricula;
 import models.Professor;
-import models.Secretaria;
-import models.abstracts.Usuario;
 import models.enums.Status;
 
 public class ProfessorController {
@@ -27,68 +24,34 @@ public class ProfessorController {
         contadorProfessor.set(valor);
     }
 
-    public void menu() {
-
+    public List<Disciplina> listarDisciplinasLecionadas(Professor professor) {
+        return disciplinaDAO.listarDisciplinas().stream()
+                .filter(d -> d.getProfessor() != null && d.getProfessor().equals(professor))
+                .toList();
     }
 
-    public void listarDisciplinas(Object professor) {
-        List<Disciplina> disciplinas = new ArrayList<>();
-        disciplinas = ((Professor) professor).getDisciplinasLecionadas();
-        if (disciplinas.isEmpty()) {
-            System.out.println(
-                    "O professor " + ((Usuario) professor).getNome() + " não está lecionando nenhuma disciplina");
+    public void listarAlunosPorDisciplina(String codigoDisciplina) {
+        Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
+
+        if (disciplinaOpt.isEmpty()) {
+            System.out.println("❌ Disciplina não encontrada!");
+            return;
+        }
+
+        Disciplina disciplina = disciplinaOpt.get();
+        List<Matricula> matriculas = disciplina.getMatriculas();
+
+        if (matriculas.isEmpty()) {
+            System.out.println("📌 Nenhum aluno matriculado na disciplina " + disciplina.getNome());
         } else {
-            System.out.println("Disciplinas lecionadas por " + ((Usuario) professor).getNome() + ":");
-            for (Disciplina d : disciplinas) {
-                System.out.println("- " + d.getNome() + " (" + d.getCodigo() + ")");
+            System.out.println("\n📌 Alunos matriculados na disciplina " + disciplina.getNome() + ":");
+            for (Matricula matricula : matriculas) {
+                Aluno aluno = matricula.getAluno();
+                System.out.println("- " + aluno.getNome() + " (" + aluno.getCurso() + ")");
             }
         }
     }
 
-    // pode ser que dê erro
-    // public void listarAlunos(String codigo) {
-    //     Disciplina disciplina;
-    //     try {
-    //         disciplina = disciplinaDAO.buscarPorCodigo(codigo);
-    //     } catch (Exception e) {
-    //         System.out.println("Disciplina não encontrada!");
-    //         return;
-    //     }
-    //     List<Aluno> alunos = new ArrayList<>();
-    //     alunos = disciplina.getAlunosMatriculados();
-    //     if (alunos.isEmpty()) {
-    //         System.out.println("Nenhum aluno matriculado na disciplina " + disciplina.getNome());
-    //     } else {
-    //         System.out.println("Alunos matriculados na disciplina " + disciplina.getNome() + ":");
-    //         for (Aluno a : alunos) {
-    //             System.out.println("- " + a.getNome() + " (" + a.getMatricula() + ")");
-    //         }
-    //     }
-    // }
-
-    
-    // public void listarAlunos(String codigo) {
-    //     Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigo);
-
-    //     if (disciplinaOpt.isEmpty()) {
-    //         System.out.println("❌ Disciplina não encontrada!");
-    //         return;
-    //     }
-
-    //     Disciplina disciplina = disciplinaOpt.get();
-    //     List<Aluno> alunos = disciplina.getAlunosMatriculados();
-
-    //     if (alunos.isEmpty()) {
-    //         System.out.println("📌 Nenhum aluno matriculado na disciplina " + disciplina.getNome());
-    //     } else {
-    //         System.out.println("\n📌 Alunos matriculados na disciplina " + disciplina.getNome() + ":");
-    //         for (Aluno aluno : alunos) {
-    //             System.out.println("- " + aluno.getNome() + " (" + aluno.getMatricula() + ")");
-    //         }
-    //     }
-    // }
-    
-    // ============================
     public boolean adicionarProfessor(String nome, String email, String senha) {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             System.out.println("❌ Erro: E-mail inválido.");
@@ -115,18 +78,15 @@ public class ProfessorController {
         if (professorOpt.isPresent()) {
             Professor professor = professorOpt.get();
     
-            // Validar e-mail apenas se ele for alterado
-            if (!novoEmail.isEmpty()) {
-                if (!EMAIL_PATTERN.matcher(novoEmail).matches()) {
-                    System.out.println("❌ Erro: E-mail inválido.");
-                    return false;
-                }
-                professor.setEmail(novoEmail);
+            if (!novoEmail.isEmpty() && !EMAIL_PATTERN.matcher(novoEmail).matches()) {
+                System.out.println("❌ Erro: E-mail inválido.");
+                return false;
             }
-    
+
             if (!novoNome.isEmpty()) professor.setNome(novoNome);
+            if (!novoEmail.isEmpty()) professor.setEmail(novoEmail);
             if (!novaSenha.isEmpty()) professor.setSenha(novaSenha);
-    
+
             professorDAO.atualizarProfessor(professor);
             return true;
         }

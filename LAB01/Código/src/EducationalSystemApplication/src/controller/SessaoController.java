@@ -14,7 +14,6 @@ public class SessaoController {
     public static void verificarUsuarioPadrao() {
         List<Usuario> usuarios = usuarioDAO.listarUsuarios();
 
-        //se não há usuários cadastrados, criamos um padrão
         if (usuarios.isEmpty()) {
             System.out.println("📌 Nenhum usuário encontrado. Criando usuário padrão...");
             Secretaria admin = new Secretaria("SEC-0000", "Administrador", "admin@email.com", "admin123");

@@ -20,12 +20,12 @@ public class Aluno extends Usuario {
         return curso;
     }
 
-    public List<Matricula> getMatriculas() {
-        return matriculas;
-    }
-
     public void setCurso(Curso curso) {
         this.curso = curso;
+    }
+
+    public List<Matricula> getMatriculas() {
+        return matriculas;
     }
 
     public void setMatriculas(List<Matricula> matriculas) {
@@ -34,6 +34,7 @@ public class Aluno extends Usuario {
 
     @Override
     public String toString() {
-        return super.toString() + ", Curso: " + curso.getNome() + ", Disciplinas Matriculadas: " + matriculas.size();
+        return super.toString() + ", Curso: " + (curso != null ? curso.getNome() : "Nenhum") + 
+               ", Disciplinas Matriculadas: " + (matriculas != null ? matriculas.size() : 0);
     }
 }

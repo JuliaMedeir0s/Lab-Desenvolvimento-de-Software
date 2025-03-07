@@ -8,17 +8,16 @@ import java.util.List;
 public class Disciplina implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private static final int MAX_ALUNOS = 60;
-    private static final int MIN_ALUNOS = 3;
-
     private String codigo;
     private String nome;
     private int cargaHoraria;
     private Professor professor;
     private double valor;
-    private List<Aluno> alunosMatriculados;
+    private List<Matricula> matriculas;
     private List<Curso> cursos;
     private Status status;
+    private static final int MATRICULA_MINIMA = 3;
+    private static final int MATRICULA_MAXIMA = 60;
 
     public Disciplina(String codigo, String nome, int cargaHoraria, Professor professor, double valor) {
         this.codigo = codigo;
@@ -26,7 +25,7 @@ public class Disciplina implements Serializable {
         this.cargaHoraria = cargaHoraria;
         this.professor = professor;
         this.valor = valor;
-        this.alunosMatriculados = new ArrayList<>();
+        this.matriculas = new ArrayList<>();
         this.cursos = new ArrayList<>();
         this.status = Status.ATIVO;
     }
@@ -55,6 +54,30 @@ public class Disciplina implements Serializable {
         return status;
     }
 
+    public static int getMatriculaMinima() {
+        return MATRICULA_MINIMA;
+    }
+
+    public static int getMatriculaMaxima() {
+        return MATRICULA_MAXIMA;
+    }
+
+    public List<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos == null ? new ArrayList<>() : new ArrayList<>(cursos);
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -71,38 +94,20 @@ public class Disciplina implements Serializable {
         this.valor = valor;
     }
 
+    public void setMatriculas(List<Matricula> matriculas) {
+        this.matriculas = matriculas;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public List<Aluno> getAlunosMatriculados() {
-        return alunosMatriculados;
-    }
-
-    public List<Curso> getCursos() {
-        return cursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        if (cursos == null) {
-            this.cursos = new ArrayList<>(); 
-            
-        } else {
-            this.cursos = new ArrayList<>(cursos); 
-        }    
-    }
-
-    public void setAtiva(boolean ativa) {
-        this.status = ativa ? Status.ATIVO : Status.INATIVO;
-    }
-
     @Override
     public String toString() {
-        String cursosAssociados = cursos.isEmpty() ? "Nenhum curso associado" :
-                String.join(", ", cursos.stream().map(Curso::getNome).toList());
-        return String.format("Disciplina: %s (%s), Carga Horária: %d, Professor: %s, Valor: %.2f, Cursos: [%s]",
-                nome, codigo, cargaHoraria, 
+        return String.format(
+                "Disciplina: %s (%s), Carga Horária: %d, Professor: %s, Valor: %.2f, Min: %d, Max: %d, Status: %s",
+                nome, codigo, cargaHoraria,
                 professor != null ? professor.getNome() : "Nenhum",
-                valor, cursosAssociados);
+                valor, MATRICULA_MINIMA, MATRICULA_MAXIMA, status);
     }
 }

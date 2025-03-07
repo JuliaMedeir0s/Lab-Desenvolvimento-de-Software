@@ -27,7 +27,8 @@ public class DisciplinaController {
         return "DIS-" + String.format("%04d", proximoCodigo);
     }
 
-    public boolean adicionarDisciplina(String codigo, String nome, int cargaHoraria, Integer professorIndex, double valor) {
+    public boolean adicionarDisciplina(String codigo, String nome, int cargaHoraria, Integer professorIndex,
+            double valor) {
         List<Professor> professores = listarProfessoresAtivos();
         Professor professor = (professorIndex != null && professorIndex > 0 && professorIndex <= professores.size())
                 ? professores.get(professorIndex - 1)
@@ -38,15 +39,18 @@ public class DisciplinaController {
         return true;
     }
 
-    public boolean editarDisciplina(int index, String novoNome, Integer novaCargaHoraria, Integer professorIndex, Double novoValor) {
+    public boolean editarDisciplina(int index, String novoNome, Integer novaCargaHoraria, Integer professorIndex,
+            Double novoValor) {
         List<Disciplina> disciplinas = disciplinaDAO.listarDisciplinas();
         if (index < 1 || index > disciplinas.size()) {
             return false;
         }
 
         Disciplina disciplina = disciplinas.get(index - 1);
-        if (!novoNome.isEmpty()) disciplina.setNome(novoNome);
-        if (novaCargaHoraria != null) disciplina.setCargaHoraria(novaCargaHoraria);
+        if (!novoNome.isEmpty())
+            disciplina.setNome(novoNome);
+        if (novaCargaHoraria != null)
+            disciplina.setCargaHoraria(novaCargaHoraria);
         if (professorIndex != null) {
             List<Professor> professores = listarProfessoresAtivos();
             if (professorIndex >= 1 && professorIndex <= professores.size()) {
@@ -56,10 +60,23 @@ public class DisciplinaController {
                 return false;
             }
         }
-        if (novoValor != null) disciplina.setValor(novoValor);
+        if (novoValor != null)
+            disciplina.setValor(novoValor);
 
         disciplinaDAO.atualizarDisciplina(disciplina);
         return true;
+    }
+
+    public boolean verificarAtivacaoDisciplina(Disciplina disciplina) {
+        int totalMatriculados = disciplina.getMatriculas().size();
+
+        if (totalMatriculados >= Disciplina.getMatriculaMinima()) {
+            disciplina.setStatus(Status.ATIVO);
+            return true;
+        } else {
+            disciplina.setStatus(Status.INATIVO);
+            return false;
+        }
     }
 
     public boolean alterarStatusDisciplina(int index) {
@@ -69,6 +86,13 @@ public class DisciplinaController {
         }
 
         Disciplina disciplina = disciplinas.get(index - 1);
+        boolean podeAtivar = verificarAtivacaoDisciplina(disciplina);
+
+        if (!podeAtivar && disciplina.getStatus() == Status.ATIVO) {
+            System.out.println("❌ Erro: Disciplina não pode ser ativada porque não atingiu o mínimo de alunos.");
+            return false;
+        }
+
         disciplina.setStatus(disciplina.getStatus() == Status.ATIVO ? Status.INATIVO : Status.ATIVO);
         disciplinaDAO.atualizarDisciplina(disciplina);
         return true;
@@ -80,8 +104,10 @@ public class DisciplinaController {
             System.out.println("📌 Nenhuma disciplina cadastrada.");
         } else {
             System.out.println("\n=== Lista de Disciplinas ===");
-            System.out.println(" Nº | Código   | Nome               | Carga Horária | Professor         | Valor   | Status ");
-            System.out.println("--------------------------------------------------------------------------------------------");
+            System.out.println(
+                    " Nº | Código   | Nome               | Carga Horária | Professor         | Valor   | Status ");
+            System.out.println(
+                    "--------------------------------------------------------------------------------------------");
             IntStream.range(0, disciplinas.size()).forEach(i -> {
                 Disciplina disciplina = disciplinas.get(i);
                 String professorNome = disciplina.getProfessor() != null ? disciplina.getProfessor().getNome() : "N/A";
@@ -107,52 +133,51 @@ public class DisciplinaController {
     }
 
     public boolean adicionarCursoADisciplina(String codigoDisciplina, Curso curso) {
-    Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
-    if (disciplinaOpt.isEmpty()) {
-        System.out.println("❌ Erro: Disciplina não encontrada.");
-        return false;
-    }
-
-    Disciplina disciplina = disciplinaOpt.get();
-    if (disciplina.getCursos() == null) {
-        disciplina.setCursos(new ArrayList<>());
-    }
-
-    if (!disciplina.getCursos().contains(curso)) {
-        disciplina.getCursos().add(curso);
-        disciplinaDAO.atualizarDisciplina(disciplina);
-        return true;
-    }
-    System.out.println("❌ Esta disciplina já está associada a este curso.");
-    return false;
-}
-
-public List<Disciplina> listarDisciplinasNaoAssociadas(Curso curso) {
-    List<Disciplina> todasDisciplinas = disciplinaDAO.listarDisciplinas();
-    List<Disciplina> disciplinasDisponiveis = new ArrayList<>();
-
-    for (Disciplina disciplina : todasDisciplinas) {
-        if (!curso.getDisciplinas().contains(disciplina)) {
-            disciplinasDisponiveis.add(disciplina);
+        Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
+        if (disciplinaOpt.isEmpty()) {
+            System.out.println("❌ Erro: Disciplina não encontrada.");
+            return false;
         }
-    }
-    return disciplinasDisponiveis;
-}
 
+        Disciplina disciplina = disciplinaOpt.get();
+        if (disciplina.getCursos() == null) {
+            disciplina.setCursos(new ArrayList<>());
+        }
 
-public boolean removerCursoDeDisciplina(String codigoDisciplina, Curso curso) {
-    Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
-    if (disciplinaOpt.isEmpty()) {
-        System.out.println("❌ Erro: Disciplina não encontrada.");
+        if (!disciplina.getCursos().contains(curso)) {
+            disciplina.getCursos().add(curso);
+            disciplinaDAO.atualizarDisciplina(disciplina);
+            return true;
+        }
+        System.out.println("❌ Esta disciplina já está associada a este curso.");
         return false;
     }
 
-    Disciplina disciplina = disciplinaOpt.get();
-    if (disciplina.getCursos().contains(curso)) {
-        disciplina.getCursos().remove(curso); 
-        disciplinaDAO.atualizarDisciplina(disciplina);
-        return true;
+    public List<Disciplina> listarDisciplinasNaoAssociadas(Curso curso) {
+        List<Disciplina> todasDisciplinas = disciplinaDAO.listarDisciplinas();
+        List<Disciplina> disciplinasDisponiveis = new ArrayList<>();
+
+        for (Disciplina disciplina : todasDisciplinas) {
+            if (!curso.getDisciplinas().contains(disciplina)) {
+                disciplinasDisponiveis.add(disciplina);
+            }
+        }
+        return disciplinasDisponiveis;
     }
-    return false;
-}
+
+    public boolean removerCursoDeDisciplina(String codigoDisciplina, Curso curso) {
+        Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);
+        if (disciplinaOpt.isEmpty()) {
+            System.out.println("❌ Erro: Disciplina não encontrada.");
+            return false;
+        }
+
+        Disciplina disciplina = disciplinaOpt.get();
+        if (disciplina.getCursos().contains(curso)) {
+            disciplina.getCursos().remove(curso);
+            disciplinaDAO.atualizarDisciplina(disciplina);
+            return true;
+        }
+        return false;
+    }
 }

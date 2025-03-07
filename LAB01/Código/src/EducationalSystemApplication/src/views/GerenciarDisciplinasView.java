@@ -2,9 +2,9 @@ package views;
 
 import controller.DisciplinaController;
 import controller.ProfessorController;
-import models.Aluno;
 import models.Curso;
 import models.Disciplina;
+import models.Matricula;
 import models.Professor;
 import utils.Utils;
 
@@ -203,23 +203,20 @@ public class GerenciarDisciplinasView {
         System.out.println("Código: " + disciplinaSelecionada.getCodigo());
         System.out.println("Nome: " + disciplinaSelecionada.getNome());
         System.out.println("Carga Horária: " + disciplinaSelecionada.getCargaHoraria());
-        System.out.println("Professor: " + disciplinaSelecionada.getProfessor().getNome());
+        System.out.println("Professor: "
+                + (disciplinaSelecionada.getProfessor() != null ? disciplinaSelecionada.getProfessor().getNome()
+                        : "N/A"));
         System.out.println("Valor: " + disciplinaSelecionada.getValor());
         System.out.println("Status: " + disciplinaSelecionada.getStatus());
 
-        if (disciplinaSelecionada.getProfessor() != null) {
-            System.out.println("Professor: " + disciplinaSelecionada.getProfessor().getNome());
-        } else {
-            System.out.println("Professor: ❌ Nenhum professor atribuído.");
-        }
-
-        if (!disciplinaSelecionada.getAlunosMatriculados().isEmpty()) {
-            System.out.println("\n📌 Alunos Matriculados:");
-            for (Aluno aluno : disciplinaSelecionada.getAlunosMatriculados()) {
-                System.out.println("- " + aluno.getNome());
-            }
-        } else {
+        List<Matricula> matriculas = disciplinaSelecionada.getMatriculas();
+        if (matriculas == null || matriculas.isEmpty()) {
             System.out.println("📌 Nenhum aluno matriculado.");
+        } else {
+            System.out.println("📌 Alunos matriculados:");
+            for (Matricula m : matriculas) {
+                System.out.println("- " + m.getAluno().getNome());
+            }
         }
 
         if (disciplinaSelecionada.getCursos() == null || disciplinaSelecionada.getCursos().isEmpty()) {
@@ -233,5 +230,4 @@ public class GerenciarDisciplinasView {
 
         Utils.pausarTela();
     }
-
 }
