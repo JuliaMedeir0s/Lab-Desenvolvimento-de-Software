@@ -2,6 +2,7 @@ package views;
 
 import java.util.Scanner;
 import controller.SecretariaController;
+import utils.Utils;
 
 public class GerenciarUsuariosView {
     private static final SecretariaController secretariaController = new SecretariaController();
@@ -10,7 +11,7 @@ public class GerenciarUsuariosView {
     public static void mostrarMenu() {
         int opcao;
         do {
-            limparConsole();
+            Utils.limparTela();
             System.out.println("\n===== GERENCIAR USUÁRIOS DA SECRETARIA =====");
             System.out.println("1. Adicionar Usuário");
             System.out.println("2. Editar Usuário");
@@ -38,7 +39,7 @@ public class GerenciarUsuariosView {
                     return;
                 default:
                     System.out.println("❌ Opção inválida! Tente novamente.");
-                    pausarTela();
+                    Utils.pausarTela();
             }
         } while (opcao != 0);
     }
@@ -52,39 +53,47 @@ public class GerenciarUsuariosView {
         String senha = sc.nextLine();
         secretariaController.adicionarUsuario(nome, email, senha);
         System.out.println("✅ Usuário adicionado com sucesso!");
-        pausarTela();
+        Utils.pausarTela();
     }
 
     private static void editarUsuario() {
         System.out.print("ID do Usuário: ");
         String id = sc.nextLine();
-        System.out.print("Novo Nome: ");
+    
+        System.out.print("Novo Nome (ENTER para manter): ");
         String novoNome = sc.nextLine();
-        secretariaController.editarUsuario(id, novoNome);
-        System.out.println("✅ Usuário editado com sucesso!");
-        pausarTela();
+    
+        System.out.print("Novo E-mail (ENTER para manter): ");
+        String novoEmail = sc.nextLine();
+    
+        System.out.print("Nova Senha (ENTER para manter): ");
+        String novaSenha = sc.nextLine();
+    
+        boolean sucesso = secretariaController.editarUsuario(id, novoNome, novoEmail, novaSenha);
+        System.out.println(sucesso ? "✅ Usuário editado com sucesso!" : "❌ Erro ao editar usuário.");
+        Utils.pausarTela();
     }
+    
 
     private static void alterarStatusUsuario() {
         System.out.print("ID do Usuário: ");
         String id = sc.nextLine();
-        secretariaController.alterarStatusUsuario(id);
-        System.out.println("✅ Status do usuário alterado com sucesso!");
-        pausarTela();
+    
+        System.out.print("Tem certeza que deseja alterar o status deste usuário? (S/N): ");
+        String confirmacao = sc.nextLine().trim().toUpperCase();
+        if (!confirmacao.equals("S")) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        boolean sucesso = secretariaController.alterarStatusUsuario(id);
+        System.out.println(sucesso ? "✅ Status do usuário alterado com sucesso!" : "❌ Erro ao alterar status.");
+        Utils.pausarTela();
     }
 
     private static void listarUsuarios() {
         secretariaController.listarUsuarios();
-        pausarTela();
-    }
-
-    private static void limparConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    private static void pausarTela() {
-        System.out.println("\nPressione ENTER para continuar...");
-        sc.nextLine();
+        Utils.pausarTela();
     }
 }
