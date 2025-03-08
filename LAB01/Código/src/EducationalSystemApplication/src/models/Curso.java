@@ -12,6 +12,7 @@ public class Curso implements Serializable {
     private String nome;
     private int creditos;
     private List<Disciplina> disciplinas;
+    private List<Disciplina> disciplinasOptativas;
     private List<Aluno> alunosMatriculados;
     private Status status;
 
@@ -20,6 +21,7 @@ public class Curso implements Serializable {
         this.nome = nome;
         this.creditos = creditos;
         this.disciplinas = new ArrayList<>();
+        this.disciplinasOptativas = new ArrayList<>();
         this.alunosMatriculados = new ArrayList<>();
         this.status = Status.ATIVO;
     }
@@ -48,6 +50,10 @@ public class Curso implements Serializable {
         return this.disciplinas;
     }
 
+    public List<Disciplina> getDisciplinasOptativas() {
+        return this.disciplinasOptativas;
+    }
+
     public List<Aluno> getAlunosMatriculados() {
         return this.alunosMatriculados;
     }
@@ -62,6 +68,10 @@ public class Curso implements Serializable {
 
     public void setDisciplinas(List<Disciplina> disciplinas) {
         this.disciplinas = disciplinas;
+    }
+
+    public void setDisciplinasOptativas(List<Disciplina> disciplinasOptativas) {
+        this.disciplinasOptativas = disciplinasOptativas;
     }
 
     public void setAlunosMatriculados(List<Aluno> alunosMatriculados) {
