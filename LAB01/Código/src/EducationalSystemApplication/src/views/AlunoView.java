@@ -6,6 +6,7 @@ import utils.Utils;
 import models.Aluno;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import controller.AlunoController;
@@ -144,9 +145,9 @@ public class AlunoView {
         if (codigo.equals("0")) {
             mostrarMenu();
         } else {
-            Disciplina disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
-            if (disciplina != null) {
-                realizarMatricula(disciplina);
+            Optional<Disciplina> disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
+            if (disciplina.isPresent()) {
+                realizarMatricula(disciplina.get());
             } else {
                 System.out.println("Disciplina não encontrada.");
                 Utils.limparTela();
@@ -154,4 +155,6 @@ public class AlunoView {
             }
         }
     }
+
+    
 }

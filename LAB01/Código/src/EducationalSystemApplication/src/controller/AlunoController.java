@@ -1,15 +1,20 @@
 package controller;
 
 import DAO.AlunoDAO;
+import DAO.DisciplinaDAO;
 import models.Aluno;
 import models.Curso;
+import models.Disciplina;
 import models.enums.Status;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 public class AlunoController {
+
     private final AlunoDAO alunoDAO = AlunoDAO.getInstance();
+    private final DisciplinaDAO disciplinaDAO = DisciplinaDAO.getInstance();
     private final CursoController cursoController = new CursoController();
     private static final AtomicInteger contadorAluno = new AtomicInteger(1);
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
@@ -107,4 +112,48 @@ public class AlunoController {
         }
         return alunos.get(index - 1);
     }
+    
+    public Optional<Disciplina> buscarDisciplinaPorCodigo(String codigo) {
+        return disciplinaDAO.buscarPorCodigo(codigo);
+    }
+
+    public boolean inscreverEmDisciplina(Aluno aluno, Disciplina disciplina) {
+        if (aluno.getMatriculas().size() >= Disciplina.getMatriculaMaxima()) {
+            System.out.println("❌ Erro: Limite de matrículas atingido.");
+            return false;
+        }
+
+        if (disciplina.getStatus() == Status.INATIVO) {
+            System.out.println("❌ Erro: Disciplina inativa.");
+            return false;
+        }
+
+        if (aluno.getMatriculas().stream().anyMatch(m -> m.getDisciplina().equals(disciplina))) {
+            System.out.println("❌ Erro: Aluno já matriculado nessa disciplina.");
+            return false;
+        }
+
+        aluno.getMatriculas().add(disciplina);
+        alunoDAO.atualizarAluno(aluno);
+        return true;
+    }
+
+    public boolean desinscreverDeDisciplina(Aluno aluno, Disciplina disciplina) {
+        if (aluno.getMatriculas().isEmpty()) {
+            System.out.println("❌ Erro: Aluno não está matriculado em nenhuma disciplina.");
+            return false;
+        }
+
+        if (!aluno.getMatriculas().removeIf(m -> m.getDisciplina().equals(disciplina))) {
+            System.out.println("❌ Erro: Aluno não está matriculado nessa disciplina.");
+            return false;
+        }
+
+        alunoDAO.atualizarAluno(aluno);
+        return true;
+    }
+
+    
+
+
 }
