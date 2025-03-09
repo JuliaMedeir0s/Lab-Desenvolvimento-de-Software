@@ -5,13 +5,14 @@ import models.SistemaCobranca;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SistemaCobrancaDAO {
+public class SistemaCobrancaDAO extends AbstractDao<SistemaCobranca> {
 
     private static final String FILE_NAME = "sistemaCobranca.dat";
     private static SistemaCobrancaDAO instance = new SistemaCobrancaDAO();
     private Map<Integer, SistemaCobranca> sistemaCobrancas;
 
     private SistemaCobrancaDAO() {
+        super(FILE_NAME);
         sistemaCobrancas = new HashMap<>();
     }
 
@@ -34,7 +35,7 @@ public class SistemaCobrancaDAO {
     public void excluirSistemaCobranca(int idAluno) {
         sistemaCobrancas.remove(idAluno);
     }
-    
+
 
     // private Map<Integer, SistemaCobranca> SistemaCobrancas = new HashMap<>();
 
