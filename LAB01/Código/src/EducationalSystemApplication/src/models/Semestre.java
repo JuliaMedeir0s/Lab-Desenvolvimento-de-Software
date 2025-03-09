@@ -10,6 +10,7 @@ public class Semestre implements Serializable {
 
     private int ano;
     private int periodo;
+    private boolean fechado;
     private LocalDate inicioInscricoes;
     private LocalDate fimInscricoes;
     private List<Disciplina> disciplinasOfertadas;
@@ -19,6 +20,7 @@ public class Semestre implements Serializable {
         this.periodo = periodo;
         this.inicioInscricoes = inicio;
         this.fimInscricoes = fim;
+        this.fechado = false;
         this.disciplinasOfertadas = new ArrayList<>();
     }
 
@@ -64,6 +66,18 @@ public class Semestre implements Serializable {
 
     public void setDataFimInscricoes(LocalDate fim) {
         this.fimInscricoes = fim;
+    }
+
+    public void setFechado() {
+        this.fechado = true;
+    }
+
+    public boolean isFechado() {
+        return fechado;
+    }
+
+    public void abrirInscricoes() {
+        this.fechado = false;
     }
 
     @Override
