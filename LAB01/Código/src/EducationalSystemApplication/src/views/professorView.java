@@ -11,8 +11,11 @@ import utils.Utils;
 import java.util.List;
 import java.util.Scanner;
 
+import DAO.ProfessorDAO;
+
 public class ProfessorView {
     private static final ProfessorController professorController = new ProfessorController();
+    
     private static final Scanner sc = new Scanner(System.in);
 
     public static void mostrarMenu() {
@@ -21,13 +24,15 @@ public class ProfessorView {
             System.out.println("===== MENU PROFESSOR =====");
             System.out.println("1. Listar Disciplinas");
             System.out.println("2. Listar Alunos de uma Disciplina");
-            System.out.println("0. Sair");
+            System.out.println("3. Logout");
+            System.out.println("0. Encerrar sistema");
             System.out.print("Escolha uma opção: ");
 
             int opcao = Utils.lerInteiro();
             switch (opcao) {
                 case 1 -> listarDisciplinas();
                 case 2 -> listarAlunos();
+                case 3 -> deslogar();
                 case 0 -> {
                     return;
                 }
@@ -36,10 +41,18 @@ public class ProfessorView {
         }
     }
 
+    private static void deslogar() {
+        Utils.limparTela();
+        System.out.println("✅ Você foi deslogado.");
+        SessaoController.encerrarSessao();
+        LoginView.mostrarLogin(); 
+    }
+
     private static void listarDisciplinas() {
         Utils.limparTela();
         List<Disciplina> disciplinas = professorController.listarDisciplinasLecionadas((Professor) SessaoController.getUsuarioLogado());
         if (disciplinas.isEmpty()) {
+            System.out.println((Professor) SessaoController.getUsuarioLogado());
             System.out.println("❌ Você não está lecionando nenhuma disciplina.");
         } else {
             System.out.println("\n=== Disciplinas Lecionadas ===");

@@ -7,6 +7,7 @@ import models.abstracts.Usuario;
 import models.enums.TipoUsuario;
 
 public class Professor extends Usuario {
+    
     private List<Disciplina> disciplinasLecionadas;
 
     public Professor(String id, String nome, String email, String senha) {

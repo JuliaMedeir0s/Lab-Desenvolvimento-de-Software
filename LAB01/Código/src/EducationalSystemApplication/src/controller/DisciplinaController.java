@@ -36,6 +36,9 @@ public class DisciplinaController {
 
         Disciplina novaDisciplina = new Disciplina(codigo, nome, cargaHoraria, professor, valor);
         disciplinaDAO.adicionarDisciplina(novaDisciplina);
+        professor.adicionarDisciplina(novaDisciplina);
+        professorDAO.atualizarProfessor(professor);
+
         return true;
     }
 
@@ -55,6 +58,7 @@ public class DisciplinaController {
             List<Professor> professores = listarProfessoresAtivos();
             if (professorIndex >= 1 && professorIndex <= professores.size()) {
                 disciplina.setProfessor(professores.get(professorIndex - 1));
+                professorDAO.atualizarProfessor(disciplina.getProfessor());
             } else {
                 System.out.println("❌ Erro: Número de professor inválido.");
                 return false;
@@ -64,6 +68,7 @@ public class DisciplinaController {
             disciplina.setValor(novoValor);
 
         disciplinaDAO.atualizarDisciplina(disciplina);
+
         return true;
     }
 
