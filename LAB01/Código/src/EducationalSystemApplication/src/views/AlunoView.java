@@ -91,25 +91,44 @@ public class AlunoView {
     }
 
     public static void verificarCobranca() {
-        double valorTotal = 0;
-
-        for (Matricula matricula : aluno.getMatriculas()) {
-            valorTotal += matricula.getDisciplina().getValor();
+        if (aluno == null) {
+            System.out.println("Erro: Nenhum aluno definido.");
+            return;
         }
+
+        double valorTotal = SistemaCobrancaController.calcularValorTotal(aluno.getMatriculas());
 
         System.out.println("Valor total a ser pago: R$ " + String.format("%.2f", valorTotal));
         System.out.println("Deseja realizar o pagamento? (1 - Sim, 0 - Voltar)");
-        int escolha = sc.nextInt();
-        sc.nextLine();
 
+        int escolha = -1;
+        boolean entradaValida = false;
+
+        while (!entradaValida) {
+            try {
+                escolha = sc.nextInt();
+                sc.nextLine(); 
+
+                if (escolha == 1 || escolha == 0) {
+                    entradaValida = true;
+                } else {
+                    System.out.println("Entrada inválida. Digite 1 para pagar ou 0 para voltar.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Digite um número (1 para pagar ou 0 para voltar).");
+                sc.nextLine();
+            }
+        }
+        
         if (escolha == 1) {
-            System.out.println("Pagamento realizado com sucesso!");
             SistemaCobrancaController.processarPagamento(aluno);
+            System.out.println("Pagamento realizado com sucesso!");
         } else {
+            System.out.println("Voltando ao menu principal...");
             mostrarMenu();
- 
         }
     }
+    
     public static void realizarMatricula(Disciplina disciplina) {
         if (alunoController.inscreverEmDisciplina(aluno, disciplina)) {
             System.out.println("Matrícula realizada com sucesso!");

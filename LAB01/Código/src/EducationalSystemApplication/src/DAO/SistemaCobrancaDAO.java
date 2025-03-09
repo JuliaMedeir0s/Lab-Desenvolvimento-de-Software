@@ -36,18 +36,4 @@ public class SistemaCobrancaDAO extends AbstractDao<SistemaCobranca> {
         sistemaCobrancas.remove(idAluno);
     }
 
-
-    // private Map<Integer, SistemaCobranca> SistemaCobrancas = new HashMap<>();
-
-    // public void salvarSistemaCobranca(int idAluno, SistemaCobranca SistemaCobranca) {
-    //     SistemaCobrancas.put(idAluno, SistemaCobranca);
-    // }
-
-    // public SistemaCobranca buscarSistemaCobranca(int idAluno) {
-    //     return SistemaCobrancas.get(idAluno);
-    // }
-
-    // public void atualizarSistemaCobranca(int idAluno, SistemaCobranca SistemaCobranca) {
-    //     SistemaCobrancas.put(idAluno, SistemaCobranca);
-    // }
 }

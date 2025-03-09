@@ -25,8 +25,16 @@ public class SistemaCobranca {
         return valorTotal;
     }
 
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
     public boolean isPaga() {
         return paga;
+    }
+
+    public void setPaga(boolean paga) {
+        this.paga = paga;
     }
 
     public void pagar() {
