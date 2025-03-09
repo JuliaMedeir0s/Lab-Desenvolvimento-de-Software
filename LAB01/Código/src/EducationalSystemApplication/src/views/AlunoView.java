@@ -5,6 +5,7 @@ import models.Matricula;
 import utils.Utils;
 import models.Aluno;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -79,9 +80,9 @@ public class AlunoView {
         if (codigo.equals("0")) {
             mostrarMenu();
         } else {
-            Disciplina disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
-            if (disciplina != null) {
-                cancelarMatricula(disciplina);
+            Optional<Disciplina> disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
+            if (disciplina.isPresent()) {
+                cancelarMatricula(disciplina.get());
             } else {
                 System.out.println("Disciplina não encontrada.");
                 Utils.limparTela();
