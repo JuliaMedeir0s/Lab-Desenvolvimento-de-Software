@@ -122,18 +122,18 @@ public class AlunoController {
             System.out.println("❌ Erro: Limite de matrículas atingido.");
             return false;
         }
-
+    
         if (disciplina.getStatus() == Status.INATIVO) {
             System.out.println("❌ Erro: Disciplina inativa.");
             return false;
         }
-
+    
         if (aluno.getMatriculas().stream().anyMatch(m -> m.getDisciplina().equals(disciplina))) {
             System.out.println("❌ Erro: Aluno já matriculado nessa disciplina.");
             return false;
         }
-
-        aluno.getMatriculas().add(disciplina);
+        
+        aluno.getMatriculas().add(matricula);
         alunoDAO.atualizarAluno(aluno);
         return true;
     }
@@ -152,8 +152,4 @@ public class AlunoController {
         alunoDAO.atualizarAluno(aluno);
         return true;
     }
-
-    
-
-
 }

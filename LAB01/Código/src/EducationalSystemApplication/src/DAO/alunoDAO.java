@@ -20,7 +20,11 @@ public class AlunoDAO extends AbstractDao<Aluno> {
 
     public static AlunoDAO getInstance() {
         if (instancia == null) {
-            instancia = new AlunoDAO();
+            synchronized (AlunoDAO.class) {
+                if (instancia == null) {
+                    instancia = new AlunoDAO();
+                }
+            }
         }
         return instancia;
     }
@@ -71,6 +75,7 @@ public class AlunoDAO extends AbstractDao<Aluno> {
         if (alunoOpt.isPresent()) {
             alunos.remove(alunoOpt.get());
             grava(alunos);
+            UsuarioDAO.getInstance().removerUsuario(alunoOpt.get());
             return true;
         }
         return false;
