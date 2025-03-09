@@ -1,6 +1,7 @@
 package DAO;
 
 import models.Curso;
+import models.Disciplina;
 import models.enums.Status;
 
 import java.util.List;
@@ -82,4 +83,12 @@ public class CursoDAO extends AbstractDao<Curso> {
             CursoController.setContadorCurso(maiorCodigo + 1);
         }
     }
+
+    public void adicionarDisciplinaOptativaAoCurso(Curso curso, Disciplina disciplina) {
+    if (!curso.getDisciplinasOptativas().contains(disciplina)) {
+        curso.getDisciplinasOptativas().add(disciplina);
+        atualizarCurso(curso);
+    }
+}
+
 }

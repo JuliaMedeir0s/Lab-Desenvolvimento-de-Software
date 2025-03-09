@@ -25,7 +25,8 @@ public class GerenciarCursosView {
             System.out.println("3. Ativar/Desativar Curso");
             System.out.println("4. Listar Cursos");
             System.out.println("5. Adicionar Disciplina ao Curso");
-            System.out.println("6. Visualizar Curso e Disciplinas");
+            System.out.println("6. Adicionar Disciplina optativas ao Curso");
+            System.out.println("7. Visualizar Curso e Disciplinas");
             System.out.println("0. Voltar");
             System.out.print("Escolha uma opção: ");
 
@@ -36,7 +37,8 @@ public class GerenciarCursosView {
                 case 3 -> alterarStatusCurso();
                 case 4 -> listarCursos();
                 case 5 -> adicionarDisciplinaAoCurso();
-                case 6 -> visualizarCurso();
+                case 6 -> adicionarDisciplinaOptativaAoCurso();
+                case 7 -> visualizarCurso();
                 case 0 -> {
                     return;
                 }
@@ -131,33 +133,36 @@ public class GerenciarCursosView {
 
     private static void adicionarDisciplinaAoCurso() {
         listarCursos();
-        System.out.print("\nDigite o código do curso ao qual deseja adicionar uma disciplina (0 para cancelar): ");
-        String cursoCodigo = sc.nextLine().trim();
-        if (cursoCodigo.equals("0")) {
+    
+        //seleciona o curso pelo índice
+        System.out.print("\nDigite o número do curso ao qual deseja adicionar uma disciplina (0 para cancelar): ");
+        int cursoIndex = Utils.lerInteiro();
+        if (cursoIndex == 0) {
             System.out.println("❌ Operação cancelada.");
             Utils.pausarTela();
             return;
         }
     
-        Curso cursoSelecionado = cursoController.buscarCursoPorCodigo(cursoCodigo);
+        Curso cursoSelecionado = cursoController.selecionarCurso(cursoIndex);
         if (cursoSelecionado == null) {
             System.out.println("❌ Erro: Curso não encontrado.");
             Utils.pausarTela();
             return;
         }
     
-        List<Disciplina> disciplinasDisponiveis = disciplinaController.listarDisciplinasNaoAssociadas(cursoSelecionado);
-    
+        //faz a lista com as disciplinas disponíveis
+        List<Disciplina> disciplinasDisponiveis = cursoController.listarDisciplinasDisponiveisParaCurso(cursoSelecionado);
         if (disciplinasDisponiveis.isEmpty()) {
-            System.out.println("📌 Todas as disciplinas já estão associadas a este curso.");
+            System.out.println("📌 Nenhuma disciplina disponível para adicionar.");
             Utils.pausarTela();
             return;
         }
     
-        // 🔥 Exibe apenas disciplinas disponíveis
+        //mostra as disciplinas disponíveis com numeração
         System.out.println("\n=== Disciplinas Disponíveis ===");
         System.out.println(" Nº | Código   | Nome               | Carga Horária | Professor         | Valor   | Status ");
         System.out.println("--------------------------------------------------------------------------------------------");
+    
         int i = 1;
         for (Disciplina disciplina : disciplinasDisponiveis) {
             String professorNome = disciplina.getProfessor() != null ? disciplina.getProfessor().getNome() : "N/A";
@@ -167,18 +172,88 @@ public class GerenciarCursosView {
             i++;
         }
     
-        System.out.print("\nDigite o código da disciplina que deseja adicionar ao curso (0 para cancelar): ");
-        String disciplinaCodigo = sc.nextLine().trim();
-        if (disciplinaCodigo.equals("0")) {
+        //seleciona a disciplina pelo índice
+        System.out.print("\nDigite o número da disciplina que deseja adicionar ao curso (0 para cancelar): ");
+        int disciplinaIndex = Utils.lerInteiro();
+        if (disciplinaIndex == 0) {
             System.out.println("❌ Operação cancelada.");
             Utils.pausarTela();
             return;
         }
     
-        boolean sucesso = cursoController.adicionarDisciplinaAoCurso(cursoCodigo, disciplinaCodigo);
+        Disciplina disciplinaSelecionada = disciplinaController.selecionarDisciplina(disciplinaIndex);
+        if (disciplinaSelecionada == null) {
+            System.out.println("❌ Erro: Disciplina não encontrada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        //adiciona a disciplina ao curso
+        boolean sucesso = cursoController.adicionarDisciplinaAoCurso(cursoSelecionado.getCodigo(), disciplinaSelecionada.getCodigo());
         System.out.println(sucesso ? "✅ Disciplina adicionada ao curso!" : "❌ Erro ao adicionar disciplina.");
         Utils.pausarTela();
-    }       
+    }    
+
+    private static void adicionarDisciplinaOptativaAoCurso() {
+        listarCursos();
+    
+        System.out.print("\nDigite o número do curso ao qual deseja adicionar uma disciplina optativa (0 para cancelar): ");
+        int cursoIndex = Utils.lerInteiro();
+        if (cursoIndex == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        Curso cursoSelecionado = cursoController.selecionarCurso(cursoIndex);
+        if (cursoSelecionado == null) {
+            System.out.println("❌ Erro: Curso não encontrado.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        List<Disciplina> disciplinasDisponiveis = cursoController.listarDisciplinasDisponiveisParaCurso(cursoSelecionado);
+    
+        if (disciplinasDisponiveis.isEmpty()) {
+            System.out.println("📌 Nenhuma disciplina disponível para adicionar.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        //mostra as disciplinas disponíveis com numeração
+        System.out.println("\n=== Disciplinas Disponíveis ===");
+        System.out.println(" Nº | Código   | Nome               | Carga Horária | Status ");
+        System.out.println("--------------------------------------------------------------");
+    
+        int i = 1;
+        for (Disciplina disciplina : disciplinasDisponiveis) {
+            System.out.printf(" %2d | %-8s | %-20s | %-13d | %s\n",
+                    i, disciplina.getCodigo(), disciplina.getNome(), disciplina.getCargaHoraria(),
+                    disciplina.getStatus());
+            i++;
+        }
+    
+        //seleciona a disciplina pelo índice
+        System.out.print("\nDigite o número da disciplina que deseja adicionar como optativa (0 para cancelar): ");
+        int disciplinaIndex = Utils.lerInteiro();
+        if (disciplinaIndex == 0) {
+            System.out.println("❌ Operação cancelada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        Disciplina disciplinaSelecionada = disciplinaController.selecionarDisciplina(disciplinaIndex);
+        if (disciplinaSelecionada == null) {
+            System.out.println("❌ Erro: Disciplina não encontrada.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        //adiciona a disciplina optativa ao curso
+        boolean sucesso = cursoController.adicionarDisciplinaOptativaAoCurso(cursoSelecionado.getCodigo(), disciplinaSelecionada.getCodigo());
+        System.out.println(sucesso ? "✅ Disciplina optativa adicionada ao curso!" : "❌ Erro ao adicionar disciplina.");
+        Utils.pausarTela();
+    }    
 
     private static void visualizarCurso() {
         listarCursos();
@@ -206,6 +281,15 @@ public class GerenciarCursosView {
         if (cursoSelecionado.getDisciplinas() != null && !cursoSelecionado.getDisciplinas().isEmpty()) {
             System.out.println("\n📌 Disciplinas Associadas:");
             for (Disciplina disciplina : cursoSelecionado.getDisciplinas()) {
+                System.out.printf("- %s (%s)\n", disciplina.getNome(), disciplina.getCodigo());
+            }
+        } else {
+            System.out.println("📌 Nenhuma disciplina associada.");
+        }
+
+        if (cursoSelecionado.getDisciplinasOptativas() != null && !cursoSelecionado.getDisciplinasOptativas().isEmpty()) {
+            System.out.println("\n📌 Disciplinas Optativas:");
+            for (Disciplina disciplina : cursoSelecionado.getDisciplinasOptativas()) {
                 System.out.printf("- %s (%s)\n", disciplina.getNome(), disciplina.getCodigo());
             }
         } else {

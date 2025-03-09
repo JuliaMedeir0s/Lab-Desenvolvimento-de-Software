@@ -47,12 +47,18 @@ public class Curso implements Serializable {
     }
 
     public List<Disciplina> getDisciplinas() {
-        return this.disciplinas;
+        if (disciplinas == null) {
+            disciplinas = new ArrayList<>();
+        }
+        return disciplinas;
     }
 
     public List<Disciplina> getDisciplinasOptativas() {
-        return this.disciplinasOptativas;
-    }
+        if (disciplinasOptativas == null) {
+            disciplinasOptativas = new ArrayList<>();
+        }
+        return disciplinasOptativas;
+    }    
 
     public List<Aluno> getAlunosMatriculados() {
         return this.alunosMatriculados;
