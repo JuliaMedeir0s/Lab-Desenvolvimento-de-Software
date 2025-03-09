@@ -4,6 +4,7 @@ import java.util.List;
 import models.Semestre;
 
 public class SemestreDAO extends AbstractDao<Semestre> {
+    
     private static final String FILE_NAME = "semestres.dat";
     private static SemestreDAO instancia = new SemestreDAO();
     private List<Semestre> semestres;
