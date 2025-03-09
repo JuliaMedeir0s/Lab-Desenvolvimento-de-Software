@@ -26,6 +26,7 @@ public class AlunoView {
             System.out.println("\n===== MENU ALUNO =====");
             System.out.println("1 - Visualizar minhas Disciplinas");
             System.out.println("2 - Realizar Matrícula");
+            System.out.println("3 - Ver Fatura");
             System.out.println("0 - Logout");
             System.out.print("Escolha uma opção: ");
             opcao = sc.nextInt();
@@ -38,11 +39,15 @@ public class AlunoView {
                     break;
                 case 2:
                     Utils.limparTela();
-                    System.out.println("Disciplinas Disponiveis");
+                    System.out.println("Disciplinas Disponíveis");
                     listarDisciplinas(aluno.getCurso().getDisciplinas()); 
                     break;
+                case 3:
+                    Utils.limparTela();
+                    verificarCobranca();
+                    break;
                 case 0:
-                SessaoController.encerrarSessao();
+                    SessaoController.encerrarSessao();
                     System.out.println("Sessão encerrada.");
                     return;
                 default:
@@ -57,6 +62,7 @@ public class AlunoView {
             System.out.println("Você não está matriculado em nenhuma disciplina.");
             return;
         }
+
 
         for (Matricula matricula : matriculas) {
             System.out.println("- Código: " + matricula.getDisciplina().getCodigo());
@@ -84,6 +90,26 @@ public class AlunoView {
 
     }
 
+    public static void verificarCobranca() {
+        double valorTotal = 0;
+
+        for (Matricula matricula : aluno.getMatriculas()) {
+            valorTotal += matricula.getDisciplina().getValor();
+        }
+
+        System.out.println("Valor total a ser pago: R$ " + String.format("%.2f", valorTotal));
+        System.out.println("Deseja realizar o pagamento? (1 - Sim, 0 - Voltar)");
+        int escolha = sc.nextInt();
+        sc.nextLine();
+
+        if (escolha == 1) {
+            System.out.println("Pagamento realizado com sucesso!");
+            SistemaCobrancaController.processarPagamento(aluno);
+        } else {
+            mostrarMenu();
+ 
+        }
+    }
     public static void realizarMatricula(Disciplina disciplina) {
         if (alunoController.inscreverEmDisciplina(aluno, disciplina)) {
             System.out.println("Matrícula realizada com sucesso!");

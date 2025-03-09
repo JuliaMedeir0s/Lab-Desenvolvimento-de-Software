@@ -1,14 +1,35 @@
 package models;
 
-import data.ArquivoCobranca;
+import java.util.List;
 
 public class SistemaCobranca {
-    public void gerarCobranca(Aluno aluno, double valorTotal) {
-        if (valorTotal > 0) {
-            System.out.println("Gerando cobrança para " + aluno.getNome() + ": R$" + valorTotal);
-            ArquivoCobranca.salvarCobranca(aluno, valorTotal);
-        } else {
-            System.out.println("Nenhuma cobrança necessária para " + aluno.getNome());
-        }
+    private Aluno aluno;
+    private double valorTotal;
+    private boolean paga;
+
+    public SistemaCobranca(Aluno aluno, List<Matricula> matriculas) {
+        this.aluno = aluno;
+        this.valorTotal = calcularValorTotal(matriculas);
+        this.paga = false;
+    }
+
+    private double calcularValorTotal(List<Matricula> matriculas) {
+        return matriculas.stream().mapToDouble(m -> m.getDisciplina().getValor()).sum();
+    }
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public boolean isPaga() {
+        return paga;
+    }
+
+    public void pagar() {
+        this.paga = true;
     }
 }
