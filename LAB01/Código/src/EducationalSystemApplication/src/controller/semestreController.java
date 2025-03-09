@@ -58,4 +58,10 @@ public class SemestreController {
     public List<Semestre> listarSemestres() {
         return semestreDAO.listarSemestres();
     }
+
+    public void fecharSemestre(Semestre semestre) {
+        semestre.setFechado();
+        semestreDAO.atualizarSemestre(semestre);
+        System.out.println("✅ Semestre " + semestre.getAno() + "." + semestre.getPeriodo() + " fechado com sucesso.");
+    }
 }
