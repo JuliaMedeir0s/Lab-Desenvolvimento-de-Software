@@ -1,12 +1,17 @@
 package views;
 
 import java.util.Scanner;
+
+import DAO.SemestreDAO;
+
 import java.time.LocalDate;
 import controller.SemestreController;
 import models.Semestre;
 import utils.Utils;
 
 public class GerenciarSemestreView {
+
+    private static final SemestreDAO semestreDAO = SemestreDAO.getInstance();
     private static final SemestreController semestreController = new SemestreController();
     private static final Scanner sc = new Scanner(System.in);
 
@@ -67,12 +72,28 @@ public class GerenciarSemestreView {
         int periodo = sc.nextInt();
         Semestre semestre = semestreController.buscarSemestre(ano, periodo);
         if (semestre != null) {
-            System.out.print("Nova data de início (YYYY-MM-DD): ");
-            LocalDate novoInicio = LocalDate.parse(sc.next());
-            System.out.print("Nova data de fim (YYYY-MM-DD): ");
-            LocalDate novoFim = LocalDate.parse(sc.next());
-            semestre.setDataInicioInscricoes(novoInicio);
-            semestre.setDataFimInscricoes(novoFim);
+            System.out.println("Deseja alterar a data de início do semestr (S/N)?");
+            String resposta = sc.next();
+            if (resposta.equalsIgnoreCase("S")) {
+                System.out.print("Nova data de início (YYYY-MM-DD): ");
+                LocalDate novoInicio = LocalDate.parse(sc.next());
+                semestre.setDataInicioInscricoes(novoInicio);
+            }
+            System.out.println("Deseja alterar a data de fim do semestr (S/N)?");
+            resposta = sc.next();
+            if (resposta.equalsIgnoreCase("S")) {
+                System.out.print("Nova data de fim (YYYY-MM-DD): ");
+                LocalDate novoFim = LocalDate.parse(sc.next());
+                semestre.setDataFimInscricoes(novoFim);
+            }
+            System.out.println("Deseja atualizar a situacao do semestre (S/N)?");
+            System.out.println("O semestre está " + semestre.getStatus());
+            resposta = sc.next();
+            if (resposta.equalsIgnoreCase("S")) {
+                semestre.abrirInscricoes();
+                System.out.println("O semestre está " + semestre.getStatus());
+            }
+            semestreDAO.atualizarSemestre(semestre);
             System.out.println("✅ Semestre atualizado com sucesso!");
         } else {
             System.out.println("❌ Semestre não encontrado!");
@@ -96,7 +117,11 @@ public class GerenciarSemestreView {
     }
 
     private static void listarSemestres() {
-        semestreController.listarSemestres();
+        System.out.println("\n===== SEMESTRES CADASTRADOS =====");
+        semestreController.listarSemestres().forEach(semestre -> {
+            System.out.println("- " + semestre.getAno() + "." + semestre.getPeriodo() + " - " + semestre.getStatus());
+        });
         Utils.pausarTela();
     }
+
 }

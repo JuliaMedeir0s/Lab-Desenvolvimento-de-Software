@@ -7,6 +7,7 @@ import models.Disciplina;
 import models.Semestre;
 
 public class SemestreController {
+
     private final SemestreDAO semestreDAO = SemestreDAO.getInstance();
 
     public void listarDisciplinas(Semestre semestre) {
@@ -64,4 +65,6 @@ public class SemestreController {
         semestreDAO.atualizarSemestre(semestre);
         System.out.println("✅ Semestre " + semestre.getAno() + "." + semestre.getPeriodo() + " fechado com sucesso.");
     }
+
+    
 }

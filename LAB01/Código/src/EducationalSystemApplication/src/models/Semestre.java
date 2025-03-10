@@ -80,6 +80,10 @@ public class Semestre implements Serializable {
         this.fechado = false;
     }
 
+    public String getStatus() {
+        return fechado ? "Fechado" : "Aberto";
+    }
+
     @Override
     public String toString() {
         return "Semestre " + ano + "." + periodo + " | Inscrições: " + inicioInscricoes + " a " + fimInscricoes +
