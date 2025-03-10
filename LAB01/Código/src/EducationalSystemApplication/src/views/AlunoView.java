@@ -1,5 +1,6 @@
 package views;
 
+import models.Curso;
 import models.Disciplina;
 import models.Matricula;
 import utils.Utils;
@@ -58,23 +59,29 @@ public class AlunoView {
         } while (opcao != 0);
     }
 
-    public static void listarDisciplinasMatriculados(List<Matricula> matriculas){
+    public static void listarDisciplinasMatriculados(List<Matricula> matriculas) {
         System.out.println("\nDisciplinas matriculadas:");
         if (matriculas.isEmpty()) {
             System.out.println("Você não está matriculado em nenhuma disciplina.");
             return;
         }
-
+        Set<Disciplina> disciplinasObrigatorias = new HashSet<>(aluno.getCurso().getDisciplinas());
+        Set<Disciplina> disciplinasOptativas = new HashSet<>(aluno.getCurso().getDisciplinasOptativas());
 
         for (Matricula matricula : matriculas) {
-            System.out.println("- Código: " + matricula.getDisciplina().getCodigo());
-            System.out.println("  Nome: " + matricula.getDisciplina().getNome());
-            System.out.println("  Carga Horária: " + matricula.getDisciplina().getCargaHoraria() + " horas");
-            System.out.println("  Professor: " + matricula.getDisciplina().getProfessor().getNome());
-            System.out.println("  Valor: R$ " + String.format("%.2f", matricula.getDisciplina().getValor()));
+            Disciplina disciplina = matricula.getDisciplina();
+            boolean isObrigatoria = disciplinasObrigatorias.contains(disciplina);
+            boolean isOptativa = disciplinasOptativas.contains(disciplina);
+    
+            System.out.println("- Código: " + disciplina.getCodigo());
+            System.out.println("  Nome: " + disciplina.getNome());
+            System.out.println("  Tipo: " + (isObrigatoria ? "Obrigatória" : (isOptativa ? "Optativa" : "Desconhecida")));
+            System.out.println("  Carga Horária: " + disciplina.getCargaHoraria() + " horas");
+            System.out.println("  Professor: " + disciplina.getProfessor().getNome());
+            System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
             System.out.println();
         }
-
+    
         System.out.println("Digite o código da disciplina para cancelar a matrícula ou 0 para voltar: ");
         String codigo = sc.nextLine();
         if (codigo.equals("0")) {
@@ -89,7 +96,6 @@ public class AlunoView {
                 listarDisciplinasMatriculados(matriculas);
             }
         }
-
     }
 
     public static void verificarCobranca() {
@@ -144,13 +150,45 @@ public class AlunoView {
         System.out.println("Matrícula cancelada com sucesso!");
     }
 
-    public static void listarDisciplinas(List<Disciplina> disciplinasDisponiveis) {
+    public static void listarDisciplinas() {
+        List<Disciplina> disciplinasObrigatorias = aluno.getCurso().getDisciplinas();
+        List<Disciplina> disciplinasOptativas = aluno.getCurso().getDisciplinasOptativas();
+    
+        System.out.println("\nEscolha o tipo de disciplina para listar:");
+        System.out.println("1 - Disciplinas Obrigatórias");
+        System.out.println("2 - Disciplinas Optativas");
+        System.out.print("Digite a opção desejada (ou 0 para voltar): ");
+        int opcao = sc.nextInt();
+        sc.nextLine(); 
+    
+        List<Disciplina> disciplinasDisponiveis;
+    
+        switch (opcao) {
+            case 1:
+                disciplinasDisponiveis = disciplinasObrigatorias;
+                System.out.println("\nDisciplinas Obrigatórias Disponíveis:");
+                break;
+            case 2:
+                disciplinasDisponiveis = disciplinasOptativas;
+                System.out.println("\nDisciplinas Optativas Disponíveis:");
+                break;
+            case 0:
+                mostrarMenu();
+                return;
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+                Utils.limparTela();
+                listarDisciplinas();
+                return;
+        }
+  
         if (disciplinasDisponiveis.isEmpty()) {
             System.out.println("Não há disciplinas disponíveis para inscrição.");
+            Utils.limparTela();
+            listarDisciplinas();
             return;
         }
-
-        System.out.println("\nDisciplinas disponíveis para inscrição:");
+    
         for (Disciplina disciplina : disciplinasDisponiveis) {
             System.out.println("- Código: " + disciplina.getCodigo());
             System.out.println("  Nome: " + disciplina.getNome());
@@ -159,7 +197,7 @@ public class AlunoView {
             System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
             System.out.println();
         }
-
+    
         System.out.println("Digite o código da disciplina para se inscrever ou 0 para voltar: ");
         String codigo = sc.nextLine();
         if (codigo.equals("0")) {
@@ -171,7 +209,7 @@ public class AlunoView {
             } else {
                 System.out.println("Disciplina não encontrada.");
                 Utils.limparTela();
-                listarDisciplinas(disciplinasDisponiveis);
+                listarDisciplinas();
             }
         }
     }
