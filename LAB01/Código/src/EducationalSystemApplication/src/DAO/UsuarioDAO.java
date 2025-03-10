@@ -2,6 +2,7 @@ package DAO;
 
 import java.util.List;
 
+import models.Aluno;
 import models.abstracts.Usuario;
 
 public class UsuarioDAO extends AbstractDao<Usuario> {
@@ -35,6 +36,12 @@ public class UsuarioDAO extends AbstractDao<Usuario> {
 
     public List<Usuario> listarUsuarios() {
         return usuarios;
+    }
+
+    public void removerUsuario(Usuario user) {
+        usuarios.remove(user);
+        grava(usuarios);
+        System.out.println("✅ Usuário " + user.getNome() + " removido.");
     }
 
     // public void imprimirUsuarios() {
