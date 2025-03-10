@@ -32,6 +32,15 @@ public class Aluno extends Usuario {
         this.matriculas = matriculas;
     }
 
+    public void adicionarMatricula(Matricula matricula) {
+        this.matriculas.add(matricula);
+    }
+
+    public void removerMatricula(Matricula matricula) {
+        this.matriculas.remove(matricula);
+    }
+
+
     @Override
     public String toString() {
         return super.toString() + ", Curso: " + (curso != null ? curso.getNome() : "Nenhum") + 

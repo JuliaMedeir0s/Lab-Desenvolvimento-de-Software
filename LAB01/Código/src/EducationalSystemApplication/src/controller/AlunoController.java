@@ -136,7 +136,6 @@ public class AlunoController {
         boolean sucesso = matriculaController.matricularAluno(aluno, disciplina);
     
         if (sucesso) {
-            aluno.getMatriculas().add(new Matricula(aluno, disciplina));
             alunoDAO.atualizarAluno(aluno);
             System.out.println("✅ Matrícula realizada com sucesso!");
             return true;

@@ -49,6 +49,14 @@ public class AlunoDAO extends AbstractDao<Aluno> {
         return alunos;
     }
 
+    public Aluno buscarPorNome(String nome) {
+        return alunos.stream().filter(a -> a.getNome().equalsIgnoreCase(nome)).findFirst().orElse(null);
+    }
+
+    public List<Aluno> getAlunos(){
+        return alunos;
+    }
+
     public void atualizarAluno(Aluno alunoAtualizado) {
         for (int i = 0; i < alunos.size(); i++) {
             if (alunos.get(i).getId().equals(alunoAtualizado.getId())) {
