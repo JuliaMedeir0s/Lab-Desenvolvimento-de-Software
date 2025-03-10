@@ -112,6 +112,7 @@ O acesso ao sistema será protegido por login e senha para todos os usuários.
 **Como** Usuário, eu **gostaria** de gerenciar meu login e autenticação, **para acessar** o sistema com segurança.
 
 ## 📊 Diagrama de Casos de Uso
-![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-Casos-de-Uso.png)
+![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-Casos-de-Uso-V2.png)
 ## 📊 Diagrama de Classes
-![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-de-Classes.png)
+[**Ver** **PDF**](./Docs/LAB01-Diagrama-de-Classes.png)
+![Diagrama de Casos de Uso](./Docs/LAB01-Diagrama-de-Classes-V2.png)
