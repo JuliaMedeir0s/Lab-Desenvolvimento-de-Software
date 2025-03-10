@@ -8,9 +8,12 @@ Além disso, o sistema deve controlar a ativação de disciplinas com base no n�
 O acesso ao sistema será protegido por login e senha para todos os usuários.
 
 ## 🚀 Tecnologias Utilizadas
-### Linguagens de Programação
-
-### Frameworks e Bibliotecas
+- Java - Utilizado para desenvolver toda a aplicação
+## 🎯 Arquitetura
+- **MVC (Model-View-Controller)** - Organização do código para separação de responsabilidades:
+  - **Model**: Representa os dados e regras de negócio.
+  - **View**: Interface com o usuário (linha de comando).
+  - **Controller**: Processa entradas e coordena a interação entre Model e View.
 
 ## 📂 Estrutura do Projeto
 
