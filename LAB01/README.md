@@ -14,71 +14,71 @@ O acesso ao sistema será protegido por login e senha para todos os usuários.
 
 ## 📂 Estrutura do Projeto
 
-código
-│
-├── main
-│   ├── java
-│   │   ├── Main.java
-│   │   │    
-│   │   ├── controller
-│   │   │   ├── AlunoController.java  
-│   │   │   ├── CursoController.java 
-│   │   │   ├── DisciplinaController.java  
-│   │   │   ├── MatriculaController.java 
-│   │   │   ├── ProfessorController.java  
-│   │   │   ├── SecretariaController.java  
-│   │   │   ├── SecretariaDisciplinaController.java 
-│   │   │   ├── SemestreController.java
-│   │   │   ├── SessaoController.java
-│   │   │   ├── SistemaCobrancaController.java
-│   │   │   └── UsuarioController.java
-│   │   │
-│   │   ├── DAO
-│   │   │   ├── AbstractDAO.java  
-│   │   │   ├── AlunoDAO.java  
-│   │   │   ├── CusroDAO.java  
-│   │   │   ├── DisciplinaDAO.java 
-│   │   │   ├── MatriculaDAO.java  
-│   │   │   ├── ProfessorDAO.java  
-│   │   │   ├── SecretariaDAO.java  
-│   │   │   ├── SemestreDAO.java  
-│   │   │   └── USuarioDAO.java
-│   │   │
-│   │   ├── data
-│   │   │
-│   │   ├── models
-│   │   │   ├── abstract
-│   │   │   │   └── User.java  
-│   │   │   │
-│   │   │   ├── enums.java
-│   │   │   │   ├── Status.java
-│   │   │   │   ├── StatusMaricula.java
-│   │   │   │   └── TipoUsuario.java
-│   │   │   │
-│   │   │   ├── Aluno.java  
-│   │   │   ├── Cusro.java  
-│   │   │   ├── Disciplina.java 
-│   │   │   ├── Matricula.java  
-│   │   │   ├── Professor.java  
-│   │   │   ├── Secretaria.java  
-│   │   │   ├── Semestre.java  
-│   │   │   └── SistemaCobranca.java
-│   │   │
-│   │   ├── utils
-│   │   │   └── utils.java  
-│   │   │
-│   │   └── views
-│   │   │   ├── AlunoView.java  
-│   │   │   ├── GerenciarAlunosView.java  
-│   │   │   ├── GerenciarCursosView.java  
-│   │   │   ├── GerenciarDisciplinasView.java 
-│   │   │   ├── GerenciarProfessoresView.java  
-│   │   │   ├── GerenciarSemestreView.java  
-│   │   │   ├── GerenciarUsuarioView.java  
-│   │   │   ├── LoginView.java
-│   │   │   ├── ProfessorViewupdat.java  
-│   │   │   └── SecretaruaView.java
-
+# Estrutura do Projeto: Sistema de Matrículas
+    ├── 📂 Código
+    ├── .vscode
+    ├── bin
+    ├── src
+        ├── 📂 controller
+        │   ├── AlunoController.java
+        │   ├── CursoController.java
+        │   ├── DisciplinaController.java
+        │   ├── MatriculaController.java
+        │   ├── ProfessorController.java
+        │   ├── SecretariaController.java
+        │   ├── SemestreController.java
+        │   ├── SessaoController.java
+        │   ├── SistemaCobrancaController.java
+        │   ├── UsuarioController.java
+        │
+        ├── 📂 DAO
+        │   ├── AbstractDao.java
+        │   ├── AlunoDAO.java
+        │   ├── CursoDAO.java
+        │   ├── DisciplinaDAO.java
+        │   ├── MatriculaDAO.java
+        │   ├── ProfessorDAO.java
+        │   ├── SecretariaDAO.java
+        │   ├── SemestreDAO.java
+        │   ├── SistemaCobrancaDAO.java
+        │   ├── UsuarioDAO.java
+        │
+        ├── 📂 models
+        │   ├── 📂 abstracts
+        │   │   ├── Usuario.java
+        │   │
+        │   ├── 📂 enums
+        │   │   ├── Status.java
+        │   │   ├── StatusMatricula.java
+        │   │   ├── TipoUsuario.java
+        │   │
+        │   ├── Aluno.java
+        │   ├── Curso.java
+        │   ├── Disciplina.java
+        │   ├── Matricula.java
+        │   ├── Professor.java
+        │   ├── Secretaria.java
+        │   ├── Semestre.java
+        │   ├── SistemaCobranca.java
+        │
+        ├── 📂 utils
+        │   ├── Utils.java
+        │
+        ├── 📂 views
+        │   ├── AlunoView.java
+        │   ├── GerenciarAlunosView.java
+        │   ├── GerenciarCursosView.java
+        │   ├── GerenciarDisciplinasView.java
+        │   ├── GerenciarProfessoresView.java
+        │   ├── GerenciarSemestreView.java
+        │   ├── GerenciarUsuariosView.java
+        │   ├── LoginView.java
+        │   ├── ProfessorView.java
+        │   ├── SecretariaView.java
+        │   ├── Main.java
+        │
+    ├── 📂 data
+    ├── 📂 Docs
 
 ## 📖 Histórias de Usuário
 **📌 História de Usuário 01**:
