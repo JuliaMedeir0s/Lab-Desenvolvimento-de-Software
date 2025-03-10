@@ -87,11 +87,10 @@ public class GerenciarDisciplinasView {
             Utils.pausarTela();
             return;
         }
-
+        
         String codigo = disciplinaController.gerarCodigo();
         boolean sucesso = disciplinaController.adicionarDisciplina(codigo, nome, cargaHoraria, professorIndex, valor);
-        System.out.println(
-                sucesso ? "✅ Disciplina adicionada com sucesso! Código: " + codigo : "❌ Erro ao adicionar disciplina.");
+        System.out.println(sucesso ? "✅ Disciplina adicionada com sucesso!" : "❌ Erro ao adicionar disciplina.");
         Utils.pausarTela();
     }
 

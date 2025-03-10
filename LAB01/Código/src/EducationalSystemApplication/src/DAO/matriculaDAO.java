@@ -40,10 +40,6 @@ public class MatriculaDAO extends AbstractDao<Matricula> {
         }
     }
 
-    private void carregarMatriculas() {
-        this.matriculas = leitura();
-    }
-
     public List<Matricula> getMatriculas() {
         return this.matriculas;
     }

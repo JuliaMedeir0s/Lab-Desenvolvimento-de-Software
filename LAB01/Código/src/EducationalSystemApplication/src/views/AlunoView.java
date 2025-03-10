@@ -43,7 +43,7 @@ public class AlunoView {
                 case 2:
                     Utils.limparTela();
                     System.out.println("Disciplinas Disponíveis");
-                    listarDisciplinas(aluno.getCurso().getDisciplinas()); 
+                    listarDisciplinas(); 
                     break;
                 case 3:
                     Utils.limparTela();
@@ -65,23 +65,30 @@ public class AlunoView {
             System.out.println("Você não está matriculado em nenhuma disciplina.");
             return;
         }
-        Set<Disciplina> disciplinasObrigatorias = new HashSet<>(aluno.getCurso().getDisciplinas());
-        Set<Disciplina> disciplinasOptativas = new HashSet<>(aluno.getCurso().getDisciplinasOptativas());
 
-        for (Matricula matricula : matriculas) {
-            Disciplina disciplina = matricula.getDisciplina();
-            boolean isObrigatoria = disciplinasObrigatorias.contains(disciplina);
-            boolean isOptativa = disciplinasOptativas.contains(disciplina);
-    
+        List<Disciplina> disciplinasObrigatorias = aluno.getCurso().getDisciplinas();
+        List<Disciplina> disciplinasOptativas = aluno.getCurso().getDisciplinasOptativas();
+
+        System.out.println("Disciplinas Obrigatórias:");
+        for (Disciplina disciplina : disciplinasObrigatorias) {
             System.out.println("- Código: " + disciplina.getCodigo());
             System.out.println("  Nome: " + disciplina.getNome());
-            System.out.println("  Tipo: " + (isObrigatoria ? "Obrigatória" : (isOptativa ? "Optativa" : "Desconhecida")));
             System.out.println("  Carga Horária: " + disciplina.getCargaHoraria() + " horas");
             System.out.println("  Professor: " + disciplina.getProfessor().getNome());
             System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
             System.out.println();
         }
-    
+
+        System.out.println("Disciplinas Optativas:");
+        for (Disciplina disciplina : disciplinasOptativas) {
+            System.out.println("- Código: " + disciplina.getCodigo());
+            System.out.println("  Nome: " + disciplina.getNome());
+            System.out.println("  Carga Horária: " + disciplina.getCargaHoraria() + " horas");
+            System.out.println("  Professor: " + disciplina.getProfessor().getNome());
+            System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
+            System.out.println();
+        }
+
         System.out.println("Digite o código da disciplina para cancelar a matrícula ou 0 para voltar: ");
         String codigo = sc.nextLine();
         if (codigo.equals("0")) {

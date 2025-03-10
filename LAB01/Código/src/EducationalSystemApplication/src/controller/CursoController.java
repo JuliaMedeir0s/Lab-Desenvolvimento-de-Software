@@ -43,6 +43,7 @@ public class CursoController {
             curso.setCreditos(novosCreditos);
 
         cursoDAO.atualizarCurso(curso);
+        DisciplinaDAO.getInstance().atualizarDisciplinas(curso.getDisciplinas());
         return true;
     }
 

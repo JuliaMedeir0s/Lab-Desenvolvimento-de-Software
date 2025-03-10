@@ -73,4 +73,10 @@ public class DisciplinaDAO extends AbstractDao<Disciplina> {
             DisciplinaController.setContadorDisciplina(maiorCodigo + 1);
         }
     }
+
+    public void atualizarDisciplinas(List<Disciplina> disciplinas2) {
+        for (Disciplina disciplina : disciplinas2) {
+            atualizarDisciplina(disciplina);
+        }
+    }
 }

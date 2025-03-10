@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import models.*;
-import models.enums.*;
-
 import DAO.*;
 
 
@@ -48,6 +46,10 @@ public class MatriculaController {
         Matricula novaMatricula = new Matricula(gerarCodigo() ,aluno, disciplina);
     
         boolean sucesso = matriculaDAO.adicionarMatricula(novaMatricula);
+        aluno.adicionarMatricula(novaMatricula);
+        disciplina.adicionarMatricula(novaMatricula);
+        AlunoDAO.getInstance().atualizarAluno(aluno);
+        DisciplinaDAO.getInstance().atualizarDisciplina(disciplina);
     
         if (sucesso) {
             System.out.println("✅ Matrícula realizada com sucesso! Código: " + novaMatricula.getCodigo());

@@ -102,6 +102,30 @@ public class Disciplina implements Serializable {
         this.status = status;
     }
 
+    public void adicionarMatricula(Matricula matricula) {
+        matriculas.add(matricula);
+    }
+
+    public void removerMatricula(Matricula matricula) {
+        matriculas.remove(matricula);
+    }
+
+    public void adicionarCurso(Curso curso) {
+        cursos.add(curso);
+    }
+
+    public void removerCurso(Curso curso) {
+        cursos.remove(curso);
+    }
+
+    public boolean isMatriculasCheias() {
+        return matriculas.size() >= MATRICULA_MAXIMA;
+    }
+
+    public boolean isMatriculasMinimas() {
+        return matriculas.size() >= MATRICULA_MINIMA;
+    }
+
     @Override
     public String toString() {
         return String.format(

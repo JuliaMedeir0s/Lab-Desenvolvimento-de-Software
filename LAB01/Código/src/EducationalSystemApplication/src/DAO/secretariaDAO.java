@@ -67,10 +67,6 @@ public class SecretariaDAO extends AbstractDao<Secretaria> {
         return null;
     }
 
-    private void carregarSecretarias() {
-        this.secretarias = leitura();
-    }
-
     public List<Secretaria> getSecretarias() {
         return this.secretarias;
     }
