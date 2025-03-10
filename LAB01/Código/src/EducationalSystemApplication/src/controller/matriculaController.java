@@ -12,6 +12,7 @@ import DAO.*;
 
 
 public class MatriculaController {
+    
     private static final AtomicInteger contadorMatricula = new AtomicInteger(1);
     private final AlunoDAO alunoDAO = AlunoDAO.getInstance();
     private final MatriculaDAO matriculaDAO = MatriculaDAO.getInstance();
@@ -29,15 +30,7 @@ public class MatriculaController {
     }
 
     public Aluno buscarPorMatricula(String matricula) {
-        return alunoDAO.buscarPorMatricula(matricula);
-    }
-
-    public boolean adicionarAluno(Aluno aluno) {
-        if (alunoDAO.buscarPorMatricula(aluno.getMatricula()) != null) {
-            return false;
-        }
-        alunoDAO.adicionarAluno(aluno);
-        return true;
+        return alunoDAO.buscarPorMatricula(matricula).get();
     }
 
     public boolean matricularAluno(Aluno aluno, Disciplina disciplina) {
@@ -52,12 +45,13 @@ public class MatriculaController {
             return false;
         }
 
-        Matricula novaMatricula = new Matricula(aluno, disciplina);
+        Matricula novaMatricula = new Matricula(gerarCodigo() ,aluno, disciplina);
     
         boolean sucesso = matriculaDAO.adicionarMatricula(novaMatricula);
     
         if (sucesso) {
             System.out.println("✅ Matrícula realizada com sucesso! Código: " + novaMatricula.getCodigo());
+            
             return true;
         } else {
             System.out.println("❌ Erro: Não foi possível realizar a matrícula.");
@@ -66,7 +60,7 @@ public class MatriculaController {
     }
 
     public boolean cancelarMatricula(String codigoMatricula) {
-        Optional<Matricula> matriculaOpt = matriculaDAO.buscarMatriculaPorCodigo(codigoMatricula);
+        Optional<Matricula> matriculaOpt = matriculaDAO.buscarPorCodigo(codigoMatricula);
         if (matriculaOpt.isEmpty()) {
             System.out.println("❌ Erro: Matrícula não encontrada.");
             return false;
@@ -79,7 +73,7 @@ public class MatriculaController {
     }
 
     public void listarMatriculas() {
-        List<Matricula> matriculas = matriculaDAO.listarMatriculas();
+        List<Matricula> matriculas = matriculaDAO.getMatriculas();
         if (matriculas.isEmpty()) {
             System.out.println("📌 Nenhuma matrícula registrada.");
             return;
@@ -95,11 +89,11 @@ public class MatriculaController {
     }
 
     public List<Matricula> listarMatriculasPorAluno(Aluno aluno) {
-        return matriculaDAO.listarMatriculasPorAluno(aluno);
+        return matriculaDAO.listarMatriculaPorAluno(aluno);
     }
 
     public List<Matricula> listarMatriculasPorDisciplina(Disciplina disciplina) {
-        return matriculaDAO.listarMatriculasPorDisciplina(disciplina);
+        return matriculaDAO.listarMatriculaPorDisciplina(disciplina);
     }
 
 }

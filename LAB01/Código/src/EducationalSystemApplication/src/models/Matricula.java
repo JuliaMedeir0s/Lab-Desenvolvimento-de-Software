@@ -9,8 +9,8 @@ public class Matricula {
     private StatusMatricula status;
     private double valor;
 
-    public Matricula(Aluno aluno, Disciplina disciplina) {
-        this.codigo = gerarCodigo();
+    public Matricula(String Codigo, Aluno aluno, Disciplina disciplina) {
+        this.codigo = Codigo;
         this.aluno = aluno;
         this.disciplina = disciplina;
         this.status = StatusMatricula.ATIVA;
