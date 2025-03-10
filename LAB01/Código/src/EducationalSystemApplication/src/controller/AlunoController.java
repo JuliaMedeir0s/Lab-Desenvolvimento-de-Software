@@ -132,10 +132,18 @@ public class AlunoController {
             System.out.println("❌ Erro: Aluno já matriculado nessa disciplina.");
             return false;
         }
-        
-        aluno.getMatriculas().add(matricula);
-        alunoDAO.atualizarAluno(aluno);
-        return true;
+        MatriculaController matriculaController = new MatriculaController();
+        boolean sucesso = matriculaController.matricularAluno(aluno, disciplina);
+    
+        if (sucesso) {
+            aluno.getMatriculas().add(new Matricula(aluno, disciplina));
+            alunoDAO.atualizarAluno(aluno);
+            System.out.println("✅ Matrícula realizada com sucesso!");
+            return true;
+        } else {
+            System.out.println("❌ Erro: Não foi possível realizar a matrícula.");
+            return false;
+        }
     }
 
     public boolean desinscreverDeDisciplina(Aluno aluno, Disciplina disciplina) {

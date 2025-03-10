@@ -45,7 +45,7 @@ public class MatriculaController {
             System.out.println("❌ Erro: Aluno ou disciplina inválida.");
             return false;
         }
-
+        
         Optional<Matricula> matriculaExistente = matriculaDAO.buscarMatricula(aluno, disciplina);
         if (matriculaExistente.isPresent()) {
             System.out.println("❌ Erro: O aluno já está matriculado nesta disciplina.");
@@ -53,10 +53,16 @@ public class MatriculaController {
         }
 
         Matricula novaMatricula = new Matricula(aluno, disciplina);
-        matriculaDAO.adicionarMatricula(novaMatricula);
-        System.out.println("✅ Matrícula realizada com sucesso! Código: " + novaMatricula.getCodigo());
-
-        return true;
+    
+        boolean sucesso = matriculaDAO.adicionarMatricula(novaMatricula);
+    
+        if (sucesso) {
+            System.out.println("✅ Matrícula realizada com sucesso! Código: " + novaMatricula.getCodigo());
+            return true;
+        } else {
+            System.out.println("❌ Erro: Não foi possível realizar a matrícula.");
+            return false;
+        }
     }
 
     public boolean cancelarMatricula(String codigoMatricula) {

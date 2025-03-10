@@ -9,10 +9,12 @@ public class Matricula {
     private StatusMatricula status;
     private double valor;
 
-    public Matricula(String codigo, Aluno aluno, Disciplina disciplina) {
-        this.codigo = codigo;
+    public Matricula(Aluno aluno, Disciplina disciplina) {
+        this.codigo = gerarCodigo();
         this.aluno = aluno;
         this.disciplina = disciplina;
+        this.status = StatusMatricula.ATIVA;
+        this.valor = disciplina.getValor();
     }
 
     public String getCodigo() {
