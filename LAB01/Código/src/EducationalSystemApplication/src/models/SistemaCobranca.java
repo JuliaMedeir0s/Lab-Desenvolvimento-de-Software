@@ -1,8 +1,11 @@
 package models;
 
 import java.util.List;
+import java.io.Serializable;
 
-public class SistemaCobranca {
+public class SistemaCobranca implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Aluno aluno;
     private double valorTotal;
     private boolean paga;

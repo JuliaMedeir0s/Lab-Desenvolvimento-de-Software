@@ -1,15 +1,18 @@
 package models;
 
 import models.enums.StatusMatricula;
+import java.io.Serializable;
 
-public class Matricula {
+public class Matricula implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String codigo;
     private Aluno aluno;
     private Disciplina disciplina;
     private StatusMatricula status;
     private double valor;
 
-    public Matricula(String Codigo, Aluno aluno, Disciplina disciplina) {
+    public Matricula(String Codigo, Aluno aluno, Disciplina disciplina)  {
         this.codigo = Codigo;
         this.aluno = aluno;
         this.disciplina = disciplina;
