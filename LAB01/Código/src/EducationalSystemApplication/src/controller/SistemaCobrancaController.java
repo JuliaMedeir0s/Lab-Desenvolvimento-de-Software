@@ -1,6 +1,6 @@
 package controller;
 
-import dao.SistemaCobrancaDAO;
+import DAO.SistemaCobrancaDAO;
 import models.Aluno;
 import models.SistemaCobranca;
 

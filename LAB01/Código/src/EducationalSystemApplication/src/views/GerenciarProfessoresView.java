@@ -36,6 +36,8 @@ public class GerenciarProfessoresView {
                     alterarStatusProfessor();
                     break;
                 case 4:
+                    Utils.limparTela();
+                    System.out.println("===== LISTA DE PROFESSORES =====");
                     professorController.listarProfessores();
                     Utils.pausarTela();
                     break;
@@ -81,11 +83,13 @@ public class GerenciarProfessoresView {
     
         boolean sucesso = professorController.adicionarProfessor(nome, email, senha);
         System.out.println(
-                sucesso ? "✅ Professor adicionado com sucesso!" : "❌ Erro: Já existe um professor com esse e-mail.");
+                sucesso ? "✅ Professor adicionado com sucesso!" : "❌ Erro: E-mail inválido.");
         Utils.pausarTela();
     }    
 
     private static void editarProfessor() {
+        Utils.limparTela();
+        System.out.println("===== EDITAR PROFESSOR =====");
         professorController.listarProfessores();
         System.out.print("\nDigite o número do professor que deseja editar (0 para cancelar): ");
         int index = Utils.lerInteiro();
@@ -145,6 +149,8 @@ public class GerenciarProfessoresView {
     }    
 
     private static void alterarStatusProfessor() {
+        Utils.limparTela();
+        System.out.println("===== ALTERAR STATUS PROFESSOR =====");
         professorController.listarProfessores();
         System.out.print("\nDigite o número do professor que deseja ativar/desativar: ");
         int index = sc.nextInt();
@@ -157,6 +163,8 @@ public class GerenciarProfessoresView {
     }
 
     private static void visualizarProfessor() {
+        Utils.limparTela();
+        System.out.println("===== DETALHES PROFESSOR =====");
         professorController.listarProfessores();
         System.out.print("\nDigite o número do professor que deseja visualizar: ");
         int index = sc.nextInt();

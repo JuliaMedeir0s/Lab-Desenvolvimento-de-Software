@@ -52,6 +52,8 @@ public class GerenciarSemestreView {
     }
 
     private static void criarSemestre() {
+        Utils.limparTela();
+        System.out.println("===== CRIAR SEMESTRE =====");
         System.out.print("Ano: ");
         int ano = sc.nextInt();
         System.out.print("Período: ");
@@ -66,20 +68,22 @@ public class GerenciarSemestreView {
     }
 
     private static void editarSemestre() {
+        Utils.limparTela();
+        System.out.println("===== EDITAR SEMESTRE =====");
         System.out.print("Ano do Semestre: ");
         int ano = sc.nextInt();
         System.out.print("Período do Semestre: ");
         int periodo = sc.nextInt();
         Semestre semestre = semestreController.buscarSemestre(ano, periodo);
         if (semestre != null) {
-            System.out.println("Deseja alterar a data de início do semestr (S/N)?");
+            System.out.println("Deseja alterar a data de início do semestre (S/N)?");
             String resposta = sc.next();
             if (resposta.equalsIgnoreCase("S")) {
                 System.out.print("Nova data de início (YYYY-MM-DD): ");
                 LocalDate novoInicio = LocalDate.parse(sc.next());
                 semestre.setDataInicioInscricoes(novoInicio);
             }
-            System.out.println("Deseja alterar a data de fim do semestr (S/N)?");
+            System.out.println("Deseja alterar a data de fim do semestre (S/N)?");
             resposta = sc.next();
             if (resposta.equalsIgnoreCase("S")) {
                 System.out.print("Nova data de fim (YYYY-MM-DD): ");
@@ -102,6 +106,8 @@ public class GerenciarSemestreView {
     }
 
     private static void fecharSemestre() {
+        Utils.limparTela();
+        System.out.println("===== FECHAR SEMESTRE =====");
         System.out.print("Ano do Semestre: ");
         int ano = sc.nextInt();
         System.out.print("Período do Semestre: ");
@@ -117,6 +123,7 @@ public class GerenciarSemestreView {
     }
 
     private static void listarSemestres() {
+        Utils.limparTela();
         System.out.println("\n===== SEMESTRES CADASTRADOS =====");
         semestreController.listarSemestres().forEach(semestre -> {
             System.out.println("- " + semestre.getAno() + "." + semestre.getPeriodo() + " - " + semestre.getStatus());

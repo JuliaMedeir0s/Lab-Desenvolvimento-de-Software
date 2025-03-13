@@ -36,8 +36,10 @@ public class DisciplinaController {
 
         Disciplina novaDisciplina = new Disciplina(codigo, nome, cargaHoraria, professor, valor);
         disciplinaDAO.adicionarDisciplina(novaDisciplina);
-        professor.adicionarDisciplina(novaDisciplina);
-        professorDAO.atualizarProfessor(professor);
+        if (professor != null) { //evita o erro de quando prof é null
+            professor.adicionarDisciplina(novaDisciplina);
+            professorDAO.atualizarProfessor(professor);
+        }
 
         return true;
     }
@@ -91,12 +93,12 @@ public class DisciplinaController {
         }
 
         Disciplina disciplina = disciplinas.get(index - 1);
-        boolean podeAtivar = verificarAtivacaoDisciplina(disciplina);
+        //boolean podeAtivar = verificarAtivacaoDisciplina(disciplina);
 
-        if (!podeAtivar && disciplina.getStatus() == Status.ATIVO) {
-            System.out.println("❌ Erro: Disciplina não pode ser ativada porque não atingiu o mínimo de alunos.");
-            return false;
-        }
+        // if (!podeAtivar && disciplina.getStatus() == Status.ATIVO) {
+        //     System.out.println("❌ Erro: Disciplina não pode ser ativada porque não atingiu o mínimo de alunos.");
+        //     return false;
+        // }
 
         disciplina.setStatus(disciplina.getStatus() == Status.ATIVO ? Status.INATIVO : Status.ATIVO);
         disciplinaDAO.atualizarDisciplina(disciplina);

@@ -73,6 +73,7 @@ public class GerenciarCursosView {
     }
 
     private static void editarCurso() {
+        System.out.println("===== EDITAR CURSO =====");
         listarCursos();
         System.out.print("\nDigite o número do curso que deseja editar (0 para cancelar): ");
         int index = Utils.lerInteiro();
@@ -116,6 +117,7 @@ public class GerenciarCursosView {
     }
 
     private static void alterarStatusCurso() {
+        System.out.println("===== ALTERAR STATUS CURSO =====");
         listarCursos();
         System.out.print("\nDigite o número do curso que deseja ativar/desativar: ");
         int index = Utils.lerInteiro();
@@ -132,8 +134,8 @@ public class GerenciarCursosView {
     }
 
     private static void adicionarDisciplinaAoCurso() {
+        System.out.println("===== ADICIONAR DISCIPLINA AO CURSO =====");
         listarCursos();
-    
         //seleciona o curso pelo índice
         System.out.print("\nDigite o número do curso ao qual deseja adicionar uma disciplina (0 para cancelar): ");
         int cursoIndex = Utils.lerInteiro();
@@ -195,8 +197,8 @@ public class GerenciarCursosView {
     }    
 
     private static void adicionarDisciplinaOptativaAoCurso() {
+        System.out.println("===== ADICIONAR DISCIPLINA OPTATIVA AO CURSO =====");
         listarCursos();
-    
         System.out.print("\nDigite o número do curso ao qual deseja adicionar uma disciplina optativa (0 para cancelar): ");
         int cursoIndex = Utils.lerInteiro();
         if (cursoIndex == 0) {
@@ -256,6 +258,7 @@ public class GerenciarCursosView {
     }    
 
     private static void visualizarCurso() {
+        System.out.println("===== DETALHES DO CURSO =====");
         listarCursos();
         System.out.print("\nDigite o número do curso que deseja visualizar (0 para cancelar): ");
         int cursoIndex = Utils.lerInteiro();

@@ -17,7 +17,7 @@ public class LoginView {
             }
 
             while (!SessaoController.isLogado()) {
-                System.out.print("ID ou Matrícula: ");
+                System.out.print("ID: ");
                 String id = scanner.nextLine();
                 System.out.print("Senha: ");
                 String senha = scanner.nextLine();

@@ -87,7 +87,7 @@ public class GerenciarDisciplinasView {
             Utils.pausarTela();
             return;
         }
-        
+
         String codigo = disciplinaController.gerarCodigo();
         boolean sucesso = disciplinaController.adicionarDisciplina(codigo, nome, cargaHoraria, professorIndex, valor);
         System.out.println(sucesso ? "✅ Disciplina adicionada com sucesso!" : "❌ Erro ao adicionar disciplina.");
@@ -95,6 +95,8 @@ public class GerenciarDisciplinasView {
     }
 
     private static void editarDisciplina() {
+        Utils.limparTela();
+        System.out.println("===== EDITAR DISCIPLINA =====");
         listarDisciplinas();
         System.out.print("\nDigite o número da disciplina que deseja editar (0 para cancelar): ");
         int index = Utils.lerInteiro();
@@ -115,7 +117,10 @@ public class GerenciarDisciplinasView {
         System.out.println("Código: " + disciplinaSelecionada.getCodigo());
         System.out.println("Nome: " + disciplinaSelecionada.getNome());
         System.out.println("Carga Horária: " + disciplinaSelecionada.getCargaHoraria());
-        System.out.println("Professor: " + disciplinaSelecionada.getProfessor().getNome());
+        String professorNome = (disciplinaSelecionada.getProfessor() != null)
+                ? disciplinaSelecionada.getProfessor().getNome()
+                : "N/A";
+        System.out.println("Professor: " + professorNome);
         System.out.println("Valor: " + disciplinaSelecionada.getValor());
 
         System.out.print("\nNovo Nome (ENTER para manter, 0 para cancelar): ");
@@ -166,6 +171,8 @@ public class GerenciarDisciplinasView {
     }
 
     private static void alterarStatusDisciplina() {
+        Utils.limparTela();
+        System.out.println("===== ALTERAR STATUS DA DISCIPLINA =====");
         listarDisciplinas();
         System.out.print("\nDigite o número da disciplina que deseja ativar/desativar: ");
         int index = Utils.lerInteiro();
@@ -176,12 +183,13 @@ public class GerenciarDisciplinasView {
     }
 
     private static void listarDisciplinas() {
-        Utils.limparTela();
         disciplinaController.listarDisciplinas();
         Utils.pausarTela();
     }
 
     private static void visualizarDisciplina() {
+        Utils.limparTela();
+        System.out.println("===== DETALHES DA DISCIPLINA =====");
         listarDisciplinas();
         System.out.print("\nDigite o número da disciplina que deseja visualizar (0 para cancelar): ");
         int index = Utils.lerInteiro();

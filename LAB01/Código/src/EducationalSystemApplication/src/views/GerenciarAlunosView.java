@@ -82,6 +82,8 @@ public class GerenciarAlunosView {
     }    
 
     private static void editarAluno() {
+        Utils.limparTela();
+        System.out.println("===== EDITAR ALUNO =====");
         listarAlunos();
         System.out.print("\nDigite o número do aluno que deseja editar (0 para cancelar): ");
         int index = Utils.lerInteiro();
@@ -156,6 +158,8 @@ public class GerenciarAlunosView {
     }    
 
     private static void alterarStatusAluno() {
+        Utils.limparTela();
+        System.out.println("===== ALTERAR STATUS ALUNO =====");
         listarAlunos();
         System.out.print("\nDigite o número do aluno que deseja ativar/desativar: ");
         int index = Utils.lerInteiro();
@@ -166,7 +170,6 @@ public class GerenciarAlunosView {
     }
 
     private static void listarAlunos() {
-        Utils.limparTela();
         alunoController.listarAlunos();
         Utils.pausarTela();
     }
