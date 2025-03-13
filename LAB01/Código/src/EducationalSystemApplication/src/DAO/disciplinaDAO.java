@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import controller.DisciplinaController;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class DisciplinaDAO extends AbstractDao<Disciplina> {
@@ -40,7 +41,15 @@ public class DisciplinaDAO extends AbstractDao<Disciplina> {
     }
 
     public List<Disciplina> listarDisciplinas() {
-        return disciplinas;
+        List<Disciplina> disciplinasCarregadas = disciplinas;
+
+        for (Disciplina disciplina : disciplinasCarregadas) {
+            if (disciplina.getCursos() == null) {
+                disciplina.setCursos(new ArrayList<>()); 
+            }
+        }
+
+        return disciplinasCarregadas;
     }
 
     public void atualizarDisciplina(Disciplina disciplinaAtualizada) {
@@ -57,7 +66,7 @@ public class DisciplinaDAO extends AbstractDao<Disciplina> {
         Optional<Disciplina> disciplinaOpt = buscarPorCodigo(codigo);
         if (disciplinaOpt.isPresent()) {
             Disciplina disciplina = disciplinaOpt.get();
-            disciplina.setStatus(disciplina.getStatus()== Status.ATIVO ? Status.INATIVO : Status.ATIVO);
+            disciplina.setStatus(disciplina.getStatus() == Status.ATIVO ? Status.INATIVO : Status.ATIVO);
             atualizarDisciplina(disciplina);
             return true;
         }

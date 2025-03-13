@@ -244,7 +244,14 @@ public class GerenciarCursosView {
             return;
         }
     
-        Disciplina disciplinaSelecionada = disciplinaController.selecionarDisciplina(disciplinaIndex);
+        if (disciplinaIndex < 1 || disciplinaIndex > disciplinasDisponiveis.size()) {
+            System.out.println("❌ Erro: Número de disciplina inválido.");
+            Utils.pausarTela();
+            return;
+        }
+        
+        Disciplina disciplinaSelecionada = disciplinasDisponiveis.get(disciplinaIndex - 1);
+        
         if (disciplinaSelecionada == null) {
             System.out.println("❌ Erro: Disciplina não encontrada.");
             Utils.pausarTela();

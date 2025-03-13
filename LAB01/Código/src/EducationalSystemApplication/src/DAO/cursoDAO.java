@@ -4,6 +4,7 @@ import models.Curso;
 import models.Disciplina;
 import models.enums.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,11 +31,46 @@ public class CursoDAO extends AbstractDao<Curso> {
     public void adicionarCurso(Curso curso) {
         cursos.add(curso);
         grava(cursos);
-        atualizarContadorCodigo(); 
+        atualizarContadorCodigo();
     }
 
     public Optional<Curso> buscarPorCodigo(String codigo) {
         return cursos.stream().filter(c -> c.getCodigo().equals(codigo)).findFirst();
+    }
+
+    public Curso buscarCursoComDisciplinas(String codigo) {
+        Optional<Curso> cursoOpt = buscarPorCodigo(codigo);
+
+        if (cursoOpt.isPresent()) {
+            Curso curso = cursoOpt.get();
+
+            List<Disciplina> todasDisciplinas = DisciplinaDAO.getInstance().listarDisciplinas();
+
+            List<Disciplina> disciplinasObrigatorias = new ArrayList<>();
+            List<Disciplina> disciplinasOptativas = new ArrayList<>();
+
+            for (Disciplina disciplina : todasDisciplinas) {
+                
+                boolean pertenceAoCurso = disciplina.getCursos().stream()
+                        .anyMatch(c -> c.getCodigo().equals(curso.getCodigo()));
+
+                if (pertenceAoCurso) {
+                    if (curso.getDisciplinasOptativas().stream()
+                            .anyMatch(d -> d.getCodigo().equals(disciplina.getCodigo()))) {
+                        disciplinasOptativas.add(disciplina); 
+                    } else {
+                        disciplinasObrigatorias.add(disciplina); 
+                    }
+                }
+            }
+
+            curso.setDisciplinas(disciplinasObrigatorias);
+            curso.setDisciplinasOptativas(disciplinasOptativas);
+
+            return curso;
+        }
+
+        return null;
     }
 
     public List<Curso> listarCursos() {
@@ -71,7 +107,8 @@ public class CursoDAO extends AbstractDao<Curso> {
             int maiorCodigo = cursos.stream()
                     .map(c -> {
                         String[] partes = c.getCodigo().split("-");
-                        if (partes.length < 2) return 0;
+                        if (partes.length < 2)
+                            return 0;
                         try {
                             return Integer.parseInt(partes[1]);
                         } catch (NumberFormatException e) {
@@ -85,10 +122,10 @@ public class CursoDAO extends AbstractDao<Curso> {
     }
 
     public void adicionarDisciplinaOptativaAoCurso(Curso curso, Disciplina disciplina) {
-    if (!curso.getDisciplinasOptativas().contains(disciplina)) {
-        curso.getDisciplinasOptativas().add(disciplina);
-        atualizarCurso(curso);
+        if (!curso.getDisciplinasOptativas().contains(disciplina)) {
+            curso.getDisciplinasOptativas().add(disciplina);
+            atualizarCurso(curso);
+        }
     }
-}
 
 }

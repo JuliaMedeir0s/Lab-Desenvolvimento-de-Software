@@ -137,7 +137,7 @@ public class CursoController {
         Disciplina disciplina = disciplinaOpt.get();
 
         if (!curso.getDisciplinas().contains(disciplina)) {
-            curso.getDisciplinas().add(disciplina); // 🔥 Adiciona a disciplina ao curso
+            curso.getDisciplinas().add(disciplina);
             cursoDAO.atualizarCurso(curso);
         } else {
             System.out.println("❌ Esta disciplina já está associada a este curso.");
@@ -150,30 +150,39 @@ public class CursoController {
     public boolean adicionarDisciplinaOptativaAoCurso(String cursoCodigo, String disciplinaCodigo) {
         Optional<Curso> cursoOpt = cursoDAO.buscarPorCodigo(cursoCodigo);
         Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(disciplinaCodigo);
-
+    
         if (cursoOpt.isEmpty()) {
             System.out.println("❌ Erro: Curso não encontrado.");
             return false;
         }
-
+    
         if (disciplinaOpt.isEmpty()) {
             System.out.println("❌ Erro: Disciplina não encontrada.");
             return false;
         }
-
+    
         Curso curso = cursoOpt.get();
         Disciplina disciplina = disciplinaOpt.get();
-
+    
+        if (curso.getDisciplinas().contains(disciplina)) {
+            System.out.println("❌ Erro: A disciplina já está associada como obrigatória e não pode ser optativa.");
+            return false;
+        }
+    
         if (!curso.getDisciplinasOptativas().contains(disciplina)) {
             curso.getDisciplinasOptativas().add(disciplina);
+            disciplina.adicionarCurso(curso);
+            
             cursoDAO.atualizarCurso(curso);
-            System.out.println("✅ Disciplina optativa adicionada ao curso!");
+            disciplinaDAO.atualizarDisciplina(disciplina);
+    
+            System.out.println("✅ Disciplina optativa adicionada corretamente ao curso: " + curso.getNome());
             return true;
         } else {
             System.out.println("❌ Esta disciplina já está associada como optativa a este curso.");
             return false;
         }
-    }
+    }    
 
     public Curso visualizarCurso(int cursoIndex) {
         List<Curso> cursos = cursoDAO.listarCursos();

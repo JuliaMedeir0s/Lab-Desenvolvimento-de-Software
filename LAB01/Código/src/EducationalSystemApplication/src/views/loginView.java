@@ -27,7 +27,6 @@ public class LoginView {
                 if (usuario != null) {
                     SessaoController.login(usuario);
                     Utils.limparTela();
-                    System.out.println("✅ Bem-vindo, " + usuario.getNome() + "! Você está logado.");
                     abrirView(usuario);
                 } else {
                     Utils.limparTela();
