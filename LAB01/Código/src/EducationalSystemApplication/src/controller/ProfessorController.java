@@ -26,9 +26,9 @@ public class ProfessorController {
 
     public List<Disciplina> listarDisciplinasLecionadas(Professor professor) {
         return disciplinaDAO.listarDisciplinas().stream()
-                .filter(d -> d.getProfessor() != null && d.getProfessor().equals(professor))
+                .filter(d -> d.getProfessor() != null && d.getProfessor().getId().equals(professor.getId()))
                 .toList();
-    }
+    }    
 
     public void listarAlunosPorDisciplina(String codigoDisciplina) {
         Optional<Disciplina> disciplinaOpt = disciplinaDAO.buscarPorCodigo(codigoDisciplina);

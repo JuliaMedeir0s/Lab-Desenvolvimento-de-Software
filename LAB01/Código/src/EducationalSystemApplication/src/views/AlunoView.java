@@ -26,6 +26,7 @@ public class AlunoView {
         int opcao;
 
         do {
+            Utils.limparTela();
             System.out.println("\n===== MENU ALUNO =====");
             System.out.println("1 - Visualizar minhas Disciplinas");
             System.out.println("2 - Realizar Matrícula");
