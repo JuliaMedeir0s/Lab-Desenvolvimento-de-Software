@@ -92,40 +92,68 @@ public class AlunoView {
             System.out.println("Erro: Nenhum aluno definido.");
             return;
         }
-
-        double valorTotal = SistemaCobrancaController.calcularValorTotal(aluno.getMatriculas());
-
-        System.out.println("Valor total a ser pago: R$ " + String.format("%.2f", valorTotal));
-        System.out.println("Deseja realizar o pagamento? (1 - Sim, 0 - Voltar)");
-
-        int escolha = -1;
-        boolean entradaValida = false;
-
-        while (!entradaValida) {
-            try {
-                escolha = sc.nextInt();
-                sc.nextLine();
-
-                if (escolha == 1 || escolha == 0) {
-                    entradaValida = true;
-                } else {
-                    System.out.println("Entrada inválida. Digite 1 para pagar ou 0 para voltar.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada inválida. Digite um número (1 para pagar ou 0 para voltar).");
-                sc.nextLine();
+    
+        List<Matricula> matriculas = MatriculaDAO.getInstance().listarMatriculaPorAluno(aluno);
+    
+        if (matriculas.isEmpty()) {
+            System.out.println("❌ Você não está matriculado em nenhuma disciplina.");
+            Utils.pausarTela();
+            return;
+        }
+    
+        double valorTotal = 0;
+    
+        System.out.println("\n📌 Fatura das Disciplinas Matriculadas:");
+        System.out.println("-----------------------------------------------------");
+        System.out.printf("%-30s | %-10s\n", "Disciplina", "Valor (R$)");
+        System.out.println("-----------------------------------------------------");
+    
+        for (Matricula matricula : matriculas) {
+            if (matricula.getStatus().equals(models.enums.StatusMatricula.ATIVA)) {
+                Disciplina disciplina = matricula.getDisciplina();
+                double valor = disciplina.getValor();
+                valorTotal += valor;
+    
+                System.out.printf("%-30s | R$ %.2f\n", disciplina.getNome(), valor);
             }
         }
-
-        if (escolha == 1) {
-            SistemaCobrancaController.processarPagamento(aluno);
-            System.out.println("Pagamento realizado com sucesso!");
-        } else {
-            System.out.println("Voltando ao menu principal...");
-            mostrarMenu();
+    
+        System.out.println("-----------------------------------------------------");
+        System.out.printf("TOTAL A PAGAR: R$ %.2f\n", valorTotal);
+        System.out.println("-----------------------------------------------------");
+    
+        if (valorTotal > 0) {
+            System.out.println("\nDeseja realizar o pagamento? (1 - Sim, 0 - Voltar)");
+            int escolha = -1;
+            boolean entradaValida = false;
+    
+            while (!entradaValida) {
+                try {
+                    escolha = Utils.lerInteiro();
+    
+                    if (escolha == 1 || escolha == 0) {
+                        entradaValida = true;
+                    } else {
+                        System.out.println("Entrada inválida. Digite 1 para pagar ou 0 para voltar.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Entrada inválida. Digite um número (1 para pagar ou 0 para voltar).");
+                    sc.nextLine();
+                }
+            }
+    
+            if (escolha == 1) {
+                //simula o pagamento
+                System.out.println("\n✅ Pagamento realizado com sucesso!");
+                System.out.println("Obrigado por efetuar o pagamento. Sua situação financeira está regularizada.");
+            } else {
+                System.out.println("\nVoltando ao menu principal...");
+            }
         }
+    
         Utils.pausarTela();
     }
+    
 
     public static void realizarMatricula(Disciplina disciplina) {
         if (alunoController.inscreverEmDisciplina(aluno, disciplina)) {
