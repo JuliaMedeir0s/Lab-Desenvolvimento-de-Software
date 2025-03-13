@@ -17,7 +17,7 @@ O acesso ao sistema será protegido por login e senha para todos os usuários.
 
 ## 📂 Estrutura do Projeto
 
-# Estrutura do Projeto: Sistema de Matrículas
+# Sistema de Matrículas
     ├── 📂 Código
     ├── .vscode
     ├── bin
