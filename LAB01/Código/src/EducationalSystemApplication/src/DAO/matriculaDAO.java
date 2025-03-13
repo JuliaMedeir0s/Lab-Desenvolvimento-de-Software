@@ -62,12 +62,13 @@ public class MatriculaDAO extends AbstractDao<Matricula> {
 
     public List<Matricula> listarMatriculaPorAluno(Aluno aluno) {
         List<Matricula> matriculasAluno = new ArrayList<>();
+
         for (Matricula matricula : matriculas) {
-            if (matricula.getAluno().equals(aluno)) {
+            if (matricula.getAluno().getId().equals(aluno.getId())) {
                 matriculasAluno.add(matricula);
             }
         }
-        return matriculasAluno; 
+        return matriculasAluno;
     }
 
     public List<Matricula> listarMatriculaPorDisciplina(Disciplina disciplina) {
@@ -88,49 +89,5 @@ public class MatriculaDAO extends AbstractDao<Matricula> {
         }
         return Optional.empty();
     }
-
-    // public boolean adicionarMatricula(Matricula matricula) {
-    //     try{
-    //         this.matriculas.add(matricula);
-    //         grava(matriculas);
-    //         return true;
-    //     }   catch (Exception e){
-    //         return false;
-    //     }
-    // }
-
-    // public boolean removerMatricula(Matricula matricula) {
-    //     try{
-    //         this.matriculas.remove(matricula);
-    //         grava(matriculas);
-    //         return true;
-    //     }   catch (Exception e){
-    //         return false;
-    //     }
-    // }
-
-    // private void carregarMatriculas() {
-    //     this.matriculas = leitura();
-    // }
-
-    // public List<Matricula> getMatriculas() {
-    //     return this.matriculas;
-    // }
-
-    // public Matricula buscarPorCodigo(String codigo) {
-    //     for (Matricula matricula : matriculas) {
-    //         if (matricula.getDisciplina().getCodigo().equals(codigo)) {
-    //             return matricula;
-    //         }
-    //     }
-    //     return null;
-    // }
-
-    // public static MatriculaDAO getInstance() {
-    //     if (instance == null) {
-    //         instance = new MatriculaDAO();
-    //     }
-    //     return instance;
-    // }
 
 }

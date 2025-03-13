@@ -11,8 +11,6 @@ import utils.Utils;
 import java.util.List;
 import java.util.Scanner;
 
-import DAO.ProfessorDAO;
-
 public class ProfessorView {
     private static final ProfessorController professorController = new ProfessorController();
     
@@ -97,7 +95,7 @@ public class ProfessorView {
             System.out.println("------------------------------------------");
             for (int i = 0; i < matriculas.size(); i++) {
                 Aluno aluno = matriculas.get(i).getAluno();
-                System.out.printf(" %2d | %-20s | %s\n", i + 1, aluno.getNome(), aluno.getCurso());
+                System.out.printf(" %2d | %-20s | %s\n", i + 1, aluno.getNome(), aluno.getCurso().getNome());
             }
         }
         Utils.pausarTela();

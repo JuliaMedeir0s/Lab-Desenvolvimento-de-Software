@@ -6,6 +6,7 @@ import models.Matricula;
 import utils.Utils;
 import models.Aluno;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 
 import DAO.CursoDAO;
 import DAO.DisciplinaDAO;
+import DAO.MatriculaDAO;
 import controller.AlunoController;
 import controller.SessaoController;
 import controller.SistemaCobrancaController;
@@ -41,7 +43,7 @@ public class AlunoView {
             switch (opcao) {
                 case 1:
                     Utils.limparTela();
-                    listarDisciplinasMatriculados(aluno.getMatriculas());
+                    listarDisciplinasMatriculados(MatriculaDAO.getInstance().listarMatriculaPorAluno(aluno));
                     break;
                 case 2:
                     Utils.limparTela();
@@ -62,50 +64,26 @@ public class AlunoView {
     }
 
     public static void listarDisciplinasMatriculados(List<Matricula> matriculas) {
-        System.out.println("\nDisciplinas matriculadas:");
+        System.out.println("\n📌 Disciplinas Matriculadas:");
+
         if (matriculas.isEmpty()) {
-            System.out.println("Você não está matriculado em nenhuma disciplina.");
+            System.out.println("❌ Você não está matriculado em nenhuma disciplina.");
             Utils.pausarTela();
             return;
         }
 
-        List<Disciplina> disciplinasObrigatorias = aluno.getCurso().getDisciplinas();
-        List<Disciplina> disciplinasOptativas = aluno.getCurso().getDisciplinasOptativas();
-
-        System.out.println("Disciplinas Obrigatórias:");
-        for (Disciplina disciplina : disciplinasObrigatorias) {
+        for (Matricula matricula : matriculas) {
+            Disciplina disciplina = matricula.getDisciplina();
             System.out.println("- Código: " + disciplina.getCodigo());
             System.out.println("  Nome: " + disciplina.getNome());
             System.out.println("  Carga Horária: " + disciplina.getCargaHoraria() + " horas");
-            System.out.println("  Professor: " + disciplina.getProfessor().getNome());
+            System.out.println("  Professor: "
+                    + (disciplina.getProfessor() != null ? disciplina.getProfessor().getNome() : "Nenhum"));
             System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
+            System.out.println("  Status: " + matricula.getStatus());
             System.out.println();
         }
 
-        System.out.println("Disciplinas Optativas:");
-        for (Disciplina disciplina : disciplinasOptativas) {
-            System.out.println("- Código: " + disciplina.getCodigo());
-            System.out.println("  Nome: " + disciplina.getNome());
-            System.out.println("  Carga Horária: " + disciplina.getCargaHoraria() + " horas");
-            System.out.println("  Professor: " + disciplina.getProfessor().getNome());
-            System.out.println("  Valor: R$ " + String.format("%.2f", disciplina.getValor()));
-            System.out.println();
-        }
-
-        System.out.println("Digite o código da disciplina para cancelar a matrícula ou 0 para voltar: ");
-        String codigo = sc.nextLine();
-        if (codigo.equals("0")) {
-            return;
-        } else {
-            Optional<Disciplina> disciplina = alunoController.buscarDisciplinaPorCodigo(codigo);
-            if (disciplina.isPresent()) {
-                cancelarMatricula(disciplina.get());
-            } else {
-                System.out.println("Disciplina não encontrada.");
-                Utils.pausarTela();
-                listarDisciplinasMatriculados(matriculas);
-            }
-        }
         Utils.pausarTela();
     }
 
