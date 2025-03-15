@@ -66,19 +66,19 @@ As seguintes histórias de usuário definem o escopo do sistema:
 
 ---
 
-## 🎨 Diagrama de Casos de Uso  
+## 📊 Diagrama de Casos de Uso  
 
 ![Diagrama de Casos de Uso](docs/diagramas/casos_de_uso.png)  
 
 ---
 
-## 📌 Diagrama de Classes  
+## 📊 Diagrama de Classes  
 
 ![Diagrama de Classes](docs/diagramas/diagrama_classes.png)  
 
 ---
 
-## 📌 Diagrama de Pacotes  
+## 📊 Diagrama de Pacotes  
 
 ![Diagrama de Pacotes](docs/diagramas/diagrama_pacotes.png)  
 
