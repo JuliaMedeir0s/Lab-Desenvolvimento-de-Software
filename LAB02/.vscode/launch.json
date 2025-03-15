@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SistemaAluguelCarrosApplication<sistema-aluguel-carros>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lab02.sistema_aluguel_carros.SistemaAluguelCarrosApplication",
+            "projectName": "sistema-aluguel-carros",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
