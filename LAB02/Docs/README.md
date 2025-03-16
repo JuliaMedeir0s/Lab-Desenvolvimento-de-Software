@@ -9,3 +9,5 @@ Esta pasta contém documentos relacionados ao projeto
 
 📌 **Para detalhes sobre os casos de uso**:  
 🔗 [Descrição do Diagrama de Casos de Uso](./casos_de_uso.md)
+📌 **Para detalhes sobre as histórias de usuário**:  
+🔗 [Descrição das Histórias de Usuário](./historias_de_usuario.md)
