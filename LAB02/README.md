@@ -97,7 +97,7 @@ As seguintes histórias de usuário definem o escopo do sistema:
 
 ## 📊 Diagrama de Pacotes  
 
-![Diagrama de Pacotes](docs/diagramas/diagrama_pacotes.png)  
+![Diagrama de Pacotes](Docs/Diagrama-de-Pacotes.png)  
 
 ---
 
