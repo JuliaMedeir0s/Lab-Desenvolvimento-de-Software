@@ -68,7 +68,9 @@ As seguintes histórias de usuário definem o escopo do sistema:
 
 ## 📊 Diagrama de Casos de Uso  
 
-![Diagrama de Casos de Uso](docs/diagramas/casos_de_uso.png)  
+![Diagrama de Casos de Uso](Docs/LAB02-Diagrama-Casos-de-Uso.png)  
+📌 **Para detalhes sobre os casos de uso**:  
+🔗 [Descrição do Diagrama de Casos de Uso](Docs/casos_de_uso.md)
 
 ---
 
