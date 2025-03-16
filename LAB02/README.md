@@ -78,7 +78,7 @@ As seguintes histórias de usuário definem o escopo do sistema:
 - ✅ Como agente, eu quero modificar um pedido de aluguel, para que eu possa ajustar valores ou prazos antes da aprovação.
 
 📌 **Para detalhes completos e critérios de aceitação:**  
-🔗 [Histórias de Usuário e Critérios de Aceitação](./docs/historias_de_usuario.md)
+🔗 [Histórias de Usuário e Critérios de Aceitação](./Docs/historias_de_usuario.md)
 
 ---
 
