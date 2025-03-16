@@ -62,7 +62,23 @@ A comunicação entre os componentes ocorre através de **REST APIs** e a persis
 
 As seguintes histórias de usuário definem o escopo do sistema:  
 
-  
+### **Cliente**
+- ✅ Como cliente, eu quero me cadastrar no sistema, para que eu possa realizar pedidos de aluguel de automóveis.
+- ✅ Como cliente, eu quero fazer login no sistema, para que eu possa acessar minha conta e gerenciar meus pedidos de aluguel.
+- ✅ Como cliente, eu quero recuperar minha senha, para que eu possa acessar minha conta caso eu a esqueça.
+- ✅ Como cliente, eu quero alugar um automóvel, para que eu possa utilizá-lo por um período determinado.
+- ✅ Como cliente, eu quero visualizar o status do meu pedido, para que eu possa acompanhar o andamento do processo.
+- ✅ Como cliente, eu quero modificar meu pedido, para que eu possa corrigir ou alterar detalhes antes da aprovação.
+- ✅ Como cliente, eu quero cancelar um pedido de aluguel, para que eu possa desistir do serviço caso necessário.
+
+### **Agente (Banco/Empresa)**
+- ✅ Como agente, eu quero fazer login no sistema, para que eu possa avaliar e aprovar pedidos de aluguel.
+- ✅ Como agente, eu quero analisar pedidos de aluguel, para que eu possa decidir se o cliente está apto para alugar um veículo.
+- ✅ Como agente, eu quero aprovar ou rejeitar um pedido de aluguel, para que apenas clientes qualificados consigam alugar um veículo.
+- ✅ Como agente, eu quero modificar um pedido de aluguel, para que eu possa ajustar valores ou prazos antes da aprovação.
+
+📌 **Para detalhes completos e critérios de aceitação, acesse:**  
+🔗 [Histórias de Usuário e Critérios de Aceitação](./docs/historias_de_usuario.md)
 
 ---
 
