@@ -1,4 +1,4 @@
-# 📌 Diagrama de Casos de Uso - Sistema de Aluguel de Carros
+# 📌 Detalhamento dos Casos de Uso
 
 Este documento contém a descrição detalhada do **Diagrama de Casos de Uso** do sistema.
 
