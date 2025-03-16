@@ -77,7 +77,7 @@ As seguintes histórias de usuário definem o escopo do sistema:
 - ✅ Como agente, eu quero aprovar ou rejeitar um pedido de aluguel, para que apenas clientes qualificados consigam alugar um veículo.
 - ✅ Como agente, eu quero modificar um pedido de aluguel, para que eu possa ajustar valores ou prazos antes da aprovação.
 
-📌 **Para detalhes completos e critérios de aceitação, acesse:**  
+📌 **Para detalhes completos e critérios de aceitação:**  
 🔗 [Histórias de Usuário e Critérios de Aceitação](./docs/historias_de_usuario.md)
 
 ---
