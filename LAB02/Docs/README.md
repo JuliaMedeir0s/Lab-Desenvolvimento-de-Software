@@ -12,3 +12,6 @@ Esta pasta contém documentos relacionados ao projeto
 
 📌 **Para detalhes sobre as histórias de usuário**:  
 🔗 [Descrição das Histórias de Usuário](./historias_de_usuario.md)
+
+📌 **Para detalhes sobre o diagrama de classes**:  
+🔗 [Descrição do diagrama de classes](./LAB%2002%20-%20Diagrama%20de%20Classes.png)
