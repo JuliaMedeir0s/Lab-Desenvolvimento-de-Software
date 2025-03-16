@@ -91,8 +91,8 @@ As seguintes histórias de usuário definem o escopo do sistema:
 ---
 
 ## 📊 Diagrama de Classes  
+![Diagrama de Classes](Docs/LAB02-Diagram-de-Classes.png)  
 
-🔗 [Descrição do diagrama de classes](./Docs/LAB02-Diagram-de-Classes.png)
 ---
 
 ## 📊 Diagrama de Pacotes  
