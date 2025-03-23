@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     carregarClientes();
+    preencherSelectProfissoes();
 });
 
 //carrega a tabela com os cliente da base
@@ -42,7 +43,10 @@ function salvarCliente(event) {
         nome: document.getElementById('cliente-nome').value,
         cpf: document.getElementById('cliente-cpf').value,
         rg: document.getElementById('cliente-rg').value,
-        profissao: document.getElementById('cliente-profissao').value,
+        //validar a profissão
+        profissao: document.getElementById('cliente-profissao').value === 'Outro'
+            ? document.getElementById('cliente-profissao-outro').value
+            : document.getElementById('cliente-profissao').value,
         endereco: {
             rua: document.getElementById('endereco-rua').value,
             numero: document.getElementById('endereco-numero').value,
@@ -64,6 +68,12 @@ function salvarCliente(event) {
             cliente.empregos.push({ empresa, renda });
         }
     });
+
+    const cpf = document.getElementById('cliente-cpf').value;
+    if (!validarCPF(cpf)) {
+        showToast('CPF inválido. Verifique os números digitados.', 'error');
+        return;
+    }
 
     const metodo = clienteId ? 'PUT' : 'POST';
     const url = clienteId ? `${API.CLIENTES}/${clienteId}` : API.CLIENTES;
@@ -98,7 +108,15 @@ function editarCliente(id) {
             document.getElementById('cliente-nome').value = cliente.nome;
             document.getElementById('cliente-cpf').value = cliente.cpf;
             document.getElementById('cliente-rg').value = cliente.rg;
-            document.getElementById('cliente-profissao').value = cliente.profissao || '';
+            if (PROFISSOES.includes(cliente.profissao)) {
+                document.getElementById('cliente-profissao').value = cliente.profissao;
+                verificarOutraProfissao(); // oculta campo se não for "Outro"
+            } else {
+                document.getElementById('cliente-profissao').value = 'Outro';
+                verificarOutraProfissao(); // mostra campo
+                document.getElementById('cliente-profissao-outro').value = cliente.profissao;
+            }
+
 
             const endereco = cliente.endereco || {};
             document.getElementById('endereco-rua').value = endereco.rua || '';
@@ -208,6 +226,33 @@ function buscarEnderecoPorCEP() {
         .catch(() => {
             showToast('Erro ao buscar o CEP.', 'error');
         });
+}
+
+//preenche as opções do select de profissões
+function preencherSelectProfissoes() {
+    const select = document.getElementById('cliente-profissao');
+    select.innerHTML = '<option value="">Selecione...</option>';
+
+    PROFISSOES.forEach(profissao => {
+        const option = document.createElement('option');
+        option.value = profissao;
+        option.textContent = profissao;
+        select.appendChild(option);
+    });
+}
+
+//se selecionar "outra" aparece o campo para digitar
+function verificarOutraProfissao() {
+    const select = document.getElementById('cliente-profissao');
+    const outroContainer = document.getElementById('profissao-outro-container');
+
+    if (select.value === 'Outro') {
+        outroContainer.classList.remove('d-none');
+        document.getElementById('cliente-profissao-outro').required = true;
+    } else {
+        outroContainer.classList.add('d-none');
+        document.getElementById('cliente-profissao-outro').required = false;
+    }
 }
 
 //limpa os campos do form depois de um novo cliente adicionado
