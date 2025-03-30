@@ -21,10 +21,19 @@ const cliente = database.define('Cliente', {
     rg: {
         type: DataTypes.STRING,
         allowNull: false
+    }, 
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    }, 
+    senha: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 });
 
-cliente.hasMany(emprego,{
+cliente.hasMany(emprego, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
