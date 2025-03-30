@@ -1,38 +1,37 @@
-const sequelize = require('sequelize');
+const { DataTypes } = require('sequelize');
 const database = require('../database/db');
-const Endereco = require('./endereco');
-const Emprego = require('./emprego');
+const endereco = require('./endereco');
+const emprego = require('./emprego');
 
-const Cliente = database.define('cliente', {
+const cliente = database.define('Cliente', {
     id: {
-        type: sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
     nome: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     cpf: {
-        type: sequelize.STRING,
-        allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
     },
-    rg:{
-        type: sequelize.STRING,
+    rg: {
+        type: DataTypes.STRING,
         allowNull: false
-    },
-    empregos:{
-        type: sequelize.STRING,
-        allowNull: false
-    },
+    }
 });
 
-Cliente.hasOne(Endereco,{
+cliente.hasMany(emprego,{
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
-    allowNull: false
 });
 
-Cliente.hasMany(Emprego, { as: 'historicoEmpregos', foreignKey: 'clienteId' });
+cliente.hasOne(endereco, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
 
-module.exports = Cliente;
+module.exports = cliente;
