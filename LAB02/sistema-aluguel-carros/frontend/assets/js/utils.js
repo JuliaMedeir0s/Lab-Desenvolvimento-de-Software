@@ -71,3 +71,36 @@ function validarRG(rg) {
   rg = rg.replace(/\D/g, '');
   return rg.length >= 7 && rg.length <= 9;
 }
+
+function validarEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email.toLowerCase());
+}
+
+function validarSenha(senha) {
+  return senha.length >= 6;
+}
+
+//busca o endereço pelo CEP
+function buscarEnderecoPorCEP() {
+  const cep = document.getElementById('endereco-cep').value.replace(/\D/g, '');
+
+  if (cep.length !== 8) return;
+
+  fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(response => response.json())
+      .then(data => {
+          if (data.erro) {
+              alert('CEP não encontrado.');
+              return;
+          }
+
+          document.getElementById('endereco-rua').value = data.logradouro || '';
+          document.getElementById('endereco-bairro').value = data.bairro || '';
+          document.getElementById('endereco-cidade').value = data.localidade || '';
+          document.getElementById('endereco-estado').value = data.uf || '';
+      })
+      .catch(() => {
+          showToast('Erro ao buscar o CEP.', 'error');
+      });
+}

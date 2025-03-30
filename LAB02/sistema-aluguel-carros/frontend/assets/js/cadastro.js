@@ -1,37 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    carregarClientes();
     preencherSelectProfissoes();
 });
-
-//carrega a tabela com os cliente da base
-function carregarClientes() {
-    fetch(API.CLIENTES)
-        .then(response => response.json())
-        .then(clientes => {
-            const tabela = document.getElementById('tabela-clientes');
-            tabela.innerHTML = '';
-
-            clientes.forEach(cliente => {
-                const tr = document.createElement('tr');
-
-                tr.innerHTML = `
-            <td>${cliente.nome}</td>
-            <td>${cliente.cpf}</td>
-            <td>${cliente.profissao || '-'}</td>
-            <td>
-              <button class="btn btn-sm btn-warning" onclick="editarCliente(${cliente.id})">Editar</button>
-              <button class="btn btn-sm btn-danger" onclick="deletarCliente(${cliente.id})">Excluir</button>
-            </td>
-          `;
-
-                tabela.appendChild(tr);
-            });
-        })
-        .catch(error => {
-            showToast('Erro ao carregar cliente.', 'error');
-            console.error('Erro ao carregar clientes:', error);
-        });
-}
 
 //cadastra um novo cliente na base
 function salvarCliente(event) {
@@ -55,7 +24,9 @@ function salvarCliente(event) {
             cidade: document.getElementById('endereco-cidade').value,
             estado: document.getElementById('endereco-estado').value
         },
-        empregos: []
+        empregos: [],
+        email: document.getElementById('cliente-email').value,
+        senha: document.getElementById('cliente-senha').value
     };
 
     // Pegar vínculos empregatícios
@@ -72,6 +43,19 @@ function salvarCliente(event) {
     const cpf = document.getElementById('cliente-cpf').value;
     if (!validarCPF(cpf)) {
         showToast('CPF inválido. Verifique os números digitados.', 'error');
+        return;
+    }
+
+    const email = document.getElementById('cliente-email').value;
+    const senha = document.getElementById('cliente-senha').value;
+
+    if (!validarEmail(email)) {
+        showToast('E-mail inválido. Verifique o formato.', 'error');
+        return;
+    }
+
+    if (!validarSenha(senha)) {
+        showToast('A senha deve conter pelo menos 6 caracteres.', 'error');
         return;
     }
 
@@ -96,80 +80,6 @@ function salvarCliente(event) {
         .catch(error => {
             showToast('Erro ao salvar novo cliente.', 'error');
             alert(error.message);
-        });
-}
-
-//responsavel por editar um cliente a partir do id
-function editarCliente(id) {
-    fetch(`${API.CLIENTES}/${id}`)
-        .then(response => response.json())
-        .then(cliente => {
-            document.getElementById('cliente-id').value = cliente.id;
-            document.getElementById('cliente-nome').value = cliente.nome;
-            document.getElementById('cliente-cpf').value = cliente.cpf;
-            document.getElementById('cliente-rg').value = cliente.rg;
-            if (PROFISSOES.includes(cliente.profissao)) {
-                document.getElementById('cliente-profissao').value = cliente.profissao;
-                verificarOutraProfissao(); // oculta campo se não for "Outro"
-            } else {
-                document.getElementById('cliente-profissao').value = 'Outro';
-                verificarOutraProfissao(); // mostra campo
-                document.getElementById('cliente-profissao-outro').value = cliente.profissao;
-            }
-
-
-            const endereco = cliente.endereco || {};
-            document.getElementById('endereco-rua').value = endereco.rua || '';
-            document.getElementById('endereco-numero').value = endereco.numero || '';
-            document.getElementById('endereco-bairro').value = endereco.bairro || '';
-            document.getElementById('endereco-cep').value = endereco.cep || '';
-            document.getElementById('endereco-cidade').value = endereco.cidade || '';
-            document.getElementById('endereco-estado').value = endereco.estado || '';
-
-            // Empregos
-            const container = document.getElementById('empregos-container');
-            container.innerHTML = '';
-
-            (cliente.empregos || []).forEach(emprego => {
-                const bloco = document.createElement('div');
-                bloco.classList.add('emprego-item', 'row', 'g-2', 'mb-2');
-
-                bloco.innerHTML = `
-            <div class="col-8">
-              <input type="text" class="form-control empresa" placeholder="Empresa" value="${emprego.empresa}" />
-            </div>
-            <div class="col-4">
-              <input type="number" class="form-control renda" placeholder="Renda" value="${emprego.renda}" />
-            </div>
-          `;
-
-                container.appendChild(bloco);
-            });
-
-            const modal = new bootstrap.Modal(document.getElementById('clienteModal'));
-            modal.show();
-        })
-        .catch(error => {
-            showToast('Erro ao carregar cliente.', 'error');
-            console.error(error);
-        });
-}
-
-//excluir um cliente da base
-function deletarCliente(id) {
-    const confirmacao = confirm('Tem certeza que deseja excluir este cliente?');
-
-    if (!confirmacao) return;
-
-    fetch(`${API.CLIENTES}/${id}`, {
-        method: 'DELETE'
-    })
-        .then(() => {
-            showToast('Cliente excluído com sucesso!', 'success');
-            carregarClientes();
-        })
-        .catch(error => {
-            showToast('Erro ao excluir cliente.', 'error');
         });
 }
 
@@ -202,30 +112,6 @@ function adicionarEmprego() {
 function removerEmprego(botao) {
     const bloco = botao.closest('.emprego-item');
     bloco.remove();
-}
-
-//busca o endereço pelo CEP
-function buscarEnderecoPorCEP() {
-    const cep = document.getElementById('endereco-cep').value.replace(/\D/g, '');
-
-    if (cep.length !== 8) return;
-
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.erro) {
-                alert('CEP não encontrado.');
-                return;
-            }
-
-            document.getElementById('endereco-rua').value = data.logradouro || '';
-            document.getElementById('endereco-bairro').value = data.bairro || '';
-            document.getElementById('endereco-cidade').value = data.localidade || '';
-            document.getElementById('endereco-estado').value = data.uf || '';
-        })
-        .catch(() => {
-            showToast('Erro ao buscar o CEP.', 'error');
-        });
 }
 
 //preenche as opções do select de profissões
