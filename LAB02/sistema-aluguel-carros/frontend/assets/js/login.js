@@ -30,7 +30,6 @@ function login(event) {
         .then(data => {
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('usuarioId', data.id);
-            sessionStorage.setItem('usuarioNome', data.nome);
             sessionStorage.setItem('usuarioTipo', data.tipo);
 
             showToast('Login realizado com sucesso!', 'success');

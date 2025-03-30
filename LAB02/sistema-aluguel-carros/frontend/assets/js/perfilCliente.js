@@ -4,14 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function carregarPerfil() {
-    const clienteId = sessionStorage.getItem('clienteId');
-    // if (!clienteId) {
-    //     window.location.href = '../index.html';
-    //     return;
-    // }
+    const usuarioId = sessionStorage.getItem('usuarioId');
+    const token = sessionStorage.getItem('token');
 
-    fetch(`${API.CLIENTES}/${clienteId}`)
-        .then(res => res.json())
+    if (!usuarioId || !token) {
+        window.location.href = '../index.html';
+        return;
+    }
+
+    fetch(`${API.CLIENTES}/${usuarioId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao buscar perfil');
+            return res.json();
+        })
         .then(cliente => {
             document.getElementById('cliente-nome').value = cliente.nome;
             document.getElementById('cliente-cpf').value = cliente.cpf;
@@ -54,8 +63,9 @@ function carregarPerfil() {
                 container.appendChild(div);
             });
         })
-        .catch(err => {
+        .catch(erro => {
             showToast('Erro ao carregar perfil', 'error');
+            console.error(erro);
         });
 }
 
@@ -94,9 +104,12 @@ function atualizarCliente(event) {
         }
     };
 
-    fetch(`${API.CLIENTES}/${clienteId}`, {
+    fetch(`${API.CLIENTES}/${usuarioId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(cliente)
     })
         .then(res => {
@@ -117,8 +130,11 @@ function confirmarExclusao() {
 
 function excluirConta() {
     const clienteId = sessionStorage.getItem('clienteId');
-    fetch(`${API.CLIENTES}/${clienteId}`, {
-        method: 'DELETE'
+    fetch(`${API.CLIENTES}/${usuarioId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     })
         .then(res => {
             if (!res.ok) throw new Error('Erro ao excluir conta');
