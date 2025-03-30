@@ -1,20 +1,21 @@
-const sequelize = require('sequelize');
+const { DataTypes } = require('sequelize');
 const database = require('../database/db');
 
-const Emprego = database.define('emprego', {
+const Emprego = database.define('Emprego', {
     id: {
-        type: sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
     empresa: {
-        type: sequelize.STRING,
-
+        type: DataTypes.STRING,
+        allowNull: false
     },
     renda: {
-        type: sequelize.FLOAT,
-    },
+        type: DataTypes.FLOAT,
+        allowNull: false
+    }
 });
 
 module.exports = Emprego;
