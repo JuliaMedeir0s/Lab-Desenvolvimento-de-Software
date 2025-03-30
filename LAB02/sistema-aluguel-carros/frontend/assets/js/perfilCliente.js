@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function carregarPerfil() {
     const clienteId = sessionStorage.getItem('clienteId');
-    if (!clienteId) {
-        window.location.href = 'index.html';
-        return;
-    }
+    // if (!clienteId) {
+    //     window.location.href = '../index.html';
+    //     return;
+    // }
 
     fetch(`${API.CLIENTES}/${clienteId}`)
         .then(res => res.json())
