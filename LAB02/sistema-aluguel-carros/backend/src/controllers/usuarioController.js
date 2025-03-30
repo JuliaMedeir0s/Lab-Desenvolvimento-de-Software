@@ -23,6 +23,9 @@ exports.findAll = (req, res, next) => {
     usuarios.findAll({
         include: [enderecos, emprego]
     }).then(usuario => {
+        if (!usuario) {
+            return res.status(404).send('Usuarios não encontrados.');
+        }
         res.status(200).send(usuario);
     }).catch(err => {
         next(err);

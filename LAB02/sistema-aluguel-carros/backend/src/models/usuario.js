@@ -32,7 +32,7 @@ const usuario = database.define('Usuario', {
         allowNull: false
     },
     tipo: {
-        type: DataTypes.ENUM('cliente', 'funcionario'),
+        type: DataTypes.ENUM('CLIENTE', 'FUNCIONARIO'),
         allowNull: false
     },
 });

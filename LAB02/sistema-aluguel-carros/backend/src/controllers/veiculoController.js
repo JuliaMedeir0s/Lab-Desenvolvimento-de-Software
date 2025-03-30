@@ -16,6 +16,9 @@ exports.create = (req, res, next) => {
 //buscar todos os veiculos
 exports.findAll = (req, res, next) => {
     veiculo.findAll().then(veiculo => {
+        if (!veiculo) {
+            return res.status(404).send('Veículos não encontrados.');
+        }
         res.status(200).send(veiculo);
     }).catch(err => {
         next(err);
