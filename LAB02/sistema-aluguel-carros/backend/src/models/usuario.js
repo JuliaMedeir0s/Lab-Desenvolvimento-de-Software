@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const database = require('../database/db');
 const endereco = require('./endereco');
 const emprego = require('./emprego');
+const bcrypt = require('bcryptjs');
 
 const usuario = database.define('Usuario', {
     id: {
@@ -47,6 +48,16 @@ usuario.hasOne(endereco, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     allowNull: true
+});
+
+usuario.beforeCreate(async (usuario) => {
+    usuario.senha = await bcrypt.hash(usuario.senha, 10);
+});
+
+usuario.beforeUpdate(async (usuario) => {
+    if (usuario.changed('senha')) {
+        usuario.senha = await bcrypt.hash(usuario.senha, 10);
+    }
 });
 
 module.exports = usuario;

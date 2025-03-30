@@ -1,3 +1,5 @@
+
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -9,16 +11,22 @@ const enderecoRouter = require('./routes/enderecos');
 const empregoRouter = require('./routes/empregos');
 const veiculoRouter = require('./routes/veiculos');
 const pedidosRouter = require('./routes/pedidos');
+const authRouter = require('./routes/auth');
+const authMiddleware = require('./middlewares/auth'); 
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/usuario', usuarioRoute);
+app.use('/auth', authRouter);
+
+app.use('/usuario', authMiddleware, usuarioRoute);
 app.use('/endereco', enderecoRouter);
 app.use('/emprego', empregoRouter);
-app.use('/veiculo', veiculoRouter);
-app.use('/pedido', pedidosRouter);
+app.use('/veiculo', authMiddleware, veiculoRouter);
+app.use('/pedido', authMiddleware, pedidosRouter);
+app.use('/auth', authRouter);
+
 
 const syncDataBase = async () => {
     const database = require('./database/db')
