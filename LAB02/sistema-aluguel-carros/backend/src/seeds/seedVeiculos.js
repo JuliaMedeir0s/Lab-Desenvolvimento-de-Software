@@ -1,6 +1,4 @@
-const axios = require('axios');
-
-const API_URL = 'http://localhost:3000/veiculo';
+const Veiculo = require('../models/veiculo'); // Importa o modelo Sequelize de Veículo
 
 const veiculos = [
     {
@@ -10,7 +8,7 @@ const veiculos = [
         placa: 'ABC-1234',
         ano: 2022,
         cor: 'Prata',
-        valor: 90000.00
+        valor: 90000.0
     },
     {
         matricula: 'MAT-002',
@@ -19,7 +17,7 @@ const veiculos = [
         placa: 'XYZ-5678',
         ano: 2021,
         cor: 'Preto',
-        valor: 95000.00
+        valor: 95000.0
     },
     {
         matricula: 'MAT-003',
@@ -28,7 +26,7 @@ const veiculos = [
         placa: 'QWE-9876',
         ano: 2020,
         cor: 'Vermelho',
-        valor: 55000.00
+        valor: 55000.0
     },
     {
         matricula: 'MAT-004',
@@ -37,7 +35,7 @@ const veiculos = [
         placa: 'LKJ-3210',
         ano: 2023,
         cor: 'Branco',
-        valor: 72000.00
+        valor: 72000.0
     },
     {
         matricula: 'MAT-005',
@@ -46,7 +44,7 @@ const veiculos = [
         placa: 'ZXC-4567',
         ano: 2024,
         cor: 'Cinza',
-        valor: 99000.00
+        valor: 99000.0
     },
     {
         matricula: 'MAT-006',
@@ -55,7 +53,7 @@ const veiculos = [
         placa: 'JKL-1122',
         ano: 2022,
         cor: 'Azul',
-        valor: 46000.00
+        valor: 46000.0
     },
     {
         matricula: 'MAT-007',
@@ -64,7 +62,7 @@ const veiculos = [
         placa: 'FGH-3344',
         ano: 2023,
         cor: 'Prata',
-        valor: 70000.00
+        valor: 70000.0
     },
     {
         matricula: 'MAT-008',
@@ -73,7 +71,7 @@ const veiculos = [
         placa: 'POI-5566',
         ano: 2021,
         cor: 'Preto',
-        valor: 63000.00
+        valor: 63000.0
     },
     {
         matricula: 'MAT-009',
@@ -82,7 +80,7 @@ const veiculos = [
         placa: 'UIO-7788',
         ano: 2020,
         cor: 'Branco',
-        valor: 58000.00
+        valor: 58000.0
     },
     {
         matricula: 'MAT-010',
@@ -91,30 +89,24 @@ const veiculos = [
         placa: 'MNB-9900',
         ano: 2022,
         cor: 'Verde',
-        valor: 88000.00
+        valor: 88000.0
     }
 ];
 
 async function popularVeiculos() {
     try {
-        const res = await axios.get(API_URL);
-        if (res.data.length > 0) {
+        // Verifica se já existem veículos no banco
+        const veiculosExistentes = await Veiculo.findAll();
+        if (veiculosExistentes.length > 0) {
             console.log('Veículos já existentes. Seed ignorada.');
             return;
         }
 
-        for (const veiculo of veiculos) {
-            const response = await axios.post(API_URL, veiculo);
-            console.log(`Inserido: ${response.data.modelo} (${response.data.placa})`);
-        }
+        // Insere os veículos diretamente no banco
+        await Veiculo.bulkCreate(veiculos);
+        console.log('Veículos inseridos com sucesso!');
     } catch (error) {
-        if (error.response) {
-            console.error('Erro ao popular veículos:', error.response.status, error.response.data);
-        } else if (error.request) {
-            console.error('Erro ao popular veículos: Sem resposta da API.');
-        } else {
-            console.error('Erro ao popular veículos:', error.message);
-        }
+        console.error('Erro ao popular veículos:', error.message);
     }
 }
 
