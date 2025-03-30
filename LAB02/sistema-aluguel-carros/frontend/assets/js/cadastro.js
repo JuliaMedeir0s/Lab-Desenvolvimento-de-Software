@@ -12,6 +12,7 @@ function salvarCliente(event) {
         rg: document.getElementById('cliente-rg').value,
         email: document.getElementById('cliente-email').value,
         senha: document.getElementById('cliente-senha').value,
+        tipo: 'CLIENTE',
         profissao: document.getElementById('cliente-profissao').value === 'Outro'
             ? document.getElementById('cliente-profissao-outro').value
             : document.getElementById('cliente-profissao').value,

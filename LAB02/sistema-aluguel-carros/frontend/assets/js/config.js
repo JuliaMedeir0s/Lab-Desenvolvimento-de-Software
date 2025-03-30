@@ -1,6 +1,6 @@
 const API = {
     BASE: 'http://localhost:3000',
-    CLIENTES: 'http://localhost:3000/clientes',
+    CLIENTES: 'http://localhost:3000/usuario',
     VEICULOS: 'http://localhost:3000/veiculo',
     PEDIDOS: 'http://localhost:3000/pedidos'
 };
