@@ -17,9 +17,9 @@ Este projeto utiliza a **arquitetura MVC** e é desenvolvido em **Java com Sprin
 O projeto utiliza as seguintes tecnologias e ferramentas:  
 
 - **Linguagem**: Java  
-- **Framework Backend**: Spring Boot  
+- **Framework Backend**: Node.js 
 - **Padrão Arquitetural**: MVC  
-- **Banco de Dados**:   
+- **Banco de Dados**:JSON   
 - **Ferramentas de Versionamento**: Git & GitHub  
 - **Documentação**: Markdown & UML  
 
@@ -98,6 +98,12 @@ As seguintes histórias de usuário definem o escopo do sistema:
 ## 📊 Diagrama de Pacotes  
 
 ![Diagrama de Pacotes](Docs/Diagrama-de-Pacotes.png)  
+
+---
+
+## 📊 Diagrama de Componentes
+
+![Diagrama de Componentes](Docs/LAB2-Diagrama-de-Componentes.png)
 
 ---
 
