@@ -107,6 +107,12 @@ As seguintes histórias de usuário definem o escopo do sistema:
 
 ---
 
+## 📊 Diagrama de Implantação
+
+![Diagrama de Implantação](Docs/LAB02-Diagrama-de-Implantaçao.png)
+
+---
+
 ## 🏆 Equipe  
 
 - **Gustavo Delfino** 
