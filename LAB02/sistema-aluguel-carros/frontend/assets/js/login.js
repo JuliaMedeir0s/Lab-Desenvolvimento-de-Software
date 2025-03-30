@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
 });
 
 function login(event) {
@@ -28,7 +28,11 @@ function login(event) {
             return res.json();
         })
         .then(data => {
-            sessionStorage.setItem('clienteId', data.id);
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('usuarioId', data.id);
+            sessionStorage.setItem('usuarioNome', data.nome);
+            sessionStorage.setItem('usuarioTipo', data.tipo);
+
             showToast('Login realizado com sucesso!', 'success');
             setTimeout(() => window.location.href = 'pedido.html', 1000);
         })

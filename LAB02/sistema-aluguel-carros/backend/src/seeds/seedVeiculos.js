@@ -99,7 +99,7 @@ async function popularVeiculos() {
     try {
         const res = await axios.get(API_URL);
         if (res.data.length > 0) {
-            console.log('⚠️ Veículos já existentes. Seed ignorada.');
+            console.log('Veículos já existentes. Seed ignorada.');
             return;
         }
 

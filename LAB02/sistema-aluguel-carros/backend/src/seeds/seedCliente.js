@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const API_USUARIOS = 'http://localhost:3000/clientes';
+const API_USUARIOS = 'http://localhost:3000/usuario';
 
 const clientePadrao = {
     nome: 'João da Silva',
