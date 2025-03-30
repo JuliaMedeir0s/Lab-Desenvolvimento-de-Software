@@ -8,6 +8,7 @@ const usuarioRoute = require('./routes/usuarios');
 const enderecoRouter = require('./routes/enderecos');
 const empregoRouter = require('./routes/empregos');
 const veiculoRouter = require('./routes/veiculos');
+const pedidosRouter = require('./routes/pedidos');
 
 app.use(cors());
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use('/usuario', usuarioRoute);
 app.use('/endereco', enderecoRouter);
 app.use('/emprego', empregoRouter);
 app.use('/veiculo', veiculoRouter);
+app.use('/pedido', pedidosRouter);
 
 const syncDataBase = async () => {
     const database = require('./database/db')
