@@ -26,11 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', authRouter);
 
-app.use('/usuario', authMiddleware, usuarioRoute);
+app.use('/usuario', usuarioRoute);
 app.use('/endereco', enderecoRouter);
 app.use('/emprego', empregoRouter);
-app.use('/veiculo', veiculoRouter);
-app.use('/pedido', pedidosRouter);
+app.use('/veiculo', authMiddleware, veiculoRouter);
+app.use('/pedido', authMiddleware, pedidosRouter);
 
 // Inicialização do banco e do servidor
 const startApp = async () => {

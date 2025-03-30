@@ -50,14 +50,4 @@ usuario.hasOne(endereco, {
     allowNull: true
 });
 
-usuario.beforeCreate(async (usuario) => {
-    usuario.senha = await bcrypt.hash(usuario.senha, 10);
-});
-
-usuario.beforeUpdate(async (usuario) => {
-    if (usuario.changed('senha')) {
-        usuario.senha = await bcrypt.hash(usuario.senha, 10);
-    }
-});
-
 module.exports = usuario;

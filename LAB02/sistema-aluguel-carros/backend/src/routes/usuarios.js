@@ -1,19 +1,20 @@
 const router = require('express').Router();
 const clienteController = require('../controllers/usuarioController');
+const authMiddleware = require('../middlewares/auth');
 
 router.route('/')
     .post(clienteController.create)
-    .get(clienteController.findAll);
+    .get(authMiddleware, clienteController.findAll);
 
 router.route('/:id')
-    .get(clienteController.findOne)
-    .put(clienteController.update)
-    .delete(clienteController.delete);
+    .get(authMiddleware, clienteController.findOne)
+    .put(authMiddleware, clienteController.update)
+    .delete(authMiddleware, clienteController.delete);
 
 router.route('/funcionario')
-    .get(clienteController.findAllFuncionarios);
+    .get(authMiddleware, clienteController.findAllFuncionarios);
 
 router.route('/cliente')
-    .get(clienteController.findAllClientes);
+    .get(authMiddleware, clienteController.findAllClientes);
 
 module.exports = router;
