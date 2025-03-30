@@ -7,6 +7,11 @@ const veiculo = database.define('veiculo', {
         primaryKey: true,
         autoIncrement: true,
     },
+    matricula: {
+        type: sequelize.STRING,
+        allowNull: false,
+        unique: true
+    },
     modelo: {
         type: sequelize.STRING,
         allowNull: false,

@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const clienteId = sessionStorage.getItem('clienteId');
-    if (!clienteId) {
-        window.location.href = '../index.html';
-        return;
-    }
+    // const clienteId = sessionStorage.getItem('clienteId');
+    // if (!clienteId) {
+    //     window.location.href = '../index.html';
+    //     return;
+    // }
 
     carregarVeiculos();
     listarPedidos();

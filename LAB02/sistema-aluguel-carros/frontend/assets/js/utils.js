@@ -1,6 +1,6 @@
 function logout() {
   sessionStorage.clear();
-  window.location.href = '../index.html'; // ou 'index.html' dependendo da pasta
+  window.location.href = '../index.html';
 }
 
 // Toast
