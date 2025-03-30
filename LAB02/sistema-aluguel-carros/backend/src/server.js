@@ -5,16 +5,16 @@ const app = express();
 const PORT = 3000;
 
 const clienteRouter = require('./routes/clientes');
-//const enderecoRouter = require('./routes/endereco');
-//const empregoRouter = require('./routes/emprego');
+const enderecoRouter = require('./routes/enderecos');
+const empregoRouter = require('./routes/empregos');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/clientes', clienteRouter);
-//app.use('/endereco', enderecoRouter);
-//app.use('/emprego', empregoRouter);
+app.use('/endereco', enderecoRouter);
+app.use('/emprego', empregoRouter);
 
 const syncDataBase = async () => {
     const database = require('./database/db')
