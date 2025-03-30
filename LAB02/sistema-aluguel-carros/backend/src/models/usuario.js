@@ -3,7 +3,7 @@ const database = require('../database/db');
 const endereco = require('./endereco');
 const emprego = require('./emprego');
 
-const cliente = database.define('Cliente', {
+const usuario = database.define('Usuario', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -30,17 +30,23 @@ const cliente = database.define('Cliente', {
     senha: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    tipo: {
+        type: DataTypes.ENUM('cliente', 'funcionario'),
+        allowNull: false
+    },
 });
 
-cliente.hasMany(emprego, {
+usuario.hasMany(emprego, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    allowNull: true,
 });
 
-cliente.hasOne(endereco, {
+usuario.hasOne(endereco, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    allowNull: true
 });
 
-module.exports = cliente;
+module.exports = usuario;

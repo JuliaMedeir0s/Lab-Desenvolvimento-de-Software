@@ -4,7 +4,7 @@ const app = express();
 
 const PORT = 3000;
 
-const clienteRouter = require('./routes/clientes');
+const usuarioRoute = require('./routes/usuarios');
 const enderecoRouter = require('./routes/enderecos');
 const empregoRouter = require('./routes/empregos');
 const veiculoRouter = require('./routes/veiculos');
@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/clientes', clienteRouter);
+app.use('/usuario', usuarioRoute);
 app.use('/endereco', enderecoRouter);
 app.use('/emprego', empregoRouter);
 app.use('/veiculo', veiculoRouter);
