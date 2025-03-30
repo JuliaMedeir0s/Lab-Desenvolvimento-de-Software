@@ -1,3 +1,8 @@
+function logout() {
+  sessionStorage.clear();
+  window.location.href = '../index.html'; // ou 'index.html' dependendo da pasta
+}
+
 // Toast
 function showToast(message, type = 'success') {
   const toastArea = document.getElementById('toast-area');
