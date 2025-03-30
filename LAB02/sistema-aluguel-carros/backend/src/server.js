@@ -12,6 +12,9 @@ const enderecoRouter = require('./routes/enderecos');
 const empregoRouter = require('./routes/empregos');
 const veiculoRouter = require('./routes/veiculos');
 const pedidosRouter = require('./routes/pedidos');
+const authRouter = require('./routes/auth');
+const authMiddleware = require('./middlewares/auth');
+
 
 // Seeds
 const popularVeiculos = require('./seeds/seedVeiculos');
