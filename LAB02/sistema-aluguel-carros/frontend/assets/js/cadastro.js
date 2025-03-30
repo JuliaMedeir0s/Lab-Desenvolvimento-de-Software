@@ -6,13 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function salvarCliente(event) {
     event.preventDefault();
 
-    const clienteId = document.getElementById('cliente-id').value;
-
     const cliente = {
         nome: document.getElementById('cliente-nome').value,
         cpf: document.getElementById('cliente-cpf').value,
         rg: document.getElementById('cliente-rg').value,
-        //validar a profissão
+        email: document.getElementById('cliente-email').value,
+        senha: document.getElementById('cliente-senha').value,
         profissao: document.getElementById('cliente-profissao').value === 'Outro'
             ? document.getElementById('cliente-profissao-outro').value
             : document.getElementById('cliente-profissao').value,
@@ -24,12 +23,26 @@ function salvarCliente(event) {
             cidade: document.getElementById('endereco-cidade').value,
             estado: document.getElementById('endereco-estado').value
         },
-        empregos: [],
-        email: document.getElementById('cliente-email').value,
-        senha: document.getElementById('cliente-senha').value
+        empregos: []
     };
 
-    // Pegar vínculos empregatícios
+    // Validações
+    if (!validarCPF(cliente.cpf)) {
+        showToast('CPF inválido. Verifique os números digitados.', 'error');
+        return;
+    }
+
+    if (!validarEmail(cliente.email)) {
+        showToast('E-mail inválido. Verifique o formato.', 'error');
+        return;
+    }
+
+    if (!validarSenha(cliente.senha)) {
+        showToast('A senha deve conter pelo menos 6 caracteres.', 'error');
+        return;
+    }
+
+    // Empregos
     const empregos = document.querySelectorAll('.emprego-item');
     empregos.forEach(emprego => {
         const empresa = emprego.querySelector('.empresa').value;
@@ -40,46 +53,22 @@ function salvarCliente(event) {
         }
     });
 
-    const cpf = document.getElementById('cliente-cpf').value;
-    if (!validarCPF(cpf)) {
-        showToast('CPF inválido. Verifique os números digitados.', 'error');
-        return;
-    }
-
-    const email = document.getElementById('cliente-email').value;
-    const senha = document.getElementById('cliente-senha').value;
-
-    if (!validarEmail(email)) {
-        showToast('E-mail inválido. Verifique o formato.', 'error');
-        return;
-    }
-
-    if (!validarSenha(senha)) {
-        showToast('A senha deve conter pelo menos 6 caracteres.', 'error');
-        return;
-    }
-
-    const metodo = clienteId ? 'PUT' : 'POST';
-    const url = clienteId ? `${API.CLIENTES}/${clienteId}` : API.CLIENTES;
-
-    fetch(url, {
-        method: metodo,
+    // Enviar para API
+    fetch(API.CLIENTES, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cliente)
     })
-        .then(response => {
-            if (!response.ok) throw new Error('Erro ao salvar cliente');
-            return response.json();
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao cadastrar cliente.');
+            return res.json();
         })
         .then(() => {
-            document.querySelector('#clienteModal .btn-close').click();
-            carregarClientes();
-            showToast('Cliente adicionado com sucesso!', 'success');
-            limparFormulario();
+            showToast('Cadastro realizado com sucesso!', 'success');
+            setTimeout(() => window.location.href = '../index.html', 1500);
         })
         .catch(error => {
-            showToast('Erro ao salvar novo cliente.', 'error');
-            alert(error.message);
+            showToast(error.message, 'error');
         });
 }
 
