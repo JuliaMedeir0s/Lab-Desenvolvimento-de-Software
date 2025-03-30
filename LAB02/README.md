@@ -19,7 +19,7 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 - **Linguagem**: Java  
 - **Framework Backend**: Node.js 
 - **Padrão Arquitetural**: MVC  
-- **Banco de Dados**:JSON   
+- **Banco de Dados**: JSON   
 - **Ferramentas de Versionamento**: Git & GitHub  
 - **Documentação**: Markdown & UML  
 
