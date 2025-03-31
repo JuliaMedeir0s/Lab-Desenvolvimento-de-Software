@@ -3,8 +3,39 @@ document.addEventListener('DOMContentLoaded', () => {
     preencherSelectProfissoes();
 });
 
+//preenche as opções do select de profissões
+function preencherSelectProfissoes() {
+    const select = document.getElementById('cliente-profissao');
+    select.innerHTML = '<option value="">Selecione...</option>';
+
+    PROFISSOES.forEach(profissao => {
+        const option = document.createElement('option');
+        option.value = profissao;
+        option.textContent = profissao;
+        select.appendChild(option);
+    });
+}
+
+function getUserIdFromToken() {
+    // Recupera o token do sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+        console.error("Token não encontrado!");
+        return null;
+    }
+
+    // Decodifica o token JWT (sem validar a assinatura)
+    const payloadBase64 = token.split('.')[1]; // Pega a parte do payload
+    const payloadJson = atob(payloadBase64); // Converte de Base64 para JSON
+    const payload = JSON.parse(payloadJson); // Converte JSON para objeto
+
+    return payload.id; // Retorna o ID do usuário
+}
+
 function carregarPerfil() {
-    const usuarioId = sessionStorage.getItem('usuarioId');
+    const usuarioId = getUserIdFromToken();
+
     const token = sessionStorage.getItem('token');
 
     if (!usuarioId || !token) {
@@ -18,7 +49,7 @@ function carregarPerfil() {
         }
     })
         .then(res => {
-            if (!res.ok) throw new Error('Erro ao buscar perfil');
+            if (!res.ok) throw new Error('Erro ao buscar perfil'); ;
             return res.json();
         })
         .then(cliente => {

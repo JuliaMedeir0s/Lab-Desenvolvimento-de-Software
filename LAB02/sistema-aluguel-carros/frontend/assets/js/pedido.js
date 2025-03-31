@@ -9,8 +9,48 @@ document.addEventListener('DOMContentLoaded', () => {
     listarPedidos();
 });
 
+function getUserIdFromToken() {
+    // Recupera o token do sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+        console.error("Token não encontrado!");
+        return null;
+    }
+
+    // Decodifica o token JWT (sem validar a assinatura)
+    const payloadBase64 = token.split('.')[1]; // Pega a parte do payload
+    const payloadJson = atob(payloadBase64); // Converte de Base64 para JSON
+    const payload = JSON.parse(payloadJson); // Converte JSON para objeto
+
+    return payload.id; // Retorna o ID do usuário
+}
+
+function carregarUsuarioLogado(token) {
+
+    fetch(`${API.CLIENTES}/me`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao carregar informações do usuário.');
+            return res.json();
+        })
+        .then(usuario => {
+            console.log('Usuário logado:', usuario);
+            
+        })
+        .catch(err => {
+            console.error(err.message);
+            showToast('Erro ao carregar informações do usuário.', 'error');
+        });
+}
+
 function carregarVeiculos() {
-    fetch(API.VEICULOS)
+    const token = sessionStorage.getItem('token');
+
+    fetch(API.VEICULOS, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
         .then(res => res.json())
         .then(veiculos => {
             const select = document.getElementById('veiculo-id');
@@ -28,9 +68,13 @@ function carregarVeiculos() {
 }
 
 function listarPedidos() {
-    const clienteId = sessionStorage.getItem('clienteId');
+    const token = sessionStorage.getItem('token');
+    const clienteId =  getUserIdFromToken();
 
-    fetch(`${API.PEDIDOS}/cliente/${clienteId}`)
+
+    fetch(`${API.PEDIDOS}/cliente/${clienteId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
         .then(res => res.json())
         .then(pedidos => {
             const tbody = document.querySelector('#tabela-pedidos tbody');

@@ -30,9 +30,15 @@ exports.create = async (req, res, next) => {
         const senhaHash = await bcrypt.hash(senha, 10);
 
         const usuario = await usuarios.create(
-            { ...userData, senha: senhaHash }, 
-            { include: [enderecos, emprego] }
+            { 
+                ...userData, 
+                senha: senhaHash, 
+                endereco: req.body.endereco, 
+                empregos: req.body.empregos 
+            }, 
+            { include: ['endereco', 'Empregos'] } // Certifique-se de que os aliases estão corretos
         );
+
 
         res.status(201).send({ message: 'Usuário criado com sucesso!', usuario });
     } catch (err) {
@@ -43,6 +49,20 @@ exports.create = async (req, res, next) => {
         }
     }
 };
+
+exports.findMe = async (req, res, next) => {
+    try {
+        const id = req.id; // ID do usuário decodificado do token
+        const usuario = await usuarios.findByPk(id, { include: [enderecos, emprego] });
+        if (!usuario) {
+            return res.status(404).send({ message: `Usuário com id ${id} não encontrado.` });
+        }
+        res.status(200).send(usuario);
+    } catch (err) {
+        next(err);
+    }
+};
+
 
 exports.findAll = [verificarToken, async (req, res, next) => {
     try {
@@ -77,8 +97,8 @@ exports.findAllFuncionarios = [verificarToken, async (req, res, next) => {
 exports.findOne = [verificarToken, async (req, res, next) => {
     try {
         const id = req.params.id;
+        if (req.userId != id) {
 
-        if (req.userId !== id) {
             return res.status(403).send({ message: 'Acesso negado.' });
         }
 
