@@ -103,13 +103,13 @@ As seguintes histórias de usuário definem o escopo do sistema:
 
 ## 📊 Diagrama de Componentes
 
-![Diagrama de Componentes](Docs/LAB02-Diagrama-de-Componentes.png)
+![Diagrama de Componentes](Docs/LAB02-Diagrama-de-Componentes..png)
 
 ---
 
 ## 📊 Diagrama de Implantação
 
-![Diagrama de Implantação](Docs/LAB02-Diagrama-de-Implantaçao.png)
+![Diagrama de Implantação](Docs/LAB02-Diagrama-de-Implantaçao..png)
 
 ---
 
