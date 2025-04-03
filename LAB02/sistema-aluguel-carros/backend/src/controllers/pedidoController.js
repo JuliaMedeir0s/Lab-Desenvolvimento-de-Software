@@ -27,10 +27,6 @@ exports.create = [verificarToken, async (req, res, next) => {
     try {
         const { veiculoId, clienteId, ...pedidoData } = req.body;
 
-        if (req.userId !== clienteId) {
-            return res.status(403).send({ message: 'Você não tem permissão para criar este pedido.' });
-        }
-
         const pedido = await pedidos.create(
             { veiculoId, clienteId, ...pedidoData },
             { include: [veiculos, usuarios] }
@@ -146,15 +142,10 @@ exports.findOne = [verificarToken, async (req, res, next) => {
 // Buscar todos os pedidos de um cliente
 exports.findAllByCliente = [verificarToken, async (req, res, next) => {
     try {
-        const clienteId = req.params.clienteId;
-
-        // Verifica se o usuário autenticado é o cliente associado ao pedido
-        if (req.userId !== parseInt(clienteId)) {
-            return res.status(403).send({ message: 'Você não tem permissão para acessar os pedidos deste cliente.' });
-        }
+        const clienteId = req.params.id;
 
         const pedidosCliente = await pedidos.findAll({
-            where: { clienteId: clienteId },
+            where: { UsuarioId: clienteId },
             include: [veiculos, usuarios]
         });
 

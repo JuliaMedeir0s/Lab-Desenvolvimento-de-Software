@@ -71,9 +71,9 @@ function listarPedidos() {
     const token = sessionStorage.getItem('token');
     const clienteId =  getUserIdFromToken();
 
-
     fetch(`${API.PEDIDOS}/cliente/${clienteId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: {
+             'Authorization': `Bearer ${token}` }
     })
         .then(res => res.json())
         .then(pedidos => {
@@ -83,8 +83,8 @@ function listarPedidos() {
             pedidos.forEach(pedido => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-            <td>${pedido.veiculo?.modelo || '---'}</td>
-            <td>${formatarData(pedido.dataInicio)} até ${formatarData(pedido.dataFim)}</td>
+            <td>${pedido.veiculoId?.modelo || '---'}</td>
+            <td>${formatarData(pedido.data_inicio)} até ${formatarData(pedido.data_fim)}</td>
             <td><span class="badge bg-${corStatus(pedido.status)}">${pedido.status}</span></td>
           `;
                 tbody.appendChild(tr);
@@ -98,18 +98,21 @@ function listarPedidos() {
 function criarPedido(event) {
     event.preventDefault();
 
-    const clienteId = sessionStorage.getItem('clienteId');
+    const token = sessionStorage.getItem('token');
+    const clienteId = getUserIdFromToken();
     const pedido = {
-        clienteId: parseInt(clienteId),
+        UsuarioId: parseInt(clienteId),
         veiculoId: parseInt(document.getElementById('veiculo-id').value),
-        dataInicio: document.getElementById('data-inicio').value,
-        dataFim: document.getElementById('data-fim').value,
+        data_inicio: document.getElementById('data-inicio').value,
+        data_fim: document.getElementById('data-fim').value,
         observacao: document.getElementById('observacao').value
     };
 
     fetch(API.PEDIDOS, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        },
         body: JSON.stringify(pedido)
     })
         .then(res => {
