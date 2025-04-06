@@ -1,6 +1,6 @@
 # 🚗 Sistema de Aluguel de Carros  
 
-![Projeto Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)  
+![Projeto Status](https://img.shields.io/badge/status-finalizado-green)  
 
 ## 📖 Descrição  
 
