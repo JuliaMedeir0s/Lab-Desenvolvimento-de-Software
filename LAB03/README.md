@@ -90,6 +90,10 @@ sistema-moeda-estudantil/
 
 ## 📊 Diagrama de Classes
 
+![Diagrama de Casos de Uso](Docs/Diagramas/classes.png)  
+📌 **Para detalhes sobre os casos de uso**:  
+🔗 [Descrição do Diagrama de Casos de Uso](Docs/classes.md)
+
 ---
 
 ## 📊 Diagrama de Componentes
