@@ -18,7 +18,7 @@ Este documento descreve os principais casos de uso do Sistema de Moeda Estudanti
 
 | Código | Caso de Uso                          | Descrição                                                                |
 |--------|--------------------------------------|--------------------------------------------------------------------------|
-| UC01   | Cadastrar-se no sistema              | Aluno informa seus dados pessoais e acadêmicos para se registrar.        |
+| UC01   | Realizar cadastro                    | Aluno informa seus dados pessoais e acadêmicos para se registrar.        |
 | UC02   | Fazer login                          | Aluno acessa o sistema com e-mail e senha.                               |
 | UC03   | Visualizar extrato de moedas         | Aluno consulta as moedas recebidas e trocadas.                           |
 | UC04   | Resgatar vantagem                    | Aluno escolhe uma vantagem e troca moedas por ela.                       |
@@ -40,7 +40,7 @@ Este documento descreve os principais casos de uso do Sistema de Moeda Estudanti
 
 | Código | Caso de Uso                  | Descrição                                                                 |
 |--------|------------------------------|---------------------------------------------------------------------------|
-| UC09   | Cadastrar-se no sistema      | Empresa se registra no sistema para oferecer vantagens.                   |
+| UC09   | Realizar cadastro            | Empresa se registra no sistema para oferecer vantagens.                   |
 | UC10   | Fazer login                  | Empresa acessa o sistema com e-mail e senha.                              |
 | UC11   | Cadastrar vantagem           | Empresa registra uma vantagem com nome, descrição, imagem e custo.        |
 | UC12   | Receber e-mail de resgate    | Empresa recebe um e-mail com os dados do aluno e código da vantagem.      |
