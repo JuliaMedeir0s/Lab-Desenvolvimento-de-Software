@@ -20,9 +20,9 @@ Este documento descreve os principais casos de uso do Sistema de Moeda Estudanti
 |--------|--------------------------------------|--------------------------------------------------------------------------|
 | UC01   | Realizar cadastro                    | Aluno informa seus dados pessoais e acadêmicos para se registrar.        |
 | UC02   | Fazer login                          | Aluno acessa o sistema com e-mail e senha.                               |
-| UC03   | Visualizar extrato de moedas         | Aluno consulta as moedas recebidas e trocadas.                           |
+| UC03   | Visualizar extrato                   | Aluno consulta as moedas recebidas e trocadas.                           |
 | UC04   | Resgatar vantagem                    | Aluno escolhe uma vantagem e troca moedas por ela.                       |
-| UC05   | Receber e-mail com código de resgate | Aluno recebe um e-mail com o código da vantagem resgatada.               |
+| UC05   | Receber e-mail de resgate            | Aluno recebe um e-mail com o código da vantagem resgatada.               |
 
 ---
 
@@ -31,8 +31,8 @@ Este documento descreve os principais casos de uso do Sistema de Moeda Estudanti
 | Código | Caso de Uso                   | Descrição                                                                 |
 |--------|-------------------------------|---------------------------------------------------------------------------|
 | UC06   | Fazer login                   | Professor acessa o sistema com e-mail e senha.                            |
-| UC07   | Enviar moedas para aluno      | Professor envia moedas para um aluno com uma justificativa obrigatória.   |
-| UC08   | Visualizar extrato de envios  | Professor consulta histórico de moedas enviadas e saldo disponível.       |
+| UC07   | Enviar moedas                 | Professor envia moedas para um aluno com uma justificativa obrigatória.   |
+| UC08   | Visualizar extrato            | Professor consulta histórico de moedas enviadas e saldo disponível.       |
 
 ---
 
