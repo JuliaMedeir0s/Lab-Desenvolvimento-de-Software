@@ -62,6 +62,22 @@ sistema-moeda-estudantil/
 
 ## 📌 Histórias de Usuário
 
+### **Aluno**
+- ✅ Como aluno, quero me cadastrar para participar do sistema e receber moedas.
+- ✅ Como aluno, quero ver meu extrato para saber quantas moedas recebi e usei.
+- ✅ Como aluno, quero trocar moedas por vantagens como produtos e descontos.
+- ✅ Como aluno, quero receber um e-mail com um código ao resgatar uma vantagem.
+
+### **Professor**
+- ✅ Como professor, quero fazer login para acessar o sistema.
+- ✅ Como professor, quero enviar moedas aos alunos com uma justificativa.
+- ✅ Como professor, quero ver meu extrato para acompanhar meu saldo e envios.
+
+### **Empresa Parceira**
+- ✅ Como empresa parceira, quero me cadastrar para oferecer vantagens aos alunos.
+- ✅ Como empresa parceira, quero cadastrar produtos com nome, imagem, descrição e custo.
+- ✅ Como empresa parceira, quero receber e-mail com o código quando uma vantagem for usada.
+
 ---
 
 ## 📊 Diagrama de Casos de Uso
