@@ -9,6 +9,3 @@ Cada projeto está organizado em pastas, refletindo as atividades e desafios pro
 - [**/LAB04**](./LAB04) – Sistema de Moeda Estudantil (Release 2)
 - [**/LAB05**](./LAB05) – Sistema de Moeda Estudantil (Release 3)
 
-## 🚀 Tecnologias Utilizadas
-
-## 📌 Objetivo
