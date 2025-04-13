@@ -98,6 +98,7 @@ sistema-moeda-estudantil/
 
 ## 📊 Diagrama de Componentes
 
+![Diagrama de Componentes](Docs/Diagramas/componentes.png)
 ---
 
 ## 📌 Modelo ER
