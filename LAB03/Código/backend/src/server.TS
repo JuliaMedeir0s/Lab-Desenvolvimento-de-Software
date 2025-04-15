@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const startApp = async () => {
-    const database = await import('./database/db.js').then(module => module.default);
+    const database = await import('./database/db').then(module => module.default);
 
     try {
         await database.sync({ alter: true });

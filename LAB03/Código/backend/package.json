@@ -1,10 +1,11 @@
 {
   "name": "backendlab3",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
+    "start": "nodemon",
+    "dev": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "Gustavo Delfino Guimarães",
@@ -26,6 +27,10 @@
     "tsconfig": "^7.0.0"
   },
   "devDependencies": {
-    "@types/sequelize": "^4.28.20"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/sequelize": "^4.28.20",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
