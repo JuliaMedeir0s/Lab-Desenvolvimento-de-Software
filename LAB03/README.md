@@ -91,7 +91,7 @@ sistema-moeda-estudantil/
 
 ## 📊 Diagrama de Classes
 
-![Diagrama de Classes](Docs/Diagramas/classes-v2.png)  
+![Diagrama de Classes](Docs/Diagramas/classes-V2.png)  
 📌 **Para detalhes sobre as classes**:  
 🔗 [Detalhamento do Diagrama de Classes](Docs/classes.md)
 
