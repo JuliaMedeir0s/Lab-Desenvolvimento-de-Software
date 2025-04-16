@@ -104,5 +104,5 @@ sistema-moeda-estudantil/
 
 ## 📌 Modelo ER
 
-![Diagrama Entidade Relacionamento](Docs/Diagramas/modelo-er.png)
+![Diagrama Entidade Relacionamento](Docs/Diagramas/logico.png)
 ---
