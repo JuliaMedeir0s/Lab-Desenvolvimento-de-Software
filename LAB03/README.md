@@ -51,8 +51,9 @@ sistema-moeda-estudantil/
 │   │   ├── casos-de-uso.png
 │   │   ├── classes.png
 │   │   ├── componentes.png
-│   │   └── modelo-er.png
-│   └── README.md (opcional)
+│   │   ├── modelo-er.png
+│   │   └── logico.png
+│   └── README.md
 │
 ├── README.md
 └── .gitignore
@@ -90,7 +91,7 @@ sistema-moeda-estudantil/
 
 ## 📊 Diagrama de Classes
 
-![Diagrama de Classes](Docs/Diagramas/classes.png)  
+![Diagrama de Classes](Docs/Diagramas/classes-v2.png)  
 📌 **Para detalhes sobre as classes**:  
 🔗 [Detalhamento do Diagrama de Classes](Docs/classes.md)
 
@@ -103,4 +104,5 @@ sistema-moeda-estudantil/
 
 ## 📌 Modelo ER
 
+![Diagrama Entidade Relacionamento](Docs/Diagramas/modelo-er.png)
 ---
