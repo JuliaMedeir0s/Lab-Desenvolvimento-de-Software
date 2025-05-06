@@ -65,3 +65,12 @@ exports.delete = (req, res, next) => {
     });
 }
 
+//listar todas as transacoes
+exports.list = (req, res, next) => {
+    transacao.findAll().then(transacoes => {
+        res.status(200).send(transacoes);
+    }
+    ).catch(err => {
+        next(err);
+    });
+}

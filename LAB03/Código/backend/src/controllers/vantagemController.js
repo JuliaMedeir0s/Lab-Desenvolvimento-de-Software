@@ -51,3 +51,21 @@ exports.updateVantagem = (req, res, next) => {
         next(err);
     });
 }
+
+// Função para deletar uma vantagem
+exports.delete = (req, res, next) => {
+    const id = req.params.id;
+    vantagem.findByPk(id).then(vantagem => {
+        if (vantagem) {
+            vantagem.destroy().then(() => {
+                res.status(200).send(`Vantagem com id ${id} deletada.`);
+            }).catch(err => {
+                next(err);
+            });
+        } else {
+            res.status(404).send(`Vantagem com id ${id} não encontrada.`);
+        }
+    }).catch(err => {
+        next(err);
+    });
+}
