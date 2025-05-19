@@ -25,7 +25,10 @@ exports.login = async (req, res, next) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
         const token = generateToken(user);
-        return res.status(200).json({ token });
+        return res.status(200).json({
+            token,
+            tipoUsuario: user.tipoUsuario
+        });
     } catch (error) {
         next(error);
     }
