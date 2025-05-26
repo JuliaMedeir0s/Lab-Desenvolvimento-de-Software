@@ -1,6 +1,19 @@
 const API_URL = "http://localhost:3000";
 
 export const alunoService = {
+  registrar: async (dados: any) => {
+    const response = await fetch(`${API_URL}/alunos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao registrar aluno");
+    }
+
+    return await response.json();
+  },
   getExtrato: async (alunoId: number) => {
     const token = localStorage.getItem("token");
 

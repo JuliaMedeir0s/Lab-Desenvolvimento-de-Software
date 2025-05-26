@@ -1,6 +1,19 @@
 const API_URL = "http://localhost:3000";
 
 export const parceiroService = {
+  registrar: async (dados: any) => {
+    const response = await fetch(`${API_URL}/parceiros`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao registrar parceiro");
+    }
+
+    return await response.json();
+  },
   cadastrarVantagem: async (
     parceiroId: number,
     dados: {

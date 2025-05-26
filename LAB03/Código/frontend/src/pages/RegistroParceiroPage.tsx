@@ -1,8 +1,8 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
+import ParceiroForm from "../components/ParceiroForm";
 import { Coins } from "lucide-react";
 
-const LoginPage: React.FC = () => {
+const RegistroParceiroPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
@@ -11,14 +11,12 @@ const LoginPage: React.FC = () => {
             <Coins size={48} className="text-indigo-600" />
           </div>
           <h1 className="text-2xl font-bold text-gray-800">
-            Sistema de Moeda Estudantil
+            Cadastro de Parceiro
           </h1>
-          <p className="text-gray-600 mt-2">
-            Faça login para acessar sua conta
-          </p>
+          <p className="text-gray-600 mt-2">Preencha os dados da sua empresa</p>
         </div>
 
-        <LoginForm />
+        <ParceiroForm />
 
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>© {new Date().getFullYear()} Sistema de Moeda Estudantil</p>
@@ -28,4 +26,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default RegistroParceiroPage;

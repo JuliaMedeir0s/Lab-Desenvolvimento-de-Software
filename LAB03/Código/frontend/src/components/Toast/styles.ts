@@ -1,16 +1,27 @@
-export const toastContainer = (type: "success" | "error" | "info") => {
-  const color = {
-    success: "green",
-    error: "red",
-    info: "blue",
-  }[type];
+export const toastContainer = (
+  type: "success" | "error" | "info"
+): React.CSSProperties => {
+  const colors = {
+    success: "#16A34A", 
+    error: "#DC2626", 
+    info: "#2563EB", 
+  };
+
+  const background = {
+    success: "#DCFCE7", 
+    error: "#FEE2E2", 
+    info: "#DBEAFE", 
+  };
 
   return {
-    padding: "10px 16px",
-    border: `1px solid ${color}`,
-    backgroundColor: `${color}20`,
-    color: color,
-    borderRadius: "4px",
-    marginTop: "10px",
+    padding: "12px 16px",
+    borderRadius: "6px",
+    border: `1px solid ${colors[type]}`,
+    backgroundColor: background[type],
+    color: colors[type],
+    marginTop: "12px",
+    fontSize: "15px",
+    fontWeight: 500,
+    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
   };
 };
