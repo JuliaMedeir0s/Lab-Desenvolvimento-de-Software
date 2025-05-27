@@ -1,0 +1,10 @@
+const express = require('express');
+const auth = require('../middlewares/authMiddleware');
+const { getMe, updateMe, getAll, getById } = require('../controllers/parceiroController');
+const router = express.Router();
+router.use(auth);
+router.get('/me', getMe);
+router.put('/me', updateMe);
+router.get('/', getAll);
+router.get('/:id', getById);
+module.exports = router;

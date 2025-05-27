@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TipoUsuario {
+  ALUNO
+  PROFESSOR
+  PARCEIRO
+}
+
+enum TipoTransacao {
+  ENVIO
+  RESGATE
+}
+
+model Usuario {
+  id          Int          @id @default(autoincrement())
+  nome        String
+  email       String       @unique
+  senha       String
+  tipoUsuario TipoUsuario
+  aluno       Aluno?       @relation("UsuarioAluno")
+  professor   Professor?   @relation("UsuarioProfessor")
+  parceiro    Parceiro?    @relation("UsuarioParceiro")
+}
+
+model Aluno {
+  id            Int         @id
+  cpf           String
+  rg            String
+  saldo         Int         @default(0)
+  instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
+  instituicaoId Int
+  endereco      Endereco    @relation(fields: [enderecoId], references: [id])
+  enderecoId    Int
+  transacoes    Transacao[] @relation("AlunoTransacoes")
+  usuario       Usuario     @relation("UsuarioAluno", fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Professor {
+  id            Int         @id
+  cpf           String
+  departamento  String
+  saldo         Int         @default(0)
+  instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
+  instituicaoId Int
+  transacoes    Transacao[] @relation("ProfessorTransacoes")
+  usuario       Usuario     @relation("UsuarioProfessor", fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Parceiro {
+  id         Int         @id
+  cnpj       String
+  vantagens  Vantagem[]
+  usuario    Usuario     @relation("UsuarioParceiro", fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Instituicao {
+  id          Int           @id @default(autoincrement())
+  nome        String
+  alunos      Aluno[]
+  professores Professor[]
+}
+
+model Endereco {
+  id          Int     @id @default(autoincrement())
+  rua         String
+  numero      String
+  complemento String?
+  bairro      String
+  cidade      String
+  uf          String
+  cep         String
+  alunos      Aluno[]
+}
+
+model Vantagem {
+  id          Int         @id @default(autoincrement())
+  nome        String
+  descricao   String
+  imagem      String
+  custo       Int
+  parceiro    Parceiro    @relation(fields: [parceiroId], references: [id])
+  parceiroId  Int
+  transacoes  Transacao[] @relation("VantagemTransacoes")
+}
+
+model Transacao {
+  id           Int         @id @default(autoincrement())
+  tipo         TipoTransacao
+  valor        Int
+  mensagem     String
+  codigo       String      @unique
+  data         DateTime    @default(now())
+  aluno        Aluno       @relation("AlunoTransacoes", fields: [alunoId], references: [id])
+  alunoId      Int
+  professor    Professor?   @relation("ProfessorTransacoes", fields: [professorId], references: [id])
+  professorId  Int?
+  vantagem     Vantagem?   @relation("VantagemTransacoes", fields: [vantagemId], references: [id])
+  vantagemId   Int?
+}

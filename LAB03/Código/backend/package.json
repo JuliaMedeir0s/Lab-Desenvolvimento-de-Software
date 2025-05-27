@@ -1,0 +1,23 @@
+{
+  "name": "estudantil-backend",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "migrate": "prisma migrate dev --name init",
+    "generate": "prisma generate",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
+    "prisma": "^4.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
