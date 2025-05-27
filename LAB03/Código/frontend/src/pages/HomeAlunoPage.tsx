@@ -6,7 +6,7 @@ interface StudentDashboardProps {
   balance: number;
 }
 
-const HomeAlunoPage: React.FC<StudentDashboardProps> = ({
+const DashboardAluno: React.FC<StudentDashboardProps> = ({
   studentName = "João Silva",
   balance = 120,
 }) => {
@@ -97,4 +97,4 @@ const HomeAlunoPage: React.FC<StudentDashboardProps> = ({
   );
 };
 
-export default HomeAlunoPage;
+export default DashboardAluno;

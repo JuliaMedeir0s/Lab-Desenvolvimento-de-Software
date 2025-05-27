@@ -1,20 +1,20 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: "aluno" | "professor" | "empresa";
+  requiredRole?: "ALUNO" | "PROFESSOR" | "PARCEIRO";
 }
 
 function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
-  const token = localStorage.getItem("token");
-  const tipoUsuario = localStorage.getItem("tipoUsuario");
+  const { isAuthenticated, tipo } = useAuth();
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
-  if (requiredRole && tipoUsuario !== requiredRole) {
-    return <Navigate to="/login" replace />;
+  if (requiredRole && tipo !== requiredRole) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

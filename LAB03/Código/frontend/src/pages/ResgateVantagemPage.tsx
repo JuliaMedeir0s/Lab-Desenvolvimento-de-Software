@@ -37,7 +37,7 @@ const mockRewards: Reward[] = [
   },
 ];
 
-export function VantagensAlunoPage() {
+export function ResgateVantagemPage() {
   const handleLogout = () => {
     // Implementar lógica de logout
     toast.info("Saindo do sistema...");
@@ -133,4 +133,4 @@ export function VantagensAlunoPage() {
   );
 }
 
-export default VantagensAlunoPage;
+export default ResgateVantagemPage;

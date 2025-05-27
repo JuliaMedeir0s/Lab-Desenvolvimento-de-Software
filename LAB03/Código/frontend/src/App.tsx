@@ -1,32 +1,98 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-import LoginPage from "./pages/LoginPage";
-import RegistroAluno from "./pages/RegistroAlunoPage";
-import RegistroParceiro from "./pages/RegistroParceiroPage";
-import HomeAluno from "./pages/HomeAlunoPage";
+import { Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
+import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
+
+// Páginas
+import Login from "./pages/LoginPage";
+import DashboardAluno from "./pages/HomeAlunoPage";
+import DashboardProfessor from "./pages/HomeProfessorPage";
+import DashboardParceiro from "./pages/HomeParceiroPage";
+import ExtratoAluno from "./pages/ExtratoAlunoPage";
+import ExtratoProfessor from "./pages/ExtratoProfessorPage";
+import EnvioMoedas from "./pages/EnvioMoedasPage";
+import ResgateVantagem from "./pages/ResgateVantagemPage";
+import CadastroVantagem from "./pages/CadastroVantagemPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <AuthProvider>
+      <Toaster richColors position="top-right" />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/registro/aluno" element={<RegistroAluno />} />
-        <Route path="/registro/parceiro" element={<RegistroParceiro />} />
+        {/* Rota pública */}
+        <Route path="/" element={<Login />} />
 
-        <Route
-          path="/aluno"
+        {/* Rotas protegidas - ALUNO */}
+        {/* <Route
+          path="/dashboard-aluno"
           element={
-            <ProtectedRoute requiredRole="aluno">
-              <HomeAluno />
+            <ProtectedRoute requiredRole="ALUNO">
+              <DashboardAluno />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/extrato-aluno"
+          element={
+            <ProtectedRoute requiredRole="ALUNO">
+              <ExtratoAluno />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/resgate-vantagem"
+          element={
+            <ProtectedRoute requiredRole="ALUNO">
+              <ResgateVantagem />
+            </ProtectedRoute>
+          }
+        /> */}
 
-        {/* Adicione mais rotas aqui conforme for criando */}
+        {/* Rotas protegidas - PROFESSOR */}
+        {/* <Route
+          path="/dashboard-professor"
+          element={
+            <ProtectedRoute requiredRole="PROFESSOR">
+              <DashboardProfessor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/envio-moedas"
+          element={
+            <ProtectedRoute requiredRole="PROFESSOR">
+              <EnvioMoedas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/extrato-professor"
+          element={
+            <ProtectedRoute requiredRole="PROFESSOR">
+              <ExtratoProfessor />
+            </ProtectedRoute>
+          }
+        /> */}
+
+        {/* Rotas protegidas - PARCEIRO */}
+        {/* <Route
+          path="/dashboard-parceiro"
+          element={
+            <ProtectedRoute requiredRole="PARCEIRO">
+              <DashboardParceiro />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cadastro-vantagem"
+          element={
+            <ProtectedRoute requiredRole="PARCEIRO">
+              <CadastroVantagem />
+            </ProtectedRoute>
+          }
+        /> */}
       </Routes>
-    </BrowserRouter>
+    </AuthProvider>
   );
 }
 

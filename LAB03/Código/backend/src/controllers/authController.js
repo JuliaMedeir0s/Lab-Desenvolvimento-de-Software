@@ -28,7 +28,7 @@ async function login(req, res) {
     if (!user) return res.status(401).json({ error: 'Credenciais inválidas' });
     const valid = await bcrypt.compare(senha, user.senha);
     if (!valid) return res.status(401).json({ error: 'Credenciais inválidas' });
-    const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id, tipo: user.tipoUsuario }, jwtSecret, { expiresIn: '1h' });
     return res.json({ message: 'Login bem-sucedido', token });
   } catch (err) {
     return res.status(500).json({ error: 'Erro no servidor' });
