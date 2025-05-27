@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { LoginFormData } from "../types";
+import { useAuth } from "../contexts/AuthContext";
+import { toast } from "sonner";
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { loginUser } = useAuth();
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -18,7 +23,6 @@ const LoginForm: React.FC = () => {
       [name]: value,
     }));
 
-    // Clear error when user types
     if (errors[name as keyof LoginFormData]) {
       setErrors((prev) => ({
         ...prev,
@@ -44,28 +48,34 @@ const LoginForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      // Here you would handle the login logic
-      console.log("Form submitted:", formData);
+    if (!validateForm()) return;
+    try {
+      await loginUser(formData.email, formData.password);
+      toast.success("Login realizado com sucesso!");
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.error ||
+          "Erro ao realizar o login. Verifique seus dados."
+      );
     }
   };
 
   const handleRegisterAsStudent = () => {
+    navigate("/registro-aluno");
     console.log("Registrar como aluno");
-    // Navigate to student registration
   };
 
   const handleRegisterAsPartner = () => {
+    navigate("/registro-parceiro");
     console.log("Registrar como parceiro");
-    // Navigate to partner registration
   };
 
   const handleForgotPassword = () => {
+    navigate("/recuperar-senha");
     console.log("Esqueci minha senha");
-    // Navigate to password recovery
   };
 
   return (

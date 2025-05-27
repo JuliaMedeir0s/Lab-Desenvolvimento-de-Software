@@ -4,10 +4,18 @@ const bcrypt = require('bcryptjs');
 
 async function main() {
   // Instituições
-  const insts = [];
-  for (let i = 1; i <= 5; i++) {
-    insts.push(await prisma.instituicao.create({ data: { nome: `Instituição ${i}` } }));
-  }
+  await prisma.instituicao.createMany({
+    data: [
+      { nome: 'PUC Minas' },
+      { nome: 'UFMG' },
+      { nome: 'CEFET-MG' },
+      { nome: 'UNA' },
+      { nome: 'FUMEC' },
+    ],
+    skipDuplicates: true, // Evita erro se já existir
+  });
+  console.log('Instituições criadas com sucesso!');
+
   // Endereços
   const ends = [];
   for (let i = 1; i <= 5; i++) {

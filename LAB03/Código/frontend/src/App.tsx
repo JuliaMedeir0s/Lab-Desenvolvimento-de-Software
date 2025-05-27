@@ -13,6 +13,7 @@ import ExtratoProfessor from "./pages/ExtratoProfessorPage";
 import EnvioMoedas from "./pages/EnvioMoedasPage";
 import ResgateVantagem from "./pages/ResgateVantagemPage";
 import CadastroVantagem from "./pages/CadastroVantagemPage";
+import RegistroAlunoPage from "./pages/RegistroAlunoPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         {/* Rota pública */}
         <Route path="/" element={<Login />} />
+        <Route path="/registro-aluno" element={<RegistroAlunoPage />} />
 
         {/* Rotas protegidas - ALUNO */}
         {/* <Route

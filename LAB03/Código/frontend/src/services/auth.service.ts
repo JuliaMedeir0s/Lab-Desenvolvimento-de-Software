@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000"; // 👉 Trocar pela URL da sua API
+const API_URL = "http://localhost:3000/auth"; 
 
 interface LoginResponse {
   message: string;

@@ -4,15 +4,46 @@ const jwt = require('jsonwebtoken');
 
 async function register(req, res) {
   try {
-    const { nome, email, senha, tipoUsuario, cpf, rg, departamento, instituicaoId, enderecoId, cnpj } = req.body;
+    const { nome, email, senha, tipoUsuario, cpf, rg, departamento, instituicaoId, cnpj, endereco } = req.body;
     const hashed = await bcrypt.hash(senha, 8);
     const user = await prisma.usuario.create({ data: { nome, email, senha: hashed, tipoUsuario } });
+    const enderecoCriado = endereco
+      ? await prisma.endereco.create({
+        data: {
+          rua: endereco.rua,
+          numero: endereco.numero,
+          cidade: endereco.cidade,
+          uf: endereco.uf,
+          cep: endereco.cep
+        }
+      })
+      : null;
     if (tipoUsuario === 'ALUNO') {
-      await prisma.aluno.create({ data: { id: user.id, cpf, rg, instituicaoId, enderecoId } });
+      await prisma.aluno.create({
+        data: {
+          id: user.id,
+          cpf,
+          rg,
+          instituicaoId,
+          enderecoId: enderecoCriado?.id
+        }
+      });
     } else if (tipoUsuario === 'PROFESSOR') {
-      await prisma.professor.create({ data: { id: user.id, cpf, departamento, instituicaoId } });
+      await prisma.professor.create({
+        data: {
+          id: user.id,
+          cpf,
+          departamento,
+          instituicaoId
+        }
+      });
     } else if (tipoUsuario === 'PARCEIRO') {
-      await prisma.parceiro.create({ data: { id: user.id, cnpj } });
+      await prisma.parceiro.create({
+        data: {
+          id: user.id,
+          cnpj
+        }
+      });
     }
     const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
     return res.status(201).json({ message: 'Registro bem-sucedido', token });
