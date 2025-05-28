@@ -1,49 +1,65 @@
-import React, { useState } from "react";
-import { PlusCircle, LogOut, Edit, Trash2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { PlusCircle, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { Reward } from "../types";
 import RewardCard from "../components/RewardCard";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import EditVantagemModal from "../components/EditVantagemModal";
+import { useAuth } from "../contexts/AuthContext";
+import { getParceiroInfo } from "../services/parceiro.services";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HomeParceiroPage: React.FC = () => {
-  const companyName = "Empresa ABC"; 
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const [rewards, setRewards] = useState<Reward[]>([
-    {
-      id: "1",
-      name: "Desconto de 50% em Livros",
-      description: "Válido para compras acima de R$100 na Livraria Central",
-      coinValue: 500,
-      imageUrl:
-        "https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: "2",
-      name: "Entrada Gratuita no Cinema",
-      description: "Válido para qualquer sessão de segunda a quinta",
-      coinValue: 350,
-      imageUrl:
-        "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: "3",
-      name: "Curso Online Gratuito",
-      description: "Escolha entre 10 cursos disponíveis na plataforma",
-      coinValue: 800,
-      imageUrl:
-        "https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-  ]);
+  const [vantagemSelecionada, setVantagemSelecionada] = useState<any | null>(
+    null
+  );
+  const [modalAberto, setModalAberto] = useState(false);
+
+  const [companyName, setCompanyName] = useState("...");
+  const [rewards, setRewards] = useState<Reward[]>([]);
+
+  useEffect(() => {
+    async function fetchParceiro() {
+      try {
+        const data = await getParceiroInfo();
+        setCompanyName(data.usuario.nome);
+        const formatted = data.vantagens.map((v: any) => ({
+          id: v.id,
+          name: v.nome,
+          description: v.descricao,
+          coinValue: v.custo,
+          imageUrl: v.imagem || "",
+        }));
+        setRewards(formatted);
+      } catch {
+        toast.error("Erro ao carregar dados do parceiro.");
+      }
+    }
+
+    fetchParceiro();
+  }, []);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [rewardToDelete, setRewardToDelete] = useState<string | null>(null);
 
   const handleLogout = () => {
-    toast.info("Saindo do sistema...");
+    logout();
   };
 
-  const handleEditReward = (id: string) => {
-    toast.info(`Editando vantagem ${id}`);
+  const handleEditReward = (rewardId: string) => {
+    const vantagem = rewards.find((r) => r.id === rewardId);
+    if (vantagem) {
+      setVantagemSelecionada(vantagem);
+      setModalAberto(true);
+    }
+  };  
+
+  const handleUpdateVantagem = () => {
+    recarregarVantagens(); 
   };
 
   const openDeleteDialog = (id: string) => {
@@ -51,14 +67,29 @@ const HomeParceiroPage: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const confirmDelete = () => {
-    if (rewardToDelete) {
-      setRewards(rewards.filter((reward) => reward.id !== rewardToDelete));
+  const confirmDelete = async () => {
+    if (!rewardToDelete) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(`http://localhost:3000/vantagens/${rewardToDelete}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setRewards((prev) =>
+        prev.filter((reward) => reward.id !== rewardToDelete)
+      );
+
       toast.success("Vantagem excluída com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao excluir vantagem.");
+      console.error(error);
+    } finally {
       setIsDialogOpen(false);
       setRewardToDelete(null);
     }
-  };
+  };  
 
   const cancelDelete = () => {
     setIsDialogOpen(false);
@@ -67,7 +98,26 @@ const HomeParceiroPage: React.FC = () => {
 
   const handleAddReward = () => {
     toast.info("Adicionando nova vantagem...");
+    navigate("/cadastro-vantagem");
   };
+
+  const recarregarVantagens = () => {
+    getParceiroInfo()
+      .then((data) => {
+        const formatted = data.vantagens.map((v: any) => ({
+          id: v.id,
+          name: v.nome,
+          description: v.descricao,
+          coinValue: v.custo,
+          imageUrl: v.imagem || "",
+        }));
+        setRewards(formatted);
+      })
+      .catch(() => {
+        toast.error("Erro ao recarregar vantagens");
+      });
+  };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
@@ -128,6 +178,15 @@ const HomeParceiroPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {modalAberto && vantagemSelecionada && (
+        <EditVantagemModal
+          isOpen={modalAberto}
+          onClose={() => setModalAberto(false)}
+          vantagem={vantagemSelecionada}
+          onUpdate={handleUpdateVantagem}
+        />
+      )}
 
       <ConfirmationDialog
         isOpen={isDialogOpen}

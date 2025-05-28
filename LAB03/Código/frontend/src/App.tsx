@@ -14,6 +14,7 @@ import EnvioMoedas from "./pages/EnvioMoedasPage";
 import ResgateVantagem from "./pages/ResgateVantagemPage";
 import CadastroVantagem from "./pages/CadastroVantagemPage";
 import RegistroAlunoPage from "./pages/RegistroAlunoPage";
+import RegistroParceiroPage from "./pages/RegistroParceiroPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         {/* Rota pública */}
         <Route path="/" element={<Login />} />
         <Route path="/registro-aluno" element={<RegistroAlunoPage />} />
+        <Route path="/registro-parceiro" element={<RegistroParceiroPage />} />
 
         {/* Rotas protegidas - ALUNO */}
         <Route
@@ -77,7 +79,7 @@ function App() {
         /> */}
 
         {/* Rotas protegidas - PARCEIRO */}
-        {/* <Route
+        <Route
           path="/dashboard-parceiro"
           element={
             <ProtectedRoute requiredRole="PARCEIRO">
@@ -92,7 +94,7 @@ function App() {
               <CadastroVantagem />
             </ProtectedRoute>
           }
-        /> */}
+        />
       </Routes>
     </AuthProvider>
   );

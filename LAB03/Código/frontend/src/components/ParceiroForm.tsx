@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { PartnerRegistrationData } from "../types";
+import { useNavigate } from "react-router-dom";
+import { cadastrarParceiro } from "../services/parceiro.services";
+import { toast } from "sonner";
 
 const ParceiroForm: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<PartnerRegistrationData>({
     nome: "",
     email: "",
@@ -55,17 +59,33 @@ const ParceiroForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
+    if (!validateForm()) return;
+
+    try {
+      const payload = {
+        nome: formData.nome,
+        email: formData.email,
+        senha: formData.senha,
+        cnpj: formData.cnpj || undefined,
+      };
+
+      await cadastrarParceiro(payload); 
+
+      toast.success("Cadastro realizado com sucesso!");
+      navigate("/"); 
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.error ||
+          "Erro ao cadastrar parceiro. Verifique os dados."
+      );
     }
   };
 
   const handleBackToLogin = () => {
-    console.log("Voltar para login");
-    // Navigate back to login
+    navigate("/");
   };
 
   return (

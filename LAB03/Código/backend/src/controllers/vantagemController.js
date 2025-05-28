@@ -41,4 +41,15 @@ async function updateVantagem(req, res) {
   }
 }
 
-module.exports = { listVantagens, myVantagens, createVantagem, updateVantagem };
+async function deleteVantagem(req, res) {
+  if (req.user.tipoUsuario !== 'PARCEIRO') return res.status(403).json({ error: 'Acesso negado' });
+  try {
+    const { id } = req.params;
+    await prisma.vantagem.delete({ where: { id: Number(id) } });
+    return res.status(204).send();
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+}
+
+module.exports = { listVantagens, myVantagens, createVantagem, updateVantagem, deleteVantagem };

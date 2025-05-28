@@ -1,10 +1,11 @@
 const express = require('express');
 const auth = require('../middlewares/authMiddleware');
-const { listVantagens, myVantagens, createVantagem, updateVantagem } = require('../controllers/vantagemController');
+const { listVantagens, myVantagens, createVantagem, updateVantagem, deleteVantagem } = require('../controllers/vantagemController');
 const router = express.Router();
 router.get('/', listVantagens);
 router.use(auth);
 router.get('/me', myVantagens);
 router.post('/me', createVantagem);
 router.put('/:id', updateVantagem);
+router.delete('/:id', deleteVantagem);
 module.exports = router;

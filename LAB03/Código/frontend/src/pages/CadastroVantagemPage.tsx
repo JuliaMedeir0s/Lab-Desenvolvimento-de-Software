@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { ArrowLeft, LogOut, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { cadastrarVantagem } from "../services/vantagem.service";
 
 interface FormData {
   name: string;
@@ -48,13 +49,28 @@ const CadastroVantagemPage: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     try {
-      console.log("Form data:", formData);
+      const payload = {
+        nome: formData.name,
+        descricao: formData.description,
+        custo: Number(formData.coinValue),
+        imagem: imagePreview || "",
+      };      
+
+      if (!imagePreview) {
+        toast.error("Selecione uma imagem para a vantagem.");
+        return;
+      }
+      console.log("Enviando payload:", payload);
+      await cadastrarVantagem(payload);
+
       toast.success("Vantagem cadastrada com sucesso!");
       navigate("/dashboard-parceiro");
-    } catch (error) {
+    } catch (error: any) {
       toast.error(
-        "Erro ao cadastrar vantagem. Verifique os dados e tente novamente."
+        error.response?.data?.error ||
+          "Erro ao cadastrar vantagem. Verifique os dados e tente novamente."
       );
     }
   };
@@ -66,7 +82,6 @@ const CadastroVantagemPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8 flex justify-between items-center">
           <button
             onClick={() => navigate("/dashboard-parceiro")}
@@ -95,7 +110,7 @@ const CadastroVantagemPage: React.FC = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Nome da vantagem
+                Nome da vantagem<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -114,7 +129,7 @@ const CadastroVantagemPage: React.FC = () => {
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Descrição da vantagem
+                Descrição da vantagem<span className="text-red-500">*</span>
               </label>
               <textarea
                 id="description"
@@ -133,7 +148,7 @@ const CadastroVantagemPage: React.FC = () => {
                 htmlFor="coinValue"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Valor em moedas
+                Valor em moedas<span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -153,7 +168,7 @@ const CadastroVantagemPage: React.FC = () => {
                 htmlFor="image"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Imagem da vantagem (opcional)
+                Imagem da vantagem<span className="text-red-500">*</span>
               </label>
               <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
                 <div className="space-y-1 text-center">
@@ -193,8 +208,10 @@ const CadastroVantagemPage: React.FC = () => {
                   </p>
                 </div>
               </div>
+              <p className="text-sm text-gray-500 mt-2">
+                Dimensão recomendada:{" "} <strong>800x600px</strong>. Tamanho máximo: <strong>1MB</strong>.
+              </p>
             </div>
-
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 type="button"
