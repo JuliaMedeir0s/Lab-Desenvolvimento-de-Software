@@ -25,7 +25,7 @@ function App() {
         <Route path="/registro-aluno" element={<RegistroAlunoPage />} />
 
         {/* Rotas protegidas - ALUNO */}
-        {/* <Route
+        <Route
           path="/dashboard-aluno"
           element={
             <ProtectedRoute requiredRole="ALUNO">
@@ -48,7 +48,7 @@ function App() {
               <ResgateVantagem />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
         {/* Rotas protegidas - PROFESSOR */}
         {/* <Route

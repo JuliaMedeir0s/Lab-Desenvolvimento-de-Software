@@ -116,7 +116,7 @@ const LoginForm: React.FC = () => {
       </div>
 
       <div className="space-y-3 pt-2">
-        <Button type="submit" fullWidth>
+        <Button type="submit" fullWidth onClick={handleRegisterAsStudent}>
           Entrar
         </Button>
 

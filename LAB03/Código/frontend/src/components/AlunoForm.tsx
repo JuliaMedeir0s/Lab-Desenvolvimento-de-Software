@@ -18,6 +18,7 @@ const AlunoForm: React.FC = () => {
     instituicao: "",
     rua: "",
     numero: "",
+    bairro: "",
     cidade: "",
     uf: "",
     cep: "",
@@ -63,6 +64,7 @@ const AlunoForm: React.FC = () => {
       "instituicao",
       "rua",
       "numero",
+      "bairro",
       "cidade",
       "uf",
       "cep",
@@ -88,14 +90,15 @@ const AlunoForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!validateForm()) return;
 
     try {
+      const instituicaoId = Number(formData.instituicao);
       const instituicaoSelecionada = instituicoes.find(
-        (i) => i.id === formData.instituicao
+        (i) => i.id === instituicaoId
       );
-
+      
       if (!instituicaoSelecionada) {
         toast.error("Instituição inválida.");
         return;
@@ -105,12 +108,14 @@ const AlunoForm: React.FC = () => {
         nome: formData.nome,
         email: formData.email,
         senha: formData.senha,
+        tipoUsuario: "ALUNO",
         cpf: formData.cpf,
         rg: formData.rg,
         instituicaoId: instituicaoSelecionada.id,
         endereco: {
           rua: formData.rua,
           numero: formData.numero,
+          bairro: formData.bairro,
           cidade: formData.cidade,
           uf: formData.uf,
           cep: formData.cep,
@@ -212,6 +217,15 @@ const AlunoForm: React.FC = () => {
             value={formData.rua}
             onChange={handleChange}
             error={errors.rua}
+          />
+          <Input
+            type="text"
+            name="bairro"
+            label="Bairro"
+            placeholder="Centro"
+            value={formData.bairro}
+            onChange={handleChange}
+            error={errors.bairro}
           />
           <Input
             type="text"

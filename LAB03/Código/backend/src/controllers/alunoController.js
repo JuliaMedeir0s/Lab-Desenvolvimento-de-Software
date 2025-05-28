@@ -6,9 +6,13 @@ async function getMe(req, res) {
   try {
     const aluno = await prisma.aluno.findUnique({
       where: { id: req.user.id },
-      include: { usuario: true, instituicao: true, endereco: true }
+      include: { usuario: true }
     });
-    return res.json(aluno);
+
+    return res.json({
+      nome: aluno.usuario.nome,
+      saldo: aluno.saldo
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

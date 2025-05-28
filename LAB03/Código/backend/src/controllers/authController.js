@@ -7,11 +7,13 @@ async function register(req, res) {
     const { nome, email, senha, tipoUsuario, cpf, rg, departamento, instituicaoId, cnpj, endereco } = req.body;
     const hashed = await bcrypt.hash(senha, 8);
     const user = await prisma.usuario.create({ data: { nome, email, senha: hashed, tipoUsuario } });
+    console.log("Recebido no backend:", endereco);
     const enderecoCriado = endereco
       ? await prisma.endereco.create({
         data: {
           rua: endereco.rua,
           numero: endereco.numero,
+          bairro: endereco.bairro,
           cidade: endereco.cidade,
           uf: endereco.uf,
           cep: endereco.cep
@@ -48,6 +50,10 @@ async function register(req, res) {
     const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
     return res.status(201).json({ message: 'Registro bem-sucedido', token });
   } catch (err) {
+    if (err.code === 'P2002' && err.meta?.target?.includes('email')) {
+      return res.status(400).json({ error: 'E-mail já cadastrado.' });
+    }
+    console.error("Erro no registro:", err);
     return res.status(400).json({ error: err.message });
   }
 }

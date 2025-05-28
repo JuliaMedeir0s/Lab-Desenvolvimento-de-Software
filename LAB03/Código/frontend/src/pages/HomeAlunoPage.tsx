@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Coins, LogOut, Receipt, Gift } from "lucide-react";
+import { getAlunoInfo } from "../services/aluno.service";
+import { useNavigate } from "react-router-dom";
 
-interface StudentDashboardProps {
-  studentName: string;
-  balance: number;
-}
+const DashboardAluno: React.FC = () => {
+  const navigate = useNavigate();
+  const [studentName, setStudentName] = useState("...");
+  const [balance, setBalance] = useState(0);
 
-const DashboardAluno: React.FC<StudentDashboardProps> = ({
-  studentName = "João Silva",
-  balance = 120,
-}) => {
+  useEffect(() => {
+    async function fetchAluno() {
+      try {
+        const data = await getAlunoInfo();
+        setStudentName(data.nome);
+        setBalance(data.saldo);
+      } catch (error) {
+        console.error("Erro ao buscar aluno", error);
+      }
+    }
+
+    fetchAluno();
+  }, []);
   const handleViewStatement = () => {
-    console.log("Navegando para extrato");
+    navigate("/extrato-aluno");
   };
 
   const handleRedeemRewards = () => {
-    console.log("Navegando para resgatar vantagens");
+    navigate("/resgate-vantagem");
   };
 
   const handleLogout = () => {
