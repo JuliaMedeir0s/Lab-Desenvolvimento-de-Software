@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Coins, LogOut, Receipt, Gift } from "lucide-react";
 import { getAlunoInfo } from "../services/aluno.service";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const DashboardAluno: React.FC = () => {
   const navigate = useNavigate();
@@ -30,7 +31,9 @@ const DashboardAluno: React.FC = () => {
   };
 
   const handleLogout = () => {
-    console.log("Realizando logout");
+    localStorage.removeItem("token");
+    toast.success("Você saiu do sistema.");
+    navigate("/");
   };
 
   return (

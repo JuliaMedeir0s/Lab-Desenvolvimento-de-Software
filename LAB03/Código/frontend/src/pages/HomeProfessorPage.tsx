@@ -1,16 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LogOut, SendHorizonal, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import {
+  getProfessorInfo,
+  getExtratoProfessor,
+} from "../services/professor.service";
 
 const HomeProfessorPage: React.FC = () => {
   const navigate = useNavigate();
-  const professorName = "João Silva"; 
-  const coinBalance = 1000; 
+  const [professorName, setProfessorName] = useState("");
+  const [coinBalance, setCoinBalance] = useState(0);
+
+  useEffect(() => {
+    const rawToken = localStorage.getItem("token");
+
+    if (!rawToken) {
+      toast.error("Token não encontrado. Faça login novamente.");
+      navigate("/login");
+      return;
+    }
+
+    const token: string = rawToken; // TypeScript confia agora
+
+    async function fetchData() {
+      try {
+        const prof = await getProfessorInfo(token);
+        setProfessorName(prof.usuario.nome);
+
+        const extrato = await getExtratoProfessor(token);
+        setCoinBalance(extrato.saldo ?? 0);
+      } catch (err) {
+        toast.error("Erro ao carregar dados do professor.");
+        console.error(err);
+      }
+    }
+
+    fetchData();
+  }, [navigate]);   
 
   const handleLogout = () => {
-    
+    localStorage.removeItem("token");
     toast.info("Saindo do sistema...");
+    navigate("/login");
   };
 
   return (
@@ -41,7 +73,6 @@ const HomeProfessorPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
           <button
             onClick={() => navigate("/enviar-moedas")}
             className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-200 text-center group"

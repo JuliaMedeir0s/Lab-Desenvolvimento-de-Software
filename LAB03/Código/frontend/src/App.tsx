@@ -53,7 +53,7 @@ function App() {
         />
 
         {/* Rotas protegidas - PROFESSOR */}
-        {/* <Route
+        <Route
           path="/dashboard-professor"
           element={
             <ProtectedRoute requiredRole="PROFESSOR">
@@ -76,7 +76,7 @@ function App() {
               <ExtratoProfessor />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
         {/* Rotas protegidas - PARCEIRO */}
         <Route

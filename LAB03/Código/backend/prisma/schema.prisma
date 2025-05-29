@@ -46,7 +46,7 @@ model Professor {
   id            Int         @id
   cpf           String
   departamento  String
-  saldo         Int         @default(0)
+  saldo         Int         @default(10000)
   instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
   instituicaoId Int
   transacoes    Transacao[] @relation("ProfessorTransacoes")

@@ -43,17 +43,33 @@ async function main() {
     } }));
   }
   // Professores
-  const profs = [];
+  const professores = [];
   for (let i = 1; i <= 5; i++) {
-    const hash = await bcrypt.hash('profpwd', 8);
-    const user = await prisma.usuario.create({ data: {
-      nome: `Professor ${i}`, email: `prof${i}@ex.com`,
-      senha: hash, tipoUsuario: 'PROFESSOR'
-    } });
-    profs.push(await prisma.professor.create({ data: {
-      id: user.id, cpf: `CPF_PROF${i}`, departamento: `Dept ${i}`, instituicaoId: insts[i-1].id
-    } }));
+    const senhaHash = await bcrypt.hash('profpwd', 8);
+
+    const usuario = await prisma.usuario.create({
+      data: {
+        nome: `Professor ${i}`,
+        email: `prof${i}@ex.com`,
+        senha: senhaHash,
+        tipoUsuario: 'PROFESSOR'
+      }
+    });
+
+    const professor = await prisma.professor.create({
+      data: {
+        id: usuario.id,
+        cpf: `000.000.000-0${i}`,
+        departamento: `Departamento ${i}`,
+        instituicaoId: insts[i % insts.length].id, 
+        saldo: 1000  
+      }
+    });
+
+    professores.push(professor);
   }
+  console.log('Professores criados com sucesso!');
+
   // Alunos
   const alunos = [];
   for (let i = 1; i <= 5; i++) {
