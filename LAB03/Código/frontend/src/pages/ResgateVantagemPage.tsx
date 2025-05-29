@@ -11,8 +11,8 @@ interface Reward {
   id: string;
   titulo: string;
   descricao: string;
-  preco: number;
-  imagemUrl?: string;
+  custo: number;
+  imagem?: string;
 }
 
 export function ResgateVantagemPage() {
@@ -87,9 +87,9 @@ export function ResgateVantagemPage() {
                   key={reward.id}
                   className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-[1.02]"
                 >
-                  {reward.imagemUrl && (
+                  {reward.imagem && (
                     <img
-                      src={reward.imagemUrl}
+                      src={reward.imagem}
                       alt={reward.titulo}
                       className="w-full h-48 object-cover"
                     />
@@ -101,7 +101,7 @@ export function ResgateVantagemPage() {
                     <p className="text-gray-600 mb-4">{reward.descricao}</p>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-lg font-medium text-indigo-600">
-                        Custa: {reward.preco} moedas
+                        Custa: {reward.custo} moedas
                       </span>
                     </div>
                     <button
