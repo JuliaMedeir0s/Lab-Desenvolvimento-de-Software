@@ -7,26 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum TipoUsuario {
-  ALUNO
-  PROFESSOR
-  PARCEIRO
-}
-
-enum TipoTransacao {
-  ENVIO
-  RESGATE
-}
-
 model Usuario {
-  id          Int          @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   nome        String
-  email       String       @unique
+  email       String      @unique
   senha       String
   tipoUsuario TipoUsuario
-  aluno       Aluno?       @relation("UsuarioAluno")
-  professor   Professor?   @relation("UsuarioProfessor")
-  parceiro    Parceiro?    @relation("UsuarioParceiro")
+  aluno       Aluno?      @relation("UsuarioAluno")
+  parceiro    Parceiro?   @relation("UsuarioParceiro")
+  professor   Professor?  @relation("UsuarioProfessor")
 }
 
 model Aluno {
@@ -34,12 +23,12 @@ model Aluno {
   cpf           String
   rg            String
   saldo         Int         @default(0)
-  instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
   instituicaoId Int
-  endereco      Endereco    @relation(fields: [enderecoId], references: [id])
   enderecoId    Int
-  transacoes    Transacao[] @relation("AlunoTransacoes")
+  endereco      Endereco    @relation(fields: [enderecoId], references: [id])
   usuario       Usuario     @relation("UsuarioAluno", fields: [id], references: [id], onDelete: Cascade)
+  instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
+  transacoes    Transacao[] @relation("AlunoTransacoes")
 }
 
 model Professor {
@@ -47,21 +36,21 @@ model Professor {
   cpf           String
   departamento  String
   saldo         Int         @default(10000)
-  instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
   instituicaoId Int
-  transacoes    Transacao[] @relation("ProfessorTransacoes")
   usuario       Usuario     @relation("UsuarioProfessor", fields: [id], references: [id], onDelete: Cascade)
+  instituicao   Instituicao @relation(fields: [instituicaoId], references: [id])
+  transacoes    Transacao[] @relation("ProfessorTransacoes")
 }
 
 model Parceiro {
-  id         Int         @id
-  cnpj       String
-  vantagens  Vantagem[]
-  usuario    Usuario     @relation("UsuarioParceiro", fields: [id], references: [id], onDelete: Cascade)
+  id        Int        @id
+  cnpj      String
+  usuario   Usuario    @relation("UsuarioParceiro", fields: [id], references: [id], onDelete: Cascade)
+  vantagens Vantagem[]
 }
 
 model Instituicao {
-  id          Int           @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   nome        String
   alunos      Aluno[]
   professores Professor[]
@@ -80,27 +69,38 @@ model Endereco {
 }
 
 model Vantagem {
-  id          Int         @id @default(autoincrement())
-  nome        String
-  descricao   String
-  imagem      String
-  custo       Int
-  parceiro    Parceiro    @relation(fields: [parceiroId], references: [id])
-  parceiroId  Int
-  transacoes  Transacao[] @relation("VantagemTransacoes")
+  id         Int         @id @default(autoincrement())
+  nome       String
+  descricao  String
+  imagem     String
+  custo      Int
+  parceiroId Int
+  transacoes Transacao[] @relation("VantagemTransacoes")
+  parceiro   Parceiro    @relation(fields: [parceiroId], references: [id])
 }
 
 model Transacao {
-  id           Int         @id @default(autoincrement())
-  tipo         TipoTransacao
-  valor        Int
-  mensagem     String
-  codigo       String      @unique
-  data         DateTime    @default(now())
-  aluno        Aluno       @relation("AlunoTransacoes", fields: [alunoId], references: [id])
-  alunoId      Int
-  professor    Professor?   @relation("ProfessorTransacoes", fields: [professorId], references: [id])
-  professorId  Int?
-  vantagem     Vantagem?   @relation("VantagemTransacoes", fields: [vantagemId], references: [id])
-  vantagemId   Int?
+  id          Int           @id @default(autoincrement())
+  tipo        TipoTransacao
+  valor       Int
+  mensagem    String
+  codigo      String        @unique
+  data        DateTime      @default(now())
+  alunoId     Int
+  professorId Int?
+  vantagemId  Int?
+  aluno       Aluno         @relation("AlunoTransacoes", fields: [alunoId], references: [id])
+  professor   Professor?    @relation("ProfessorTransacoes", fields: [professorId], references: [id])
+  vantagem    Vantagem?     @relation("VantagemTransacoes", fields: [vantagemId], references: [id])
+}
+
+enum TipoUsuario {
+  ALUNO
+  PROFESSOR
+  PARCEIRO
+}
+
+enum TipoTransacao {
+  ENVIO
+  RESGATE
 }
