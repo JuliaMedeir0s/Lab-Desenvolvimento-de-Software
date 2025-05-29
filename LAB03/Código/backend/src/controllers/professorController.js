@@ -79,15 +79,24 @@ async function getById(req, res) {
 }
 
 async function listarAlunos(req, res) {
-  if (req.user.tipoUsuario !== 'PROFESSOR') return res.status(403).json({ error: 'Acesso negado' });
+  if (req.user.tipoUsuario !== "PROFESSOR") {
+    return res.status(403).json({ error: "Acesso negado" });
+  }
+
   try {
-    const alunos = await prisma.aluno.findMany({
-      where: { instituicaoId: req.user.instituicaoId },
-      include: { usuario: true }
+    const professor = await prisma.professor.findUnique({
+      where: { id: req.user.id },
+      include: { instituicao: true },
     });
-    return res.json(alunos);
+
+    const alunos = await prisma.aluno.findMany({
+      where: { instituicaoId: professor.instituicaoId },
+      include: { usuario: true },
+    });
+
+    res.json(alunos);
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 }
 

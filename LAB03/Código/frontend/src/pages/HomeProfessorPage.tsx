@@ -42,7 +42,7 @@ const HomeProfessorPage: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.info("Saindo do sistema...");
-    navigate("/login");
+    navigate("/");
   };
 
   return (

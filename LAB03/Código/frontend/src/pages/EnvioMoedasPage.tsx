@@ -77,6 +77,7 @@ const EnvioMoedasPage: React.FC = () => {
 
   const handleLogout = () => {
     toast.info("Saindo do sistema...");
+    navigate("/");
   };
 
   return (
@@ -128,7 +129,8 @@ const EnvioMoedasPage: React.FC = () => {
                 <option value="">Selecione um aluno</option>
                 {students.map((student) => (
                   <option key={student.id} value={student.id}>
-                    {student.name} - {student.course}
+                    {student.name}
+                    {/* {student.name} - {student.course} */}
                   </option>
                 ))}
               </select>
