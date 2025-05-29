@@ -1,40 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, LogOut } from "lucide-react";
 import TransactionTable from "../components/TransactionTable";
 import EmptyState from "../components/EmptyState";
 import { Transaction } from "../types";
-import { mockTransactions } from "../data/mockTransactions";
+import { useNavigate } from "react-router-dom";
+import { getExtratoProfessor } from "../services/professor.service";
+import { toast } from "sonner";
 
 const ExtratoProfessorPage: React.FC = () => {
-  const [transactions, setTransactions] =
-    useState<Transaction[]>(mockTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const navigate = useNavigate();
 
-  // In a real application, you would fetch transactions from an API
-  // useEffect(() => {
-  //   const fetchTransactions = async () => {
-  //     try {
-  //       const response = await fetch('/api/transactions');
-  //       const data = await response.json();
-  //       setTransactions(data);
-  //     } catch (error) {
-  //       console.error('Error fetching transactions:', error);
-  //       
-  //       // toast.error('Erro ao carregar transações');
-  //     }
-  //   };
-  //
-  //   fetchTransactions();
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Token não encontrado");
+      navigate("/login");
+      return;
+    }
+
+    const fetchExtrato = async () => {
+      try {
+        const data = await getExtratoProfessor(token);
+        const transacoesFormatadas: Transaction[] = data.transacoes.map(
+          (t: any) => ({
+            id: t.id,
+            date: t.data,
+            studentName: t.aluno?.usuario?.nome ?? "-",
+            amount: t.valor,
+            reason: t.mensagem,
+          })
+        );
+
+        setTransactions(transacoesFormatadas);
+      } catch (error) {
+        console.error(error);
+        toast.error("Erro ao carregar transações.");
+      }
+    };
+
+    fetchExtrato();
+  }, []);
 
   const handleBack = () => {
-    // navigate('/dashboard/professor');
-    console.log("Navigating back to professor dashboard");
+    navigate("/dashboard-professor");
   };
 
   const handleLogout = () => {
-    // logout();
-    // navigate('/login');
-    console.log("Logging out");
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (

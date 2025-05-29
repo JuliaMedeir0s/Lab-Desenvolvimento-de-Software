@@ -29,7 +29,12 @@ async function transacoes(req, res) {
   try {
     const transacoes = await prisma.transacao.findMany({
       where: { professorId: req.user.id },
-      orderBy: { data: 'desc' }
+      orderBy: { data: 'desc' },
+      include: {
+        aluno: { include: { usuario: true } },
+        professor: { include: { usuario: true } },
+        vantagem: true,
+      },
     });
     const prof = await prisma.professor.findUnique({ where: { id: req.user.id } });
     return res.json({ saldo: prof.saldo, transacoes });
