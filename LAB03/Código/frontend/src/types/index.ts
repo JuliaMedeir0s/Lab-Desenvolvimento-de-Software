@@ -33,7 +33,7 @@ export interface Reward {
 }
 
 export interface Student {
-  id: string;
+  id: number;
   name: string;
   email: string;
   course: string;

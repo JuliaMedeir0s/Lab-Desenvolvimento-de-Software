@@ -1,11 +1,12 @@
 const express = require('express');
 const auth = require('../middlewares/authMiddleware');
-const { getMe, updateMe, transacoes, enviar, getAll, getById } = require('../controllers/professorController');
+const { getMe, listarAlunos, updateMe, transacoes, enviar, getAll, getById } = require('../controllers/professorController');
 const router = express.Router();
 router.use(auth);
 router.get('/me', getMe);
 router.put('/me', updateMe);
 router.get('/me/transacoes', transacoes);
+router.get('/me/alunos', listarAlunos);
 router.post('/me/enviar/:alunoId', enviar);
 router.get('/', getAll);
 router.get('/:id', getById);

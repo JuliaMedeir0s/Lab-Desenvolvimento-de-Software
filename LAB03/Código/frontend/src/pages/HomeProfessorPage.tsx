@@ -21,7 +21,7 @@ const HomeProfessorPage: React.FC = () => {
       return;
     }
 
-    const token: string = rawToken; // TypeScript confia agora
+    const token: string = rawToken;
 
     async function fetchData() {
       try {
@@ -93,7 +93,7 @@ const HomeProfessorPage: React.FC = () => {
           </button>
 
           <button
-            onClick={() => navigate("/extrato")}
+            onClick={() => navigate("/extrato-professor")}
             className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-200 text-center group"
           >
             <div className="flex flex-col items-center gap-4">

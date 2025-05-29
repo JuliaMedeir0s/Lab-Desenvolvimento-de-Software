@@ -62,7 +62,7 @@ function App() {
           }
         />
         <Route
-          path="/envio-moedas"
+          path="/enviar-moedas"
           element={
             <ProtectedRoute requiredRole="PROFESSOR">
               <EnvioMoedas />

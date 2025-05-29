@@ -1,37 +1,49 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { ArrowLeft, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Student } from "../types";
+import { buscarAlunosDaInstituicao, enviarMoedas, getExtratoProfessor } from "../services/professor.service";
 
 const EnvioMoedasPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [coinAmount, setCoinAmount] = useState<number>(0);
   const [reason, setReason] = useState("");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [balance, setBalance] = useState(0);
 
-  const currentBalance = 1000;
 
-  const students: Student[] = [
-    {
-      id: "1",
-      name: "Ana Silva",
-      email: "ana@email.com",
-      course: "Engenharia",
-    },
-    {
-      id: "2",
-      name: "Bruno Santos",
-      email: "bruno@email.com",
-      course: "Medicina",
-    },
-    {
-      id: "3",
-      name: "Carla Oliveira",
-      email: "carla@email.com",
-      course: "Direito",
-    },
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem("token") ?? "";
+    if (!token) {
+      toast.error("Token não encontrado");
+      navigate("/login");
+      return;
+    }
+
+    async function fetchData() {
+      try {
+        const alunos = await buscarAlunosDaInstituicao(token);
+        setStudents(
+          alunos.map((a: any) => ({
+            id: a.id,
+            name: a.usuario.nome,
+            email: a.usuario.email,
+            course: a.curso,
+          }))
+        );
+
+        const extrato = await getExtratoProfessor(token);
+        setBalance(extrato.saldo ?? 0);
+      } catch (error) {
+        toast.error("Erro ao carregar dados do professor.");
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);  
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,36 +53,27 @@ const EnvioMoedasPage: React.FC = () => {
       return;
     }
 
-    if (coinAmount <= 0) {
-      toast.error("A quantidade de moedas deve ser maior que zero.");
-      return;
-    }
-
-    if (coinAmount > currentBalance) {
-      toast.warning("Saldo insuficiente para realizar o envio.");
+    if (coinAmount <= 0 || coinAmount > balance) {
+      toast.error("Valor inválido.");
       return;
     }
 
     if (!reason.trim()) {
-      toast.error("Por favor, informe o motivo do envio.");
+      toast.error("Informe o motivo.");
       return;
     }
 
     try {
-      console.log("Sending coins:", {
-        studentId: selectedStudent.id,
-        amount: coinAmount,
-        reason,
-      });
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Token não encontrado");
 
+      await enviarMoedas(token, Number(selectedStudent.id), coinAmount, reason);
       toast.success("Moedas enviadas com sucesso!");
       navigate("/dashboard-professor");
-    } catch (error) {
-      toast.error(
-        "Erro ao enviar moedas. Verifique os dados e tente novamente."
-      );
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || "Erro ao enviar moedas.");
     }
-  };
+  };  
 
   const handleLogout = () => {
     toast.info("Saindo do sistema...");
@@ -115,7 +118,9 @@ const EnvioMoedasPage: React.FC = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 value={selectedStudent?.id || ""}
                 onChange={(e) => {
-                  const student = students.find((s) => s.id === e.target.value);
+                  const student = students.find(
+                    (s) => s.id === Number(e.target.value)
+                  );
                   setSelectedStudent(student || null);
                 }}
                 required
@@ -168,7 +173,7 @@ const EnvioMoedasPage: React.FC = () => {
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-gray-700 font-medium">
                 Saldo atual:{" "}
-                <span className="text-indigo-600">{currentBalance} moedas</span>
+                <span className="text-indigo-600">{balance} moedas</span>
               </p>
             </div>
 

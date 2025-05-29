@@ -15,3 +15,26 @@ export async function getExtratoProfessor(token: string) {
   });
   return res.data;
 }
+
+export async function buscarAlunosDaInstituicao(token: string) {
+  const res = await axios.get("/professores/me/alunos", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function enviarMoedas(
+  token: string,
+  alunoId: number,
+  valor: number,
+  mensagem: string
+) {
+  const res = await axios.post(
+    `/professores/me/enviar/${alunoId}`,
+    { valor, mensagem },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return res.data;
+}
