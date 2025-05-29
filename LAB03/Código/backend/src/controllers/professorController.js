@@ -78,6 +78,21 @@ async function getById(req, res) {
   }
 }
 
+async function listarAlunos(req, res) {
+  if (req.user.tipoUsuario !== 'PROFESSOR') return res.status(403).json({ error: 'Acesso negado' });
+  try {
+    const alunos = await prisma.aluno.findMany({
+      where: { instituicaoId: req.user.instituicaoId },
+      include: { usuario: true }
+    });
+    return res.json(alunos);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
 
 
-module.exports = { getMe, updateMe, transacoes, enviar, getAll, getById };
+
+
+
+module.exports = { getMe, updateMe, transacoes, enviar, getAll, getById, listarAlunos };
