@@ -33,7 +33,10 @@ async function extrato(req, res) {
   try {
     const transacoes = await prisma.transacao.findMany({
       where: { alunoId: req.user.id },
-      orderBy: { data: 'desc' }
+      orderBy: { data: 'desc' },
+      include: {
+        vantagem: true,
+      },
     });
     const aluno = await prisma.aluno.findUnique({ where: { id: req.user.id } });
     return res.json({ saldo: aluno.saldo, transacoes });

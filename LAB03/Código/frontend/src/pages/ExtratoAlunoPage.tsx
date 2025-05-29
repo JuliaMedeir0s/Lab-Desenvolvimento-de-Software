@@ -20,14 +20,24 @@ function ExtratoAlunoPage() {
     async function fetchExtrato() {
       try {
         const data = await getExtratoAluno();
-        setTransactions(data.transacoes);
+        const transacoesCorrigidas = data.transacoes.map((t: any) => ({
+          id: t.id,
+          data: t.data,
+          tipo: t.tipo,
+          quantidade: t.valor,
+          descricao:
+            t.tipo === "RESGATE" && t.vantagem
+              ? `Resgate: ${t.vantagem.nome}`
+              : t.mensagem,
+        }));        
+        setTransactions(transacoesCorrigidas);
       } catch (err) {
         toast.error("Erro ao carregar extrato.");
       }
     }
 
     fetchExtrato();
-  }, []);
+  }, []);  
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -97,10 +107,12 @@ function ExtratoAlunoPage() {
                       </td>
                       <td
                         className={`px-6 py-4 text-sm font-medium ${
-                          t.quantidade > 0 ? "text-green-600" : "text-red-600"
+                          t.tipo === "RESGATE"
+                            ? "text-red-600"
+                            : "text-green-600"
                         }`}
                       >
-                        {t.quantidade > 0 ? "+" : ""}
+                        {t.tipo === "RESGATE" ? "-" : "+"}
                         {t.quantidade} moedas
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-900">

@@ -209,7 +209,7 @@ const CadastroVantagemPage: React.FC = () => {
                 </div>
               </div>
               <p className="text-sm text-gray-500 mt-2">
-                Dimensão recomendada:{" "} <strong>800x600px</strong>. Tamanho máximo: <strong>1MB</strong>.
+                Dimensão recomendada:{" "} <strong>800x400px</strong>. Tamanho máximo: <strong>1MB</strong>.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
